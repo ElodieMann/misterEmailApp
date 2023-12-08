@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import HomePage from "./pages/HomePage/HomePage";
 import AboutUs from "./pages/AboutUs/AboutUs";
-import EmailIndex from "./pages/EmailIndex";
+import EmailIndex from "./pages/EmailIndex/EmailIndex";
 import "./App.css";
 
 function App() {
