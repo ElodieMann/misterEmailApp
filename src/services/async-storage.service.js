@@ -2,10 +2,9 @@
 
 import { utilService } from "./util.service.js";
 
-
 async function query(entityType) {
   try {
-    const entities = await utilService.loadFromStorage(entityType) || [];
+    const entities = (await utilService.loadFromStorage(entityType)) || [];
     return entities;
   } catch (e) {
     console.log(e);
@@ -15,7 +14,9 @@ async function query(entityType) {
 async function get(entityType, identifier) {
   try {
     const entities = await query(entityType);
-    const entity = entities.find((entit) => entit.id === identifier || entit.to === identifier);
+    const entity =
+      entities.find((entit) => entit.to === identifier) ||
+      entities[0].find((entit) => entit.id === identifier);
     if (!entity) throw new Error("Cannot find");
     return entity;
   } catch (e) {
@@ -24,16 +25,15 @@ async function get(entityType, identifier) {
 }
 
 async function post(entityType, newEntity) {
-    try {
-      const entities = await query(entityType);
-      entities.push(newEntity);
-      utilService.saveToStorage(entityType, entities);
-      return newEntity;
-    } catch (e) {
-      console.log(e);
-    }
+  try {
+    const entities = await query(entityType);
+    entities.push(newEntity);
+    utilService.saveToStorage(entityType, entities);
+    return newEntity;
+  } catch (e) {
+    console.log(e);
   }
-  
+}
 
 async function put(entityType, updateEntity) {
   try {
@@ -55,12 +55,10 @@ async function remove(entityType, emailId) {
     if (idx < 0) throw new Error("Cannot find");
     entities.splice(idx, 1);
     utilService.saveToStorage(entityType, entities);
-
   } catch (e) {
     console.log(e);
   }
 }
-
 
 export const storageService = {
   query,

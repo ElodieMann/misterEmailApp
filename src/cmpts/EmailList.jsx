@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { emailService } from "../services/email.service";
 import EmailPreview from "./EmailPreview";
 
-const EmailList = () => {
+const EmailList = ({setIsEmailClick}) => {
   const [emailData, setEmailData] = useState([]);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const EmailList = () => {
         emailData.map((emailList, index) => (
           <div key={index}>
             {emailList.map((email) => (
-              <EmailPreview key={email.id} email={email} />
+              <EmailPreview key={email.id} email={email} setIsEmailClick={setIsEmailClick} />
             ))}
           </div>
         ))

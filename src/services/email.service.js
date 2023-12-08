@@ -4,7 +4,7 @@ import { storageService } from "./async-storage.service.js";
 import { utilService } from "./util.service.js";
 
 const STORAGE_KEY = "emails";
-const USER_STORAGE_KEY = "user";
+export const USER_STORAGE_KEY = "user";
 
 async function initEmails() {
   try {
@@ -13,12 +13,30 @@ async function initEmails() {
       const initialEmails = Array.from({ length: 40 }, (_, index) => ({
         id: utilService.makeId(),
         subject: `Subject ${index + 1}`,
-        body: `Body text for email ${index + 1}`,
+        body: `Dear [Name],
+
+I trust this message finds you well. We are delighted to extend an invitation to our annual event, scheduled for [date] at [venue]. This year, we have curated an exceptional program featuring renowned speakers, interactive workshops, and, of course, excellent networking opportunities.
+
+Here's a quick overview of what you can expect at the event:
+
+Inspiring Keynotes: Industry experts will share innovative ideas and enriching experiences during our keynote sessions.
+
+Interactive Workshops: Engage in hands-on workshops designed to provide practical insights and skills.
+
+Networking Opportunities: Connect with professionals and peers, fostering valuable connections within our community.
+
+We believe this event will be a unique and enriching experience for you. Your presence will undoubtedly contribute to the success of the occasion.
+
+Please RSVP by [RSVP deadline] to secure your spot. We look forward to welcoming you and sharing an enriching experience together.
+
+Best regards,
+
+`,
         isRead: false,
         isStarred: false,
         sentAt: Date.now(),
         removedAt: null,
-        from: `sender${index + 1}@example.com`,  
+        from: `sender${index + 1}@example.com`,
         to: "user@appsus.com",
       }));
 
@@ -29,23 +47,29 @@ async function initEmails() {
   }
 }
 
-
 async function initLoggedInUser() {
   try {
-    const loggedInUser = await storageService.get(USER_STORAGE_KEY);
+    const existingUser = JSON.parse(localStorage.getItem(USER_STORAGE_KEY));
 
-    if (!loggedInUser || !loggedInUser.email) {
+    if (!existingUser || !existingUser.email) {
       const initialUser = {
         email: "user@appsus.com",
         fullname: "Mahatma Appsus",
       };
 
-      await storageService.post(USER_STORAGE_KEY, initialUser);
+      const users = await storageService.query(USER_STORAGE_KEY);
+
+      const userExists = users.some(user => user.email === initialUser.email);
+
+      if (!userExists) {
+        await storageService.post(USER_STORAGE_KEY, initialUser);
+      }
     }
   } catch (error) {
     console.error("Error initializing logged-in user:", error);
   }
 }
+
 
 async function getAllEmail() {
   const user = await storageService.get(USER_STORAGE_KEY);

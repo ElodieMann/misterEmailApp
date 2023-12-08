@@ -1,19 +1,14 @@
-import React, { useState } from "react";
-import EmailFolderList from "../../cmpts/EmailFolderList";
-import EmailFilter from "../../cmpts/EmailFilter";
+import React, { useState }  from "react";
 import EmailList from "../../cmpts/EmailList";
-import "./EmailIndex.css";
+import EmailDetails from "../../cmpts/EmailDetails";
 
 const EmailIndex = () => {
-  const [filter, setFilter] = useState("");
+  const [isEmailClick, setIsEmailClick] = useState(false);
+
   return (
     <div className="email-index">
-      <EmailFolderList setFilter={setFilter}/>
-      <main>
-        <EmailFilter />
-        <EmailList />
-      </main>
-
+     {!isEmailClick && <EmailList setIsEmailClick={setIsEmailClick} />}
+      {isEmailClick && <EmailDetails setIsEmailClick={setIsEmailClick} />}
     </div>
   );
 };
