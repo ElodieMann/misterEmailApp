@@ -1,0 +1,33 @@
+.about-page {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: rgba(128, 128, 128, 0.227);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  margin: 2% 10%;
+  gap: 15px;
+  padding: 40px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.back-btn {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: white;
+    border: 1px solid;
+    border-radius: 3px;
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: grey;
+}
+.back-btn:hover {
+    color: white;
+    background-color: transparent;
+}

@@ -1,14 +1,11 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import HomePage from "./pages/HomePage/HomePage";
+import AboutUs from "./pages/AboutUs/AboutUs";
+import EmailIndex from "./pages/EmailIndex";
 import "./App.css";
-import { Route, Router, Routes } from "react-router-dom";
-import { AboutUs } from "./pages/AboutUs";
-import { HomePage } from "./pages/HomePage";
-import { EmailIndex } from "./pages/EmailIndex";
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <Router>

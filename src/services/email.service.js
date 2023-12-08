@@ -60,7 +60,7 @@ function removeEmail(emailId) {
   return storageService.remove(STORAGE_KEY, emailId);
 }
 
-export const robotService = {
+export const emailService = {
   initEmails,
   initLoggedInUser,
   getAllEmails,
