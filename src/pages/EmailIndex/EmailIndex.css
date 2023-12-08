@@ -1,3 +1,7 @@
+.email-index {
+  display: flex;
+}
+
 nav {
   display: flex;
   flex-direction: column;
@@ -17,7 +21,6 @@ nav {
   font-size: 1.5rem;
   height: 40px;
   align-items: center;
-
 }
 
 .compose-btn {
@@ -30,14 +33,69 @@ nav {
 }
 
 .nav-link {
-border-radius: 0 15px 15px 0;
-padding: 5px;
+  border-radius: 0 15px 15px 0;
+  padding: 5px;
 }
 
 .compose-btn:hover {
-    box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.44);}
+  box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.44);
+}
 
 .nav-link:hover {
   background-color: #e3e3e7;
   cursor: pointer;
+}
+
+main {
+  width: 80vw;
+  height: 100vh;
+  padding: 5px;
+}
+
+section {
+  height: 90vh;
+  overflow-y: auto; 
+
+}
+
+.search-container,
+input[type="text"] {
+  background-color: #e9f1fb;
+  height: 5vh;
+  border-radius: 5px;
+  width: 30%;
+}
+
+input[type="text"] {
+  border: none;
+}
+
+
+article {
+  display: flex;
+  align-items: center;
+  height: 45px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.314);
+  background-color: #f2f6fb;
+}
+
+article:hover {
+  box-shadow: 1px 1px 3px 1px rgba(17, 17, 17, 0.732);
+}
+
+.fav-icon {
+  width: 5%;
+  color: rgba(128, 128, 128, 0.416);
+}
+
+.mail-from {
+  width: 25%;
+}
+
+.mail-subj {
+  width: 50%;
+}
+
+.mail-sent {
+  width: 20%;
 }

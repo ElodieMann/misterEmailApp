@@ -6,43 +6,57 @@ import { utilService } from "./util.service.js";
 const STORAGE_KEY = "emails";
 const USER_STORAGE_KEY = "user";
 
-function initEmails() {
-  const emails = storageService.query(STORAGE_KEY, utilService);
-  if (!emails || emails.length === 0) {
-    const initialEmails = [
-      {
+async function initEmails() {
+  try {
+    const emails = await storageService.query(STORAGE_KEY);
+    if (!emails || emails.length === 0) {
+      const initialEmails = Array.from({ length: 40 }, (_, index) => ({
         id: utilService.makeId(),
-        subject: "Miss you!",
-        body: "Would love to catch up sometimes",
+        subject: `Subject ${index + 1}`,
+        body: `Body text for email ${index + 1}`,
         isRead: false,
         isStarred: false,
-        sentAt: 1551133930594,
+        sentAt: Date.now(),
         removedAt: null,
-        from: "momo@momo.com",
+        from: `sender${index + 1}@example.com`,  
         to: "user@appsus.com",
-      },
-    ];
+      }));
 
-    storageService.post(STORAGE_KEY, initialEmails, utilService);
+      await storageService.post(STORAGE_KEY, initialEmails);
+    }
+  } catch (error) {
+    console.error("Error initializing emails:", error);
   }
 }
 
-function initLoggedInUser() {
-  const loggedInUser = storageService.get(USER_STORAGE_KEY, utilService);
-  if (!loggedInUser) {
-    const initialUser = {
-      email: "user@appsus.com",
-      fullname: "Mahatma Appsus",
-    };
 
-    storageService.post(USER_STORAGE_KEY, initialUser, utilService);
+async function initLoggedInUser() {
+  try {
+    const loggedInUser = await storageService.get(USER_STORAGE_KEY);
+
+    if (!loggedInUser || !loggedInUser.email) {
+      const initialUser = {
+        email: "user@appsus.com",
+        fullname: "Mahatma Appsus",
+      };
+
+      await storageService.post(USER_STORAGE_KEY, initialUser);
+    }
+  } catch (error) {
+    console.error("Error initializing logged-in user:", error);
   }
 }
 
-function getAllEmails() {
-  const user = storageService.get(USER_STORAGE_KEY, utilService);
-  const emails = storageService.query(STORAGE_KEY, utilService);
-  return emails.filter((email) => email.to === user.email);
+async function getAllEmail() {
+  const user = await storageService.get(USER_STORAGE_KEY);
+  const emails = await storageService.query(STORAGE_KEY);
+
+  if (user && user.email) {
+    return emails.filter((email) => email[0].to === user.email);
+  } else {
+    console.error("User is not defined or does not have an email property.");
+    return [];
+  }
 }
 
 function getById(emailId) {
@@ -63,7 +77,7 @@ function removeEmail(emailId) {
 export const emailService = {
   initEmails,
   initLoggedInUser,
-  getAllEmails,
+  getAllEmail,
   newEmail,
   getById,
   updateEmail,

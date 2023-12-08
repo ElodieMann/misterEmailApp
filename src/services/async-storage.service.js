@@ -3,19 +3,19 @@
 import { utilService } from "./util.service.js";
 
 
-function query(entityType) {
+async function query(entityType) {
   try {
-    const entities = JSON.parse(utilService.loadFromStorage(entityType)) || [];
+    const entities = await utilService.loadFromStorage(entityType) || [];
     return entities;
   } catch (e) {
     console.log(e);
   }
 }
 
-async function get(entityType, emailId) {
+async function get(entityType, identifier) {
   try {
     const entities = await query(entityType);
-    const entity = entities.find((entit) => entit.id === emailId);
+    const entity = entities.find((entit) => entit.id === identifier || entit.to === identifier);
     if (!entity) throw new Error("Cannot find");
     return entity;
   } catch (e) {
@@ -26,7 +26,6 @@ async function get(entityType, emailId) {
 async function post(entityType, newEntity) {
     try {
       const entities = await query(entityType);
-      newEntity = { ...newEntity, id: utilService.makeId() };  
       entities.push(newEntity);
       utilService.saveToStorage(entityType, entities);
       return newEntity;
