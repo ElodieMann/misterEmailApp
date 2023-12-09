@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const EmailFolderList = ({setFilter}) => {
+
   return (
     <nav>
       <FontAwesomeIcon className="mail-home-icon" icon={faEnvelopesBulk} />
@@ -32,7 +33,7 @@ const EmailFolderList = ({setFilter}) => {
         <FontAwesomeIcon icon={faCompassDrafting} />
         Draft
       </Link>
-      <Link className="nav-link" onClick={() => setPage('trash')}>
+      <Link className="nav-link" onClick={() => setFilter('trash')}>
         <FontAwesomeIcon icon={faTrash} />
         Trash
       </Link>

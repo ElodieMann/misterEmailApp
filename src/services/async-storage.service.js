@@ -4,8 +4,8 @@ import { utilService } from "./util.service.js";
 
 async function query(entityType) {
   try {
-    const entities = (await utilService.loadFromStorage(entityType)) || [];
-    return entities;
+    const entities = await utilService.loadFromStorage(entityType);
+    return entities?.[0] || [];
   } catch (e) {
     console.log(e);
   }
@@ -14,13 +14,23 @@ async function query(entityType) {
 async function get(entityType, identifier) {
   try {
     const entities = await query(entityType);
-    const entity =
-      entities.find((entit) => entit.to === identifier) ||
-      entities[0].find((entit) => entit.id === identifier);
+    const entity = entities.find((entit) => entit.id === identifier);
     if (!entity) throw new Error("Cannot find");
     return entity;
   } catch (e) {
     console.log(e);
+  }
+}
+
+async function findUserEmails(entityType, userEmail) {
+
+  try {
+    const allEmails = await query(entityType);
+    const userEmails = allEmails.filter((email) => email.to === userEmail);
+    return userEmails;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error finding user emails");
   }
 }
 
@@ -37,12 +47,14 @@ async function post(entityType, newEntity) {
 
 async function put(entityType, updateEntity) {
   try {
-    const entities = await query(entityType);
+    let entities = await query(entityType);
+  
     const idx = entities.findIndex((entity) => entity.id === updateEntity.id);
+
     if (idx < 0) throw new Error("Cannot find");
-    entities.splice(idx, 1, updateEntity);
-    utilService.saveToStorage(entityType, entities);
-    return updateEntity;
+    entities[idx] = updateEntity;
+    utilService.saveToStorage(entityType, [entities]);
+    return updateEntity
   } catch (e) {
     console.log(e);
   }
@@ -52,9 +64,12 @@ async function remove(entityType, emailId) {
   try {
     const entities = await query(entityType);
     const idx = entities.findIndex((entity) => entity.id === emailId);
+    
     if (idx < 0) throw new Error("Cannot find");
-    entities.splice(idx, 1);
-    utilService.saveToStorage(entityType, entities);
+
+    entities[idx].removedAt = Date.now();
+
+    utilService.saveToStorage(entityType, [entities]);
   } catch (e) {
     console.log(e);
   }
@@ -66,4 +81,5 @@ export const storageService = {
   post,
   put,
   remove,
+  findUserEmails,
 };

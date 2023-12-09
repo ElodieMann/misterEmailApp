@@ -82,7 +82,7 @@ input:focus{
 }
 
 
-article {
+.email-item, article {
   display: flex;
   align-items: center;
   height: 45px;
@@ -91,9 +91,14 @@ article {
   text-decoration: none;
   color: black;
   margin: 1px;
+  width: 100%;
 }
 
-article:hover {
+.email-info {
+  width: 90%;
+}
+
+.email-item:hover {
   box-shadow: 1px 1px 3px 1px rgba(17, 17, 17, 0.732);
 }
 
@@ -101,6 +106,20 @@ article:hover {
   width: 5%;
   color: rgba(128, 128, 128, 0.416);
 }
+
+.fav-icon:hover {
+color: rgb(225, 225, 17);
+cursor: pointer;
+}
+
+.trash-icon {
+  width: 5%;
+  color: rgba(128, 128, 128, 0.416);
+}
+.trash-icon:hover {
+  color: black;
+  cursor: pointer;
+  }
 
 .mail-from {
   width: 25%;

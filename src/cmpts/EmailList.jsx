@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { emailService } from "../services/email.service";
 import EmailPreview from "./EmailPreview";
 
-const EmailList = ({setIsEmailClick}) => {
+const EmailList = ({ setIsEmailClick, filter }) => {
   const [emailData, setEmailData] = useState([]);
-
+  console.log(emailData);
   useEffect(() => {
     getAllEmail();
-  }, []);
+  }, [filter]);
+
 
   const getAllEmail = async () => {
     try {
@@ -15,27 +16,40 @@ const EmailList = ({setIsEmailClick}) => {
       await emailService.initLoggedInUser();
       const data = await emailService.getAllEmail();
 
-      // Aplatir la structure avant de trier
       const flattenedData = data.flat();
 
-      // Trier les emails par date décroissante
       const sortedData = flattenedData.sort((a, b) => b.sentAt - a.sentAt);
 
-      setEmailData([sortedData]); // Mettez le résultat dans un tableau pour éviter l'imbriquement
+      if (filter === "starred") {
+        const starredEmail = sortedData.filter((email) => email.isStarred);
+        setEmailData(starredEmail);
+      } else if (filter === "inbox") {
+        const inboxEmails = sortedData.filter(
+          (email) => !Boolean(email.removedAt)
+        );
+        setEmailData(inboxEmails);
+      } else if (filter === "trash") {
+        const inboxEmails = sortedData.filter((email) =>
+          Boolean(email.removedAt)
+        );
+        setEmailData(inboxEmails);
+      }
     } catch (e) {
       console.log("Failed to load Email", e);
     }
   };
 
-
   return (
     <section>
       {emailData.length > 0 ? (
-        emailData.map((emailList, index) => (
-          <div key={index}>
-            {emailList.map((email) => (
-              <EmailPreview key={email.id} email={email} setIsEmailClick={setIsEmailClick} />
-            ))}
+        emailData.map((email) => (
+          <div key={email.id}>
+            <EmailPreview
+              key={email.id}
+              email={email}
+              setIsEmailClick={setIsEmailClick}
+        
+            />
           </div>
         ))
       ) : (
