@@ -1,51 +1,27 @@
 //email.service.js
 
 import { storageService } from "./async-storage.service.js";
-import { utilService } from "./util.service.js";
+import { predefinedEmails } from "./email-models.js";
 
 const STORAGE_KEY = "emails";
 export const USER_STORAGE_KEY = "user";
 
 async function initEmails() {
   try {
-    const emails = await storageService.query(STORAGE_KEY);
-    if (!emails || emails.length === 0) {
-      const initialEmails = Array.from({ length: 40 }, (_, index) => ({
-        id: utilService.makeId(),
-        subject: `Subject ${index + 1}`,
-        body: `Dear [Name],
+    // Clear the local storage for the storage key
+    localStorage.removeItem(STORAGE_KEY);
 
-I trust this message finds you well. We are delighted to extend an invitation to our annual event, scheduled for [date] at [venue]. This year, we have curated an exceptional program featuring renowned speakers, interactive workshops, and, of course, excellent networking opportunities.
+    // Replace the local storage with the predefined emails
+    await storageService.post(STORAGE_KEY, predefinedEmails);
 
-Here's a quick overview of what you can expect at the event:
-
-Inspiring Keynotes: Industry experts will share innovative ideas and enriching experiences during our keynote sessions.
-
-Interactive Workshops: Engage in hands-on workshops designed to provide practical insights and skills.
-
-Networking Opportunities: Connect with professionals and peers, fostering valuable connections within our community.
-
-We believe this event will be a unique and enriching experience for you. Your presence will undoubtedly contribute to the success of the occasion.
-
-Please RSVP by [RSVP deadline] to secure your spot. We look forward to welcoming you and sharing an enriching experience together.
-
-Best regards,
-
-`,
-        isRead: false,
-        isStarred: false,
-        sentAt: Date.now(),
-        removedAt: null,
-        from: `sender${index + 1}@example.com`,
-        to: "user@appsus.com",
-      }));
-
-      await storageService.post(STORAGE_KEY, initialEmails);
-    }
+    // Return the predefined emails
+    return predefinedEmails;
   } catch (error) {
     console.error("Error initializing emails:", error);
+    return [];
   }
 }
+
 
 async function initLoggedInUser() {
   try {
@@ -59,7 +35,7 @@ async function initLoggedInUser() {
 
       const users = await storageService.query(USER_STORAGE_KEY);
 
-      const userExists = users.some(user => user.email === initialUser.email);
+      const userExists = users.some((user) => user.email === initialUser.email);
 
       if (!userExists) {
         await storageService.post(USER_STORAGE_KEY, initialUser);
@@ -69,7 +45,6 @@ async function initLoggedInUser() {
     console.error("Error initializing logged-in user:", error);
   }
 }
-
 
 async function getAllEmail() {
   const user = await storageService.get(USER_STORAGE_KEY);

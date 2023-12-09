@@ -14,13 +14,19 @@ const EmailList = ({setIsEmailClick}) => {
       await emailService.initEmails();
       await emailService.initLoggedInUser();
       const data = await emailService.getAllEmail();
-      setEmailData(data);
+
+      // Aplatir la structure avant de trier
+      const flattenedData = data.flat();
+
+      // Trier les emails par date décroissante
+      const sortedData = flattenedData.sort((a, b) => b.sentAt - a.sentAt);
+
+      setEmailData([sortedData]); // Mettez le résultat dans un tableau pour éviter l'imbriquement
     } catch (e) {
       console.log("Failed to load Email", e);
     }
   };
 
-  console.log(emailData);
 
   return (
     <section>
