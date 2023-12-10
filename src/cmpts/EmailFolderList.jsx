@@ -13,7 +13,7 @@ import {
 import { emailService } from "../services/email.service";
 
 
-const EmailFolderList = ({ filter, setFilter, emailData }) => {
+const EmailFolderList = ({  setFilter }) => {
 
   const [unReadEmail, setUnReadEmail] = useState('')
   const [initData, setInitData] = useState([])

@@ -59,8 +59,15 @@ section {
 
 }
 
-form{
+form, .filter-options{
+
   height: 5vh;
+display: flex;
+align-items: center;
+}
+
+.filter-options{
+  justify-content: center;
 
 }
 

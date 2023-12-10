@@ -34,6 +34,7 @@ const EmailPreview = ({ email, setIsEmailClick }) => {
         icon={faStar}
         className="fav-icon"
         onClick={onFavorite}
+        style={{ color: isFav ? "yellow" : "inherit" }}
       />
 
       <Link
@@ -41,7 +42,9 @@ const EmailPreview = ({ email, setIsEmailClick }) => {
         onClick={() => setIsEmailClick(true)}
         className="email-info"
       >
-        <article     style={{ backgroundColor: !email.isRead ? "white" : "#F2F6FC" }}>
+        <article
+          style={{ backgroundColor: !email.isRead ? "white" : "#F2F6FC" }}
+        >
           <p className="mail-from">{email.from}</p>
           <p className="mail-subj">{email.subject}</p>
           <p className="mail-sent">{formatRelativeTime(email.sentAt)}</p>

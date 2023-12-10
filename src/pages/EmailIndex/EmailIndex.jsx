@@ -1,15 +1,23 @@
-import React, { useState }  from "react";
+import React, { useState } from "react";
 import EmailList from "../../cmpts/EmailList";
 import EmailDetails from "../../cmpts/EmailDetails";
 
-const EmailIndex = ({filter, setEmailData, emailData, getAllEmail}) => {
+const EmailIndex = ({ filter, setEmailData, emailData, getAllEmail, showEmailUnread }) => {
   const [isEmailClick, setIsEmailClick] = useState(false);
-
 
   return (
     <div className="email-index">
-  
-      {isEmailClick ? <EmailDetails setIsEmailClick={setIsEmailClick} /> : <EmailList filter={filter} getAllEmail={getAllEmail} setEmailData={setEmailData} emailData={emailData}/>}
+      {isEmailClick ? (
+        <EmailDetails setIsEmailClick={setIsEmailClick} />
+      ) : (
+        <EmailList
+          filter={filter}
+          getAllEmail={getAllEmail}
+          setEmailData={setEmailData}
+          emailData={emailData}
+          showEmailUnread={showEmailUnread}
+        />
+      )}
     </div>
   );
 };
