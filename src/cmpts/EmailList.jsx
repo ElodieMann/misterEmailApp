@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import { emailService } from "../services/email.service";
 import EmailPreview from "./EmailPreview";
 
-const EmailList = ({ setIsEmailClick, filter }) => {
-  const [emailData, setEmailData] = useState([]);
-  console.log(emailData);
+const EmailList = ({ setIsEmailClick, filter, emailData, setEmailData }) => {
+
   useEffect(() => {
     getAllEmail();
   }, [filter]);
-
 
   const getAllEmail = async () => {
     try {
@@ -48,7 +46,6 @@ const EmailList = ({ setIsEmailClick, filter }) => {
               key={email.id}
               email={email}
               setIsEmailClick={setIsEmailClick}
-        
             />
           </div>
         ))

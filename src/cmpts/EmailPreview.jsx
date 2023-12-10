@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { formatRelativeTime } from "../services/util.service";
 import { emailService } from "../services/email.service";
 
-const EmailPreview = ({ email, setIsEmailClick, setIsDelete }) => {
+const EmailPreview = ({ email, setIsEmailClick }) => {
   const [isFav, setIsFav] = useState(email.isStarred);
 
   const onFavorite = async () => {
@@ -19,18 +19,20 @@ const EmailPreview = ({ email, setIsEmailClick, setIsDelete }) => {
   };
   const onDelete = async () => {
     try {
-     await emailService.removeEmail(email.id);
+      await emailService.removeEmail(email.id);
     } catch (e) {
       console.log(e);
     }
   };
 
   return (
-    <div className="email-item">
+    <div
+      className="email-item"
+      style={{ backgroundColor: !email.isRead ? "white" : "#F2F6FC" }}
+    >
       <FontAwesomeIcon
         icon={faStar}
         className="fav-icon"
-        style={{ color: isFav ? "yellow" : "inherit" }}
         onClick={onFavorite}
       />
 
@@ -39,14 +41,18 @@ const EmailPreview = ({ email, setIsEmailClick, setIsDelete }) => {
         onClick={() => setIsEmailClick(true)}
         className="email-info"
       >
-        <article>
+        <article     style={{ backgroundColor: !email.isRead ? "white" : "#F2F6FC" }}>
           <p className="mail-from">{email.from}</p>
           <p className="mail-subj">{email.subject}</p>
           <p className="mail-sent">{formatRelativeTime(email.sentAt)}</p>
         </article>
       </Link>
 
-      <FontAwesomeIcon className="trash-icon" icon={faTrash} onClick={onDelete}/>
+      <FontAwesomeIcon
+        className="trash-icon"
+        icon={faTrash}
+        onClick={onDelete}
+      />
     </div>
   );
 };

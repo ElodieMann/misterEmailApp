@@ -19,13 +19,16 @@ const EmailDetails = ({ setIsEmailClick }) => {
     try {
       const email = await emailService.getById(params.id);
       setEmail(email);
+      const updatedEmail = { ...email, isRead: true };
+      emailService.updateEmail(updatedEmail);
     } catch (e) {
       console.log("Failed to load email", e);
     }
   };
+
   console.log(email);
   return (
-    <div>
+    <div className="email-details-cont">
       <Link to="/email" onClick={() => setIsEmailClick(false)}>
         <FontAwesomeIcon icon={faArrowLeft} />
       </Link>
