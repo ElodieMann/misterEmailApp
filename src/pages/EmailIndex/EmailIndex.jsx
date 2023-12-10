@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import EmailList from "../../cmpts/EmailList";
 import EmailDetails from "../../cmpts/EmailDetails";
 
-const EmailIndex = ({ filter, setEmailData, emailData, getAllEmail, showEmailUnread }) => {
+const EmailIndex = ({
+  filter,
+  setEmailData,
+  emailData,
+  getAllEmail,
+  showEmailUnread,
+}) => {
   const [isEmailClick, setIsEmailClick] = useState(false);
 
   return (

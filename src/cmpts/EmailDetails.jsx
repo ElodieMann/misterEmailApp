@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { emailService } from "../services/email.service";
 import { formatRelativeTime } from "../services/util.service";
 import { Link } from "react-router-dom";
@@ -9,7 +9,6 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 const EmailDetails = ({ setIsEmailClick }) => {
   const [email, setEmail] = useState([]);
   const params = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     getEmailById();
@@ -29,7 +28,7 @@ const EmailDetails = ({ setIsEmailClick }) => {
   console.log(email);
   return (
     <div className="email-details-cont">
-      <Link to="/email" onClick={() => setIsEmailClick(false)}>
+      <Link to="/email/inbox" onClick={() => setIsEmailClick(false)}>
         <FontAwesomeIcon icon={faArrowLeft} />
       </Link>
       <h1>{email.subject}</h1>

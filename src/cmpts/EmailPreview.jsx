@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
@@ -25,6 +25,8 @@ const EmailPreview = ({ email, setIsEmailClick }) => {
     }
   };
 
+  const onEmailClicked = () => setIsEmailClick(true);
+
   return (
     <div
       className="email-item"
@@ -38,8 +40,8 @@ const EmailPreview = ({ email, setIsEmailClick }) => {
       />
 
       <Link
-        to={`/email/${email.id}`}
-        onClick={() => setIsEmailClick(true)}
+        to={`/email/details/${email.id}`}
+        onClick={onEmailClicked}
         className="email-info"
       >
         <article

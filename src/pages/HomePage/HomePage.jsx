@@ -26,7 +26,7 @@ const HomePage = () => {
         you need.
       </h3>
 
-      <Link to={"/email"} className="email-page-link">
+      <Link to={"/email/inbox"} className="email-page-link">
         <FontAwesomeIcon className="mail-home-icon" icon={faEnvelopesBulk} />{" "}
         To your email inbox.
       </Link>

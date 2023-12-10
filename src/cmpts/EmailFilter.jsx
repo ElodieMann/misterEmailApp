@@ -5,7 +5,6 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 const EmailFilter = ({ setShowEmailUnread }) => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission if needed
   };
 
   return (

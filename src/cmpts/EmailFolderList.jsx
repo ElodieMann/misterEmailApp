@@ -11,13 +11,18 @@ import {
   faPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { emailService } from "../services/email.service";
+import * as keys from "../config/keys";
 
+const folderLinks = [
+  { label: keys.INBOX_LABEL, icon: faInbox, filter: keys.INBOX_FILTER },
+  { label: keys.STARRED_LABEL, icon: faStar, filter: keys.STARRED_FILTER },
+  { label: keys.SENT_LABEL, icon: faPaperPlane, filter: keys.SENT_FILTER },
+  { label: keys.DRAFT_LABEL, icon: faCompassDrafting, filter: keys.DRAFT_FILTER },
+  { label: keys.TRASH_LABEL, icon: faTrash, filter:keys.TRASH_FILTER },
+];
 
-const EmailFolderList = ({  setFilter }) => {
-
-  const [unReadEmail, setUnReadEmail] = useState('')
-  const [initData, setInitData] = useState([])
-
+const EmailFolderList = ({ setFilter }) => {
+  const [unReadEmail, setUnReadEmail] = useState("");
 
   useEffect(() => {
     filterUnreadEmail();
@@ -25,8 +30,7 @@ const EmailFolderList = ({  setFilter }) => {
 
   const filterUnreadEmail = async () => {
     const data = await emailService.getAllEmail();
-    setInitData(data)
-    const unRead = initData.filter((em) => !em.isRead);
+    const unRead = data.filter((email) => !email.isRead);
     setUnReadEmail(unRead.length);
   };
 
@@ -38,25 +42,20 @@ const EmailFolderList = ({  setFilter }) => {
         Compose
       </button>
       <div className="links">
-        <Link to='/email' className="nav-link" onClick={() => setFilter("inbox")}>
-          <FontAwesomeIcon icon={faInbox} />
-          Inbox <span style={{color: 'red'}}>{unReadEmail}</span>
-        </Link>
-        <Link  to={`/email/starred`} className="nav-link" onClick={() => setFilter("starred")}>
-          <FontAwesomeIcon icon={faStar} /> Starred
-        </Link>
-        <Link to={`/email/sent`}  className="nav-link" onClick={() => setFilter("sent")}>
-          <FontAwesomeIcon icon={faPaperPlane} />
-          Sent
-        </Link>
-        <Link to={`/email/draft`} className="nav-link" onClick={() => setFilter("draft")}>
-          <FontAwesomeIcon icon={faCompassDrafting} />
-          Draft
-        </Link>
-        <Link to={`/email/trash`} className="nav-link" onClick={() => setFilter("trash")}>
-          <FontAwesomeIcon icon={faTrash} />
-          Trash
-        </Link>
+        {folderLinks.map(({ label, icon, filter }) => (
+          <Link
+            key={label}
+            to={`/email/${filter}`}
+            className="nav-link"
+            onClick={() => setFilter(filter)}
+          >
+            <FontAwesomeIcon icon={icon} />
+            {label}{" "}
+            {filter === keys.INBOX_FILTER && (
+              <span style={{ color: "red" }}>{unReadEmail}</span>
+            )}
+          </Link>
+        ))}
       </div>
     </nav>
   );

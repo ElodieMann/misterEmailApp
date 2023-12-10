@@ -8,11 +8,12 @@ import EmailFolderList from "./cmpts/EmailFolderList";
 import EmailFilter from "./cmpts/EmailFilter";
 import "./App.css";
 import { useState } from "react";
+import * as keys from './config/keys.js'
 
 function App() {
   const [emailData, setEmailData] = useState([]);
-  const [filter, setFilter] = useState("");
-  const [showEmailUnread, setShowEmailUnread] = useState('');
+  const [filter, setFilter] = useState(keys.INBOX_FILTER);
+  const [showEmailUnread, setShowEmailUnread] = useState("");
 
   console.log(showEmailUnread);
   return (
@@ -24,72 +25,22 @@ function App() {
           emailData={emailData}
         />
         <main>
-          <EmailFilter setShowEmailUnread={setShowEmailUnread}/>
+          <EmailFilter setShowEmailUnread={setShowEmailUnread} />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutUs />} />
             <Route
-              path="/email"
+              path="/email/:filter"
               element={
                 <EmailIndex
-                showEmailUnread={showEmailUnread}
+                  showEmailUnread={showEmailUnread}
                   filter={filter}
                   setEmailData={setEmailData}
                   emailData={emailData}
                 />
               }
             />
-            <Route
-              path="/email"
-              element={
-                <EmailIndex
-                  filter={filter}
-                  setEmailData={setEmailData}
-                  emailData={emailData}
-                />
-              }
-            />
-            <Route
-              path="/email/starred"
-              element={
-                <EmailIndex
-                  filter={filter}
-                  setEmailData={setEmailData}
-                  emailData={emailData}
-                />
-              }
-            />
-            <Route
-              path="/email/sent"
-              element={
-                <EmailIndex
-                  filter={filter}
-                  setEmailData={setEmailData}
-                  emailData={emailData}
-                />
-              }
-            />
-            <Route
-              path="/email/draft"
-              element={
-                <EmailIndex
-                  filter={filter}
-                  setEmailData={setEmailData}
-                  emailData={emailData}
-                />
-              }
-            />
-            <Route
-              path="/email/trash"
-              element={
-                <EmailIndex
-                  filter={filter}
-                  setEmailData={setEmailData}
-                  emailData={emailData}
-                />
-              }
-            />
-            <Route path="/email/:id" element={<EmailDetails />} />
+            <Route path="/email/details/:id" element={<EmailDetails />} />
           </Routes>
         </main>
       </div>
