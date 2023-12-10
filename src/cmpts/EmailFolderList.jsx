@@ -21,7 +21,7 @@ const folderLinks = [
   { label: keys.TRASH_LABEL, icon: faTrash, filter:keys.TRASH_FILTER },
 ];
 
-const EmailFolderList = ({ setFilter }) => {
+const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
   const [unReadEmail, setUnReadEmail] = useState("");
 
   useEffect(() => {
@@ -37,8 +37,11 @@ const EmailFolderList = ({ setFilter }) => {
   return (
     <nav>
       <FontAwesomeIcon className="mail-home-icon" icon={faEnvelopesBulk} />
-      <button className="compose-btn">
+      <button className="compose-btn"
+      onClick={setIsComposeOpen}
+      >
         <FontAwesomeIcon icon={faPen} />
+        
         Compose
       </button>
       <div className="links">

@@ -9,15 +9,15 @@ import EmailFilter from "./cmpts/EmailFilter";
 import "./App.css";
 import { useState } from "react";
 import * as keys from './config/keys.js'
+import EmailCompose from "./cmpts/EmailCompose.jsx";
 
 function App() {
   const [emailData, setEmailData] = useState([]);
   const [filter, setFilter] = useState(keys.INBOX_FILTER);
   const [showEmailUnread, setShowEmailUnread] = useState("");
   const [inputSearch, setInputSearch] = useState('')
-  console.log(inputSearch);
+  const [isComposeOpen,setIsComposeOpen] = useState(false)
 
-  console.log(showEmailUnread);
   return (
     <Router>
       <div className="email-index">
@@ -25,9 +25,13 @@ function App() {
           filter={filter}
           setFilter={setFilter}
           emailData={emailData}
+          setIsComposeOpen={setIsComposeOpen}
         />
         <main>
           <EmailFilter setShowEmailUnread={setShowEmailUnread} setInputSearch={setInputSearch}/>
+
+
+          {isComposeOpen && <EmailCompose setIsComposeOpen={setIsComposeOpen} />}
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutUs />} />
