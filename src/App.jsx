@@ -14,6 +14,8 @@ function App() {
   const [emailData, setEmailData] = useState([]);
   const [filter, setFilter] = useState(keys.INBOX_FILTER);
   const [showEmailUnread, setShowEmailUnread] = useState("");
+  const [inputSearch, setInputSearch] = useState('')
+  console.log(inputSearch);
 
   console.log(showEmailUnread);
   return (
@@ -25,7 +27,7 @@ function App() {
           emailData={emailData}
         />
         <main>
-          <EmailFilter setShowEmailUnread={setShowEmailUnread} />
+          <EmailFilter setShowEmailUnread={setShowEmailUnread} setInputSearch={setInputSearch}/>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutUs />} />
@@ -37,6 +39,7 @@ function App() {
                   filter={filter}
                   setEmailData={setEmailData}
                   emailData={emailData}
+                  inputSearch={inputSearch}
                 />
               }
             />

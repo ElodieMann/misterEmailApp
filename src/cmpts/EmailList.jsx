@@ -3,12 +3,13 @@ import { emailService } from "../services/email.service";
 import EmailPreview from "./EmailPreview";
 import * as keys from '../config/keys.js'
 
-const EmailList = ({ setIsEmailClick, filter, showEmailUnread }) => {
+const EmailList = ({ setIsEmailClick, filter, showEmailUnread, inputSearch }) => {
+  const [initialEmailData, setInitialEmailData] = useState([]);
   const [emailData, setEmailData] = useState([]);
 
   useEffect(() => {
     getAllEmail();
-  }, [filter, showEmailUnread]);
+  }, [filter, showEmailUnread, inputSearch]);
 
   const filterByStarred = (data) => data.filter((email) => email.isStarred);
   const filterByInbox = (data) => data.filter((email) => !Boolean(email.removedAt));
@@ -48,10 +49,24 @@ const EmailList = ({ setIsEmailClick, filter, showEmailUnread }) => {
         default:
       }
 
+      if (inputSearch) {
+        filteredData = filteredData.filter((email) =>
+          email.subject.toLowerCase().includes(inputSearch.toLowerCase()) ||
+          email.body.toLowerCase().includes(inputSearch.toLowerCase()) ||
+          email.from.toLowerCase().includes(inputSearch.toLowerCase())
+        );
+      }
+
+      // Stocker la version initiale des e-mails
+      setInitialEmailData(data);
       setEmailData(filteredData);
     } catch (e) {
       console.log("Failed to load Email", e);
     }
+  };
+
+  const resetSearch = () => {
+    setEmailData(initialEmailData);
   };
 
   const sortByDate = () => {
@@ -62,7 +77,7 @@ const EmailList = ({ setIsEmailClick, filter, showEmailUnread }) => {
 
   const sortByTitle = () => {
     const flattenedData = emailData.flat();
-    const sortedData = [...flattenedData].sort((a, b) =>
+    const sortedData = flattenedData.sort((a, b) =>
       a.subject.localeCompare(b.subject)
     );
     setEmailData(sortedData);
@@ -72,6 +87,7 @@ const EmailList = ({ setIsEmailClick, filter, showEmailUnread }) => {
     <section>
       <button onClick={sortByDate}>Date</button>
       <button onClick={sortByTitle}>Title</button>
+      <button onClick={resetSearch}>Reset Search</button>
 
       {emailData?.length > 0 ? (
         emailData.map((email) => (

@@ -8,6 +8,7 @@ const EmailIndex = ({
   emailData,
   getAllEmail,
   showEmailUnread,
+  inputSearch
 }) => {
   const [isEmailClick, setIsEmailClick] = useState(false);
 
@@ -22,6 +23,7 @@ const EmailIndex = ({
           setEmailData={setEmailData}
           emailData={emailData}
           showEmailUnread={showEmailUnread}
+          inputSearch={inputSearch}
         />
       )}
     </div>
