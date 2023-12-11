@@ -45,8 +45,8 @@ const EmailList = ({ setIsEmailClick, filter, setFilter }) => {
         <button onClick={resetSearch}>Reset Search</button>
       </div>
       {emailData?.length > 0 ? (
-        emailData.map((email) => (
-          <div key={email.id}>
+        emailData.map((email, index) => (
+          <div key={index}>
             <EmailPreview
               key={email.id}
               email={email}

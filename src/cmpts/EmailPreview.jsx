@@ -20,7 +20,7 @@ const EmailPreview = ({ email, setIsEmailClick, setIsDelete }) => {
   const onDelete = async () => {
     try {
       await emailService.removeEmail(email.id);
-      setIsDelete(email.id)
+      setIsDelete(email.id);
     } catch (e) {
       console.log(e);
     }
@@ -48,7 +48,7 @@ const EmailPreview = ({ email, setIsEmailClick, setIsDelete }) => {
         <article
           style={{ backgroundColor: !email.isRead ? "white" : "#F2F6FC" }}
         >
-          <p className="mail-from">{email.from}</p>
+          <p className="mail-from">{email.from }</p>
           <p className="mail-subj">{email.subject}</p>
           <p className="mail-sent">{formatRelativeTime(email.sentAt)}</p>
         </article>

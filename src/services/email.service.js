@@ -25,22 +25,29 @@ const initialUser = {
 
 async function getAllEmail(filterBy) {
   const data = await initEmails();
-  let emails = data?.filter((email) => email.to === initialUser.email);
+  let emailsReceived = data?.filter((email) => email.to === initialUser.email);
+  let emailsSent = data?.filter((email) => email.to !== initialUser.email);
+
+  let dataDisplay;
 
   if (filterBy) {
     const { status = "inbox", txt, isRead = null } = filterBy;
 
-    if (status === "inbox") {
-      emails = emails.filter((email) => email.removedAt === null);
-    } else if (status === "starred") {
-      emails = emails.filter((email) => email.isStarred);
-    } else if (status === "trash") {
-      emails = emails.filter((email) => email.removedAt !== null);
+    if (status === keys.INBOX_FILTER) {
+      dataDisplay = emailsReceived.filter((email) => email.removedAt === null);
+    } else if (status === keys.STARRED_FILTER) {
+      dataDisplay = emailsReceived.filter((email) => email.isStarred);
+    } else if (status === keys.TRASH_FILTER) {
+      dataDisplay = emailsReceived.filter((email) => email.removedAt !== null);
+    } else if (status === keys.SENT_FILTER) {
+      dataDisplay = emailsSent.filter((email) => !email.isDraft);
+    } else if (status === keys.DRAFT_FILTER) {
+      dataDisplay = emailsSent.filter((email) => email.isDraft === true);
     }
 
     if (txt && txt.trim() !== "") {
       const searchTerm = txt.toLowerCase();
-      emails = emails.filter(
+      dataDisplay = emailsReceived.filter(
         (email) =>
           email.subject.toLowerCase().includes(searchTerm) ||
           email.body.toLowerCase().includes(searchTerm)
@@ -48,11 +55,11 @@ async function getAllEmail(filterBy) {
     }
 
     if (isRead !== null) {
-      emails = emails.filter((email) => email.isRead === isRead);
+      dataDisplay = emailsReceived.filter((email) => email.isRead === isRead);
     }
   }
-
-  return emails;
+  console.log("emails2", dataDisplay);
+  return dataDisplay;
 }
 
 function getDefaultFilter() {
@@ -79,7 +86,6 @@ function removeEmail(emailId) {
 }
 
 export const emailService = {
-  initEmails,
   getAllEmail,
   getDefaultFilter,
   newEmail,

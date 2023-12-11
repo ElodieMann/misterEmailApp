@@ -37,7 +37,7 @@ console.log(filter);
               path="/email/:filter"
               element={<EmailIndex filter={filter} setFilter={setFilter}/>}
             />
-            <Route path="/email/details/:id" element={<EmailDetails />} />
+            <Route path="/email/details/:id" element={<EmailDetails filter={filter} />} />
           </Routes>
         </main>
       </div>

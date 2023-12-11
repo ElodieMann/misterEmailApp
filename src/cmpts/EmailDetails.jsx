@@ -33,8 +33,8 @@ const EmailDetails = ({ setIsEmailClick }) => {
       <h1>{email?.subject}</h1>
       <div className="from">
         <div>
-          <p>From : {email?.from}</p>
-          <p>To : me ({email?.from})</p>
+          <p>From : {email?.from || 'Me'}</p>
+          <p>To : me ({email?.to})</p>
         </div>
         <p>At {formatRelativeTime(email?.sentAt)}</p>
       </div>

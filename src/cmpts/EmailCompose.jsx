@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { emailService } from "../services/email.service";
+import { utilService } from "../services/util.service";
+
 
 const EmailCompose = ({ setIsComposeOpen }) => {
   const [emailData, setEmailData] = useState({
     to: "",
     subject: "",
     body: "",
+    sentAt: new Date(),
+    id: utilService.makeId()
   });
 
   const areFieldsNotEmpty = () => {
@@ -22,8 +26,7 @@ const EmailCompose = ({ setIsComposeOpen }) => {
   };
 
   const handleSendEmail = () => {
-    emailService.saveSentEmail(emailData);
-    setSentEmails((prevEmails) => [...prevEmails, emailData]);
+    emailService.newEmail(emailData);
 
     setIsComposeOpen(false);
 
@@ -36,8 +39,7 @@ const EmailCompose = ({ setIsComposeOpen }) => {
 
   const handleClose = () => {
     if (areFieldsNotEmpty()) {
-      emailService.saveDraft(emailData);
-      setDrafts((prevDrafts) => [...prevDrafts, emailData]);
+      emailService.newEmail({ ...emailData, isDraft: true });
     }
     setIsComposeOpen(false);
   };
