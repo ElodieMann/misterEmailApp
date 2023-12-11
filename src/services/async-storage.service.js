@@ -5,7 +5,8 @@ import { utilService } from "./util.service.js";
 async function query(entityType) {
   try {
     const entities = await utilService.loadFromStorage(entityType);
-    return entities?.[0] || [];
+    console.log(entities, 'ent query');
+    return entities?.[0] || entities || [];
   } catch (e) {
     console.log(e);
   }
@@ -37,6 +38,8 @@ async function findUserEmails(entityType, userEmail) {
 async function post(entityType, newEntity) {
   try {
     const entities = await query(entityType);
+    console.log('entities', entities);
+    console.log('newEntity', newEntity);
     entities.push(newEntity);
     utilService.saveToStorage(entityType, entities);
     return newEntity;

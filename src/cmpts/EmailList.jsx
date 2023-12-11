@@ -35,6 +35,12 @@ const EmailList = ({ setIsEmailClick, filter, showEmailUnread, inputSearch }) =>
         case keys.TRASH_FILTER:
           filteredData = filterByTrash(data);
           break;
+        case keys.SENT_FILTER:
+          filteredData = await emailService.getSentEmail();
+          break;
+        case keys.DRAFT_FILTER:
+          filteredData = await emailService.getDraft();
+          break;
         default:
           filteredData = filterByInbox(data);
       }
@@ -57,7 +63,6 @@ const EmailList = ({ setIsEmailClick, filter, showEmailUnread, inputSearch }) =>
         );
       }
 
-      // Stocker la version initiale des e-mails
       setInitialEmailData(data);
       setEmailData(filteredData);
     } catch (e) {
