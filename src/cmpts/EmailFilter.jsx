@@ -2,13 +2,32 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-const EmailFilter = ({ setInputSearch, setShowEmailUnread }) => {
+const EmailFilter = ({ setInputSearch, setFilter }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
     setInputSearch(searchTerm);
-    setSearchTerm(""); 
+    setSearchTerm("");
+    setFilter((prevFilter) => ({ ...prevFilter, txt: searchTerm }));
+  };
+
+  const onSearchInputChange = (e) => {
+    setSearchTerm(e.target.value);
+    setFilter((prevFilter) => ({ ...prevFilter, txt: e.target.value }));
+  };
+
+  const onSelectChange = (e) => {
+    const selectedValue = e.target.value;
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      isRead:
+        selectedValue === "read"
+          ? true
+          : selectedValue === "unread"
+          ? false
+          : null,
+    }));
   };
 
   return (
@@ -20,13 +39,23 @@ const EmailFilter = ({ setInputSearch, setShowEmailUnread }) => {
           placeholder="Search"
           name="txt"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={onSearchInputChange}
         />
       </div>
 
       <select
         name="readStatus"
-        onChange={(e) => setShowEmailUnread(e.target.value)}
+        onChange={(e) =>
+          setFilter((prevFilter) => ({
+            ...prevFilter,
+            isRead:
+              e.target.value === "read"
+                ? true
+                : e.target.value === "unread"
+                ? false
+                : null,
+          }))
+        }
       >
         <option value="">All</option>
         <option value="unread">Unread</option>

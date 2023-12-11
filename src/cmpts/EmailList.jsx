@@ -1,77 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { emailService } from "../services/email.service";
 import EmailPreview from "./EmailPreview";
-import * as keys from '../config/keys.js'
 
-const EmailList = ({ setIsEmailClick, filter, showEmailUnread, inputSearch }) => {
-  const [initialEmailData, setInitialEmailData] = useState([]);
+const EmailList = ({ setIsEmailClick, filter, setFilter }) => {
   const [emailData, setEmailData] = useState([]);
+  const [isDelete, setIsDelete] = useState("");
 
   useEffect(() => {
     getAllEmail();
-  }, [filter, showEmailUnread, inputSearch]);
-
-  const filterByStarred = (data) => data.filter((email) => email.isStarred);
-  const filterByInbox = (data) => data.filter((email) => !Boolean(email.removedAt));
-  const filterByTrash = (data) => data.filter((email) => Boolean(email.removedAt));
-  const filterByUnread = (data) => data.filter((email) => !email.isRead);
-  const filterByRead = (data) => data.filter((email) => email.isRead);
+  }, [filter, isDelete]);
 
   const getAllEmail = async () => {
     try {
-      await emailService.initEmails();
-      await emailService.initLoggedInUser();
-      const data = await emailService.getAllEmail();
-
-      let filteredData = data;
-
-      switch (filter) {
-        case keys.STARRED_FILTER:
-          filteredData = filterByStarred(data);
-          break;
-        case keys.INBOX_FILTER:
-          filteredData = filterByInbox(data);
-          break;
-        case keys.TRASH_FILTER:
-          filteredData = filterByTrash(data);
-          break;
-        case keys.SENT_FILTER:
-          filteredData = await emailService.getSentEmail();
-          break;
-        case keys.DRAFT_FILTER:
-          filteredData = await emailService.getDraft();
-          break;
-        default:
-          filteredData = filterByInbox(data);
-      }
-
-      switch (showEmailUnread) {
-        case keys.UNREAD_FILTER:
-          filteredData = filterByUnread(filteredData);
-          break;
-        case keys.READ_FILTER:
-          filteredData = filterByRead(filteredData);
-          break;
-        default:
-      }
-
-      if (inputSearch) {
-        filteredData = filteredData.filter((email) =>
-          email.subject.toLowerCase().includes(inputSearch.toLowerCase()) ||
-          email.body.toLowerCase().includes(inputSearch.toLowerCase()) ||
-          email.from.toLowerCase().includes(inputSearch.toLowerCase())
-        );
-      }
-
-      setInitialEmailData(data);
-      setEmailData(filteredData);
+      const data = await emailService.getAllEmail(filter);
+      setEmailData(data)
     } catch (e) {
       console.log("Failed to load Email", e);
     }
   };
 
   const resetSearch = () => {
-    setEmailData(initialEmailData);
+    setFilter(emailService.getDefaultFilter());
   };
 
   const sortByDate = () => {
@@ -90,10 +39,11 @@ const EmailList = ({ setIsEmailClick, filter, showEmailUnread, inputSearch }) =>
 
   return (
     <section>
-      <button onClick={sortByDate}>Date</button>
-      <button onClick={sortByTitle}>Title</button>
-      <button onClick={resetSearch}>Reset Search</button>
-
+      <div className="btn-filter">
+        <button onClick={sortByDate}>Date</button>
+        <button onClick={sortByTitle}>Subject</button>
+        <button onClick={resetSearch}>Reset Search</button>
+      </div>
       {emailData?.length > 0 ? (
         emailData.map((email) => (
           <div key={email.id}>
@@ -101,6 +51,7 @@ const EmailList = ({ setIsEmailClick, filter, showEmailUnread, inputSearch }) =>
               key={email.id}
               email={email}
               setIsEmailClick={setIsEmailClick}
+              setIsDelete={setIsDelete}
             />
           </div>
         ))

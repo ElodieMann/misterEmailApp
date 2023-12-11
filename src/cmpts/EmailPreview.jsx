@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { formatRelativeTime } from "../services/util.service";
 import { emailService } from "../services/email.service";
 
-const EmailPreview = ({ email, setIsEmailClick }) => {
+const EmailPreview = ({ email, setIsEmailClick, setIsDelete }) => {
   const [isFav, setIsFav] = useState(email.isStarred);
 
   const onFavorite = async () => {
@@ -20,6 +20,7 @@ const EmailPreview = ({ email, setIsEmailClick }) => {
   const onDelete = async () => {
     try {
       await emailService.removeEmail(email.id);
+      setIsDelete(email.id)
     } catch (e) {
       console.log(e);
     }

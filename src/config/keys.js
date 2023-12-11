@@ -1,3 +1,5 @@
+export const STORAGE_KEY = "emails"
+
 export const INBOX_LABEL = "Inbox";
 export const INBOX_FILTER = "inbox";
 

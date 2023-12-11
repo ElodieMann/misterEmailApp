@@ -158,6 +158,17 @@ a {
   text-decoration: none;
 }
 
+.btn-filter {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-filter button {
+  border-radius: 5px;
+  border: 1px solid grey;
+  cursor: pointer;
+}
+
 
 .email-compose-overlay {
   position: fixed;

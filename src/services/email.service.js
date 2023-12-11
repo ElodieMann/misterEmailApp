@@ -1,105 +1,89 @@
 //email.service.js
 
 import { storageService } from "./async-storage.service.js";
+import { utilService } from "./util.service.js";
 import { predefinedEmails } from "./email-models.js";
-
-export const STORAGE_KEY = "emails";
-export const USER_STORAGE_KEY = "user";
-export const SENT_EMAILS_STORAGE_KEY = "sentEmails";
-export const DRAFTS_STORAGE_KEY = "drafts";
+import * as keys from "../config/keys.js";
 
 async function initEmails() {
   try {
-    const emails = await storageService.query(STORAGE_KEY);
+    const emails = await storageService.query(keys.STORAGE_KEY);
     if (!emails || emails.length === 0) {
-      await storageService.post(STORAGE_KEY, predefinedEmails);
+      utilService.saveToStorage(keys.STORAGE_KEY, predefinedEmails);
+      return predefinedEmails;
     }
+    return emails;
   } catch (error) {
     console.error("Error initializing emails:", error);
   }
 }
 
-async function initLoggedInUser() {
-  try {
-    const existingUser = JSON.parse(localStorage.getItem(USER_STORAGE_KEY));
-    if (existingUser) return;
+const initialUser = {
+  email: "user@appsus.com",
+  fullname: "Mahatma Appsus",
+};
 
-    const initialUser = {
-      email: "user@appsus.com",
-      fullname: "Mahatma Appsus",
-    };
+async function getAllEmail(filterBy) {
+  const data = await initEmails();
+  let emails = data?.filter((email) => email.to === initialUser.email);
 
-    const users = await storageService.query(USER_STORAGE_KEY);
+  if (filterBy) {
+    const { status = "inbox", txt, isRead = null } = filterBy;
 
-    const userExists = users?.some((user) => user.email === initialUser.email);
-
-    if (!userExists) {
-      await storageService.post(USER_STORAGE_KEY, initialUser);
+    if (status === "inbox") {
+      emails = emails.filter((email) => email.removedAt === null);
+    } else if (status === "starred") {
+      emails = emails.filter((email) => email.isStarred);
+    } else if (status === "trash") {
+      emails = emails.filter((email) => email.removedAt !== null);
     }
-  } catch (error) {
-    console.error("Error initializing logged-in user:", error);
+
+    if (txt && txt.trim() !== "") {
+      const searchTerm = txt.toLowerCase();
+      emails = emails.filter(
+        (email) =>
+          email.subject.toLowerCase().includes(searchTerm) ||
+          email.body.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    if (isRead !== null) {
+      emails = emails.filter((email) => email.isRead === isRead);
+    }
   }
+
+  return emails;
 }
 
-async function getAllEmail() {
-  const user = await storageService.query(USER_STORAGE_KEY);
-  const emails = await storageService.findUserEmails(STORAGE_KEY, user?.email);
-
-  return emails?.filter((email) => email.to === user.email);
-}
-async function getEmailByFilter(filter) {
-  const emails = await getAllEmail()
-emails.filter
+function getDefaultFilter() {
+  return {
+    status: "inbox",
+    txt: "",
+    isRead: null,
+  };
 }
 
 function getById(emailId) {
-  return storageService.get(STORAGE_KEY, emailId);
+  return storageService.get(keys.STORAGE_KEY, emailId);
 }
 
 function newEmail(newEmail) {
-  return storageService.post(STORAGE_KEY, newEmail);
+  return storageService.post(keys.STORAGE_KEY, newEmail);
 }
 
 function updateEmail(updateEmail) {
-  return storageService.put(STORAGE_KEY, updateEmail);
+  return storageService.put(keys.STORAGE_KEY, updateEmail);
 }
 function removeEmail(emailId) {
-  return storageService.remove(STORAGE_KEY, emailId);
+  return storageService.remove(keys.STORAGE_KEY, emailId);
 }
-
-
-async function saveSentEmail(sentEmail) {
-  return storageService.post(SENT_EMAILS_STORAGE_KEY, sentEmail);
-}
-
-async function getSentEmail(sentEmailId) {
-  return storageService.get(SENT_EMAILS_STORAGE_KEY, sentEmailId);
-}
-
-async function saveDraft(draft) {
-  return storageService.post(DRAFTS_STORAGE_KEY, draft);
-}
-
-async function getDraft(draftId) {
-  return storageService.get(DRAFTS_STORAGE_KEY, draftId);
-}
-
-async function updateDraft(draft) {
-  return storageService.put(DRAFTS_STORAGE_KEY, draft);
-}
-
 
 export const emailService = {
   initEmails,
-  initLoggedInUser,
   getAllEmail,
+  getDefaultFilter,
   newEmail,
   getById,
   updateEmail,
   removeEmail,
-  saveSentEmail,
-  getSentEmail,
-  saveDraft,
-  getDraft,
-  updateDraft,
 };

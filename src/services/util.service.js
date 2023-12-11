@@ -14,7 +14,7 @@ function saveToStorage(key, value) {
 }
 
 function loadFromStorage(key, defaultValue = null) {
-  const value = localStorage.getItem(key) || JSON.stringify(defaultValue);
+  const value = localStorage.getItem(key) || defaultValue;
   return JSON.parse(value);
 }
 

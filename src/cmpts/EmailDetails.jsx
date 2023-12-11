@@ -25,21 +25,20 @@ const EmailDetails = ({ setIsEmailClick }) => {
     }
   };
 
-  console.log(email);
   return (
     <div className="email-details-cont">
       <Link to="/email/inbox" onClick={() => setIsEmailClick(false)}>
         <FontAwesomeIcon icon={faArrowLeft} />
       </Link>
-      <h1>{email.subject}</h1>
+      <h1>{email?.subject}</h1>
       <div className="from">
         <div>
-          <p>From : {email.from}</p>
-          <p>To : me ({email.from})</p>
+          <p>From : {email?.from}</p>
+          <p>To : me ({email?.from})</p>
         </div>
-        <p>At {formatRelativeTime(email.sentAt)}</p>
+        <p>At {formatRelativeTime(email?.sentAt)}</p>
       </div>
-      <h4>{email.body}</h4>
+      <h4>{email?.body}</h4>
     </div>
   );
 };

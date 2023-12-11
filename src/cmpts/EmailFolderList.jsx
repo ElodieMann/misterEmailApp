@@ -17,8 +17,12 @@ const folderLinks = [
   { label: keys.INBOX_LABEL, icon: faInbox, filter: keys.INBOX_FILTER },
   { label: keys.STARRED_LABEL, icon: faStar, filter: keys.STARRED_FILTER },
   { label: keys.SENT_LABEL, icon: faPaperPlane, filter: keys.SENT_FILTER },
-  { label: keys.DRAFT_LABEL, icon: faCompassDrafting, filter: keys.DRAFT_FILTER },
-  { label: keys.TRASH_LABEL, icon: faTrash, filter:keys.TRASH_FILTER },
+  {
+    label: keys.DRAFT_LABEL,
+    icon: faCompassDrafting,
+    filter: keys.DRAFT_FILTER,
+  },
+  { label: keys.TRASH_LABEL, icon: faTrash, filter: keys.TRASH_FILTER },
 ];
 
 const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
@@ -37,11 +41,8 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
   return (
     <nav>
       <FontAwesomeIcon className="mail-home-icon" icon={faEnvelopesBulk} />
-      <button className="compose-btn"
-      onClick={setIsComposeOpen}
-      >
+      <button className="compose-btn" onClick={setIsComposeOpen}>
         <FontAwesomeIcon icon={faPen} />
-        
         Compose
       </button>
       <div className="links">
@@ -50,7 +51,9 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
             key={label}
             to={`/email/${filter}`}
             className="nav-link"
-            onClick={() => setFilter(filter)}
+            onClick={() =>
+              setFilter((prevFilter) => ({ ...prevFilter, status: filter }))
+            }
           >
             <FontAwesomeIcon icon={icon} />
             {label}{" "}

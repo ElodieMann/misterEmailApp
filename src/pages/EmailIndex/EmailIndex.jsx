@@ -2,14 +2,7 @@ import React, { useState } from "react";
 import EmailList from "../../cmpts/EmailList";
 import EmailDetails from "../../cmpts/EmailDetails";
 
-const EmailIndex = ({
-  filter,
-  setEmailData,
-  emailData,
-  getAllEmail,
-  showEmailUnread,
-  inputSearch
-}) => {
+const EmailIndex = ({ filter, setFilter }) => {
   const [isEmailClick, setIsEmailClick] = useState(false);
 
   return (
@@ -17,14 +10,7 @@ const EmailIndex = ({
       {isEmailClick ? (
         <EmailDetails setIsEmailClick={setIsEmailClick} />
       ) : (
-        <EmailList
-          filter={filter}
-          getAllEmail={getAllEmail}
-          setEmailData={setEmailData}
-          emailData={emailData}
-          showEmailUnread={showEmailUnread}
-          inputSearch={inputSearch}
-        />
+        <EmailList filter={filter} setFilter={setFilter}/>
       )}
     </div>
   );
