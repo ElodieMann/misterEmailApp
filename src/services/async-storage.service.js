@@ -37,8 +37,6 @@ async function post(entityType, newEntity) {
 async function put(entityType, updateEntity) {
   try {
     let entities = await query(entityType);
-    console.log(entities);
-    console.log(updateEntity);
 
     const idx = entities.findIndex((entity) => entity.id === updateEntity.id);
 

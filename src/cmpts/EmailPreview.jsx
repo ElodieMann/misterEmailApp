@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { formatRelativeTime } from "../services/util.service";
 import { emailService } from "../services/email.service";
+import * as keys from '../config/keys'
 
 const EmailPreview = ({
   email,
@@ -25,19 +26,20 @@ const EmailPreview = ({
   };
   const onDelete = async () => {
     try {
-      if (filter.status === "trash") {
+      if (filter.status === keys.TRASH_FILTER) {
         await emailService.removeFromLocalStorage(email.id);
         setIsDelete(email.id);
+       
       } else {
         await emailService.removeEmail(email.id);
         setIsDelete(email.id);
+        console.log('tr');
       }
     } catch (e) {
       console.log(e);
     }
   };
 
-  const onEmailClicked = () => setIsEmailClick(true);
 
   return (
     <div
@@ -74,13 +76,13 @@ const EmailPreview = ({
       ) : (
         <Link
           to={`/email/details/${email.id}`}
-          onClick={onEmailClicked}
+          onClick={() => setIsEmailClick(true)}
           className="email-info"
         >
           <article
             style={{ backgroundColor: !email.isRead ? "white" : "#F2F6FC" }}
           >
-            <p className="mail-from">{email.from}</p>
+            <p className="mail-from">{email.from || 'From Me'}</p>
             <p className="mail-subj">{email.subject}</p>
             <p className="mail-sent">{formatRelativeTime(email.sentAt)}</p>
           </article>

@@ -2,9 +2,15 @@ import React, { useEffect, useState } from "react";
 import { emailService } from "../services/email.service";
 import EmailPreview from "./EmailPreview";
 
-const EmailList = ({ setIsEmailClick, filter, setFilter, setIsComposeOpen}) => {
+const EmailList = ({
+  setIsEmailClick,
+  filter,
+  setFilter,
+  setIsComposeOpen,
+}) => {
   const [emailData, setEmailData] = useState([]);
   const [isDelete, setIsDelete] = useState("");
+  
 
   useEffect(() => {
     getAllEmail();
@@ -13,27 +19,24 @@ const EmailList = ({ setIsEmailClick, filter, setFilter, setIsComposeOpen}) => {
   const getAllEmail = async () => {
     try {
       const data = await emailService.getAllEmail(filter);
-      setEmailData(data)
+      setEmailData(data);
     } catch (e) {
       console.log("Failed to load Email", e);
     }
   };
 
-  const resetSearch = () => {
-    setFilter(emailService.getDefaultFilter());
-  };
 
   const sortByDate = () => {
-    const flattenedData = emailData.flat();
-    const sortedData = flattenedData.sort((a, b) => b.sentAt - a.sentAt);
+    const sortedData = [...emailData]
+      .flat()
+      .sort((a, b) => b.sentAt - a.sentAt);
     setEmailData(sortedData);
   };
 
   const sortByTitle = () => {
-    const flattenedData = emailData.flat();
-    const sortedData = flattenedData.sort((a, b) =>
-      a.subject.localeCompare(b.subject)
-    );
+    const sortedData = [...emailData]
+      .flat()
+      .sort((a, b) => a.subject.localeCompare(b.subject));
     setEmailData(sortedData);
   };
 
@@ -42,7 +45,9 @@ const EmailList = ({ setIsEmailClick, filter, setFilter, setIsComposeOpen}) => {
       <div className="btn-filter">
         <button onClick={sortByDate}>Date</button>
         <button onClick={sortByTitle}>Subject</button>
-        <button onClick={resetSearch}>Reset Search</button>
+        <button onClick={() => setFilter(emailService.getDefaultFilter())}>
+          Reset Search
+        </button>
       </div>
       {emailData?.length > 0 ? (
         emailData.map((email, index) => (
@@ -54,7 +59,6 @@ const EmailList = ({ setIsEmailClick, filter, setFilter, setIsComposeOpen}) => {
               setIsDelete={setIsDelete}
               filter={filter}
               setIsComposeOpen={setIsComposeOpen}
-            
             />
           </div>
         ))

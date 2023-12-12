@@ -25,39 +25,56 @@ const initialUser = {
 
 async function getAllEmail(filterBy) {
   const data = await initEmails();
-  let emailsReceived = data?.filter((email) => email.to === initialUser.email);
-  let emailsSent = data?.filter((email) => email.to !== initialUser.email);
+  const emailsReceived = data?.filter(
+    (email) => email.to === initialUser.email
+  );
+  const emailsSent = data?.filter((email) => email.to !== initialUser.email);
+
+  if (!filterBy) return null;
+
+  const { status = "inbox", txt, isRead = null } = filterBy;
 
   let dataDisplay;
 
-  if (filterBy) {
-    const { status = "inbox", txt, isRead = null } = filterBy;
-
-    if (status === keys.INBOX_FILTER) {
-      dataDisplay = emailsReceived.filter((email) => email.removedAt === null);
-    } else if (status === keys.STARRED_FILTER) {
-      dataDisplay = emailsReceived.filter((email) => email.isStarred);
-    } else if (status === keys.TRASH_FILTER) {
-      dataDisplay = emailsReceived.filter((email) => email.removedAt !== null);
-    } else if (status === keys.SENT_FILTER) {
-      dataDisplay = emailsSent.filter((email) => !email.isDraft);
-    } else if (status === keys.DRAFT_FILTER) {
-      dataDisplay = emailsSent.filter((email) => email.isDraft === true);
-    }
-
-    if (txt && txt.trim() !== "") {
-      const searchTerm = txt.toLowerCase();
-      dataDisplay = emailsReceived.filter(
-        (email) =>
-          email.subject.toLowerCase().includes(searchTerm) ||
-          email.body.toLowerCase().includes(searchTerm)
+  switch (status) {
+    case keys.INBOX_FILTER:
+      dataDisplay = emailsReceived.filter((email) => !email.removedAt);
+      break;
+    case keys.STARRED_FILTER:
+      dataDisplay = data.filter(
+        (email) => email.isStarred && !email.removedAt
       );
-    }
-
-    if (isRead !== null) {
-      dataDisplay = emailsReceived.filter((email) => email.isRead === isRead);
-    }
+      break;
+    case keys.TRASH_FILTER:
+      dataDisplay = data.filter((email) => email.removedAt);
+      break;
+    case keys.SENT_FILTER:
+      dataDisplay = emailsSent.filter(
+        (email) => !email.isDraft && !email.removedAt
+      );
+      break;
+    case keys.DRAFT_FILTER:
+      dataDisplay = emailsSent.filter(
+        (email) => email.isDraft && !email.removedAt
+      );
+      break;
+    default:
+      break;
   }
+
+  if (txt && txt.trim() !== "") {
+    const searchTerm = txt.toLowerCase();
+    dataDisplay = dataDisplay.filter(
+      (email) =>
+        email.subject.toLowerCase().includes(searchTerm) ||
+        email.body.toLowerCase().includes(searchTerm)
+    );
+  }
+
+  if (isRead !== null) {
+    dataDisplay = dataDisplay.filter((email) => email.isRead === isRead);
+  }
+
   return dataDisplay;
 }
 
@@ -94,5 +111,5 @@ export const emailService = {
   getById,
   updateEmail,
   removeEmail,
-  removeFromLocalStorage
+  removeFromLocalStorage,
 };

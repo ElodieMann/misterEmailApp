@@ -18,13 +18,13 @@ function App() {
     info: {},
   });
 
+  console.log(filter);
 
   return (
     <Router>
       <div className="email-index">
         <EmailFolderList
           setFilter={setFilter}
-          isComposeOpen={isComposeOpen}
           setIsComposeOpen={setIsComposeOpen}
         />
         <main>
@@ -51,18 +51,13 @@ function App() {
             />
             <Route
               path="/email/details/:id"
-              element={<EmailDetails filter={filter} />}
-            />
-            <Route
-              path="/email/draft/:id"
               element={
-                // In App.jsx
-                <EmailCompose
-                  isComposeOpen={isComposeOpen}
+                <EmailDetails
                   setIsComposeOpen={setIsComposeOpen}
                 />
               }
             />
+            <Route path="/email/draft/:id" element={<EmailCompose />} />
           </Routes>
         </main>
       </div>

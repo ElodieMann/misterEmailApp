@@ -9,6 +9,9 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
     body: "",
     sentAt: new Date(),
     id: utilService.makeId(),
+    removedAt: null,
+    isRead: false,
+    isStarred: false,
   });
 
   useEffect(() => {
@@ -18,6 +21,9 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
         subject: isComposeOpen.info.subject,
         body: isComposeOpen.info.body,
         sentAt: isComposeOpen.info.sentAt || new Date(),
+        removedAt: null,
+        isRead: false,
+        isStarred: false,
       });
     }
   }, [isComposeOpen.info]);
@@ -79,17 +85,30 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
     });
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
     if (areFieldsNotEmpty()) {
       if (isComposeOpen.info && isComposeOpen.info.isDraft) {
-        emailService.updateEmail({
-          ...emailData,
-          isDraft: true,
-        });
+        const originalDraft = await emailService.getById(isComposeOpen.info.id);
+        if (originalDraft) {
+          emailService.updateEmail({
+            ...originalDraft,
+            ...emailData,
+            isDraft: true,
+          });
+        } else {
+          emailService.newEmail({
+            ...emailData,
+            isDraft: true,
+            sentAt: null,  
+            id: utilService.makeId(),
+          });
+        }
       } else {
         emailService.newEmail({
           ...emailData,
           isDraft: true,
+          sentAt: null,  
+          id: utilService.makeId(),
         });
       }
     }
@@ -98,6 +117,7 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
       info: {},
     });
   };
+  
 
   return (
     <div className="email-compose-overlay">

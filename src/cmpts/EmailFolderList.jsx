@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { emailService } from "../services/email.service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faInbox,
@@ -10,7 +11,6 @@ import {
   faEnvelopesBulk,
   faPen,
 } from "@fortawesome/free-solid-svg-icons";
-import { emailService } from "../services/email.service";
 import * as keys from "../config/keys";
 
 const folderLinks = [
@@ -25,7 +25,7 @@ const folderLinks = [
   { label: keys.TRASH_LABEL, icon: faTrash, filter: keys.TRASH_FILTER },
 ];
 
-const EmailFolderList = ({ setFilter, isComposeOpen, setIsComposeOpen }) => {
+const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
   const [unReadEmail, setUnReadEmail] = useState("");
 
   useEffect(() => {

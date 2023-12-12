@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-const EmailFilter = ({ setInputSearch, setFilter }) => {
+const EmailFilter = ({ setFilter }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setInputSearch(searchTerm);
     setSearchTerm("");
     setFilter((prevFilter) => ({ ...prevFilter, txt: searchTerm }));
   };
