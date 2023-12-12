@@ -58,7 +58,6 @@ async function getAllEmail(filterBy) {
       dataDisplay = emailsReceived.filter((email) => email.isRead === isRead);
     }
   }
-  console.log("emails2", dataDisplay);
   return dataDisplay;
 }
 
@@ -84,6 +83,9 @@ function updateEmail(updateEmail) {
 function removeEmail(emailId) {
   return storageService.remove(keys.STORAGE_KEY, emailId);
 }
+function removeFromLocalStorage(emailId) {
+  return storageService.removeFromLocalStorage(keys.STORAGE_KEY, emailId);
+}
 
 export const emailService = {
   getAllEmail,
@@ -92,4 +94,5 @@ export const emailService = {
   getById,
   updateEmail,
   removeEmail,
+  removeFromLocalStorage
 };

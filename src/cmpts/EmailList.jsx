@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { emailService } from "../services/email.service";
 import EmailPreview from "./EmailPreview";
 
-const EmailList = ({ setIsEmailClick, filter, setFilter }) => {
+const EmailList = ({ setIsEmailClick, filter, setFilter, setIsComposeOpen}) => {
   const [emailData, setEmailData] = useState([]);
   const [isDelete, setIsDelete] = useState("");
 
@@ -52,6 +52,9 @@ const EmailList = ({ setIsEmailClick, filter, setFilter }) => {
               email={email}
               setIsEmailClick={setIsEmailClick}
               setIsDelete={setIsDelete}
+              filter={filter}
+              setIsComposeOpen={setIsComposeOpen}
+            
             />
           </div>
         ))

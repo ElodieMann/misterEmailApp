@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-const EmailDetails = ({ setIsEmailClick }) => {
+const EmailDetails = ({ setIsEmailClick, setIsComposeOpen }) => {
   const [email, setEmail] = useState([]);
   const params = useParams();
 
@@ -16,9 +16,15 @@ const EmailDetails = ({ setIsEmailClick }) => {
 
   const getEmailById = async () => {
     try {
-      const email = await emailService.getById(params.id);
+      const email = await emailService.getById(params.id || id);
       setEmail(email);
       const updatedEmail = { ...email, isRead: true };
+
+      setIsComposeOpen({
+        status: false,
+        info: updatedEmail,
+      });
+
       emailService.updateEmail(updatedEmail);
     } catch (e) {
       console.log("Failed to load email", e);
@@ -33,8 +39,8 @@ const EmailDetails = ({ setIsEmailClick }) => {
       <h1>{email?.subject}</h1>
       <div className="from">
         <div>
-          <p>From : {email?.from || 'Me'}</p>
-          <p>To : me ({email?.to})</p>
+          <p>From : {email?.from || "Me"}</p>
+          <p>To : {email?.to}</p>
         </div>
         <p>At {formatRelativeTime(email?.sentAt)}</p>
       </div>

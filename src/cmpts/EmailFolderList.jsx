@@ -25,7 +25,7 @@ const folderLinks = [
   { label: keys.TRASH_LABEL, icon: faTrash, filter: keys.TRASH_FILTER },
 ];
 
-const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
+const EmailFolderList = ({ setFilter, isComposeOpen, setIsComposeOpen }) => {
   const [unReadEmail, setUnReadEmail] = useState("");
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
   }, [unReadEmail]);
 
   const filterUnreadEmail = async () => {
-    const data = await emailService.getAllEmail();
+    const data = await emailService.getAllEmail("inbox");
     const unRead = data.filter((email) => !email.isRead);
     setUnReadEmail(unRead.length);
   };
@@ -41,7 +41,15 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
   return (
     <nav>
       <FontAwesomeIcon className="mail-home-icon" icon={faEnvelopesBulk} />
-      <button className="compose-btn" onClick={setIsComposeOpen}>
+      <button
+        className="compose-btn"
+        onClick={() =>
+          setIsComposeOpen({
+            status: true,
+            info: {},
+          })
+        }
+      >
         <FontAwesomeIcon icon={faPen} />
         Compose
       </button>

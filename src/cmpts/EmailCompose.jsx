@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { emailService } from "../services/email.service";
 import { utilService } from "../services/util.service";
 
-
-const EmailCompose = ({ setIsComposeOpen }) => {
+const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
   const [emailData, setEmailData] = useState({
     to: "",
     subject: "",
     body: "",
     sentAt: new Date(),
-    id: utilService.makeId()
+    id: utilService.makeId(),
   });
+
+  useEffect(() => {
+    if (isComposeOpen.info && isComposeOpen.info.isDraft) {
+      setEmailData({
+        to: isComposeOpen.info.to,
+        subject: isComposeOpen.info.subject,
+        body: isComposeOpen.info.body,
+        sentAt: isComposeOpen.info.sentAt || new Date(),
+      });
+    }
+  }, [isComposeOpen.info]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEmailData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
   const areFieldsNotEmpty = () => {
     return (
@@ -20,28 +35,68 @@ const EmailCompose = ({ setIsComposeOpen }) => {
     );
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEmailData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  const handleSendEmail = async () => {
+    const sentAt = new Date();
 
-  const handleSendEmail = () => {
-    emailService.newEmail(emailData);
+    if (isComposeOpen.info && isComposeOpen.info.isDraft) {
+      const originalDraft = await emailService.getById(isComposeOpen.info.id);
+      console.log(originalDraft, "original");
+      if (originalDraft) {
+        emailService.updateEmail({
+          ...originalDraft,
+          ...emailData,
+          isDraft: false,
+          sentAt,
+        });
+      } else {
+        emailService.newEmail({
+          ...emailData,
+          isDraft: false,
+          sentAt,
+          id: utilService.makeId()
+        });
+      }
+    } else {
+      emailService.newEmail({
+        ...emailData,
+        isDraft: false,
+        sentAt,
+        id: utilService.makeId()
 
-    setIsComposeOpen(false);
+      });
+    }
+
+    setIsComposeOpen({
+      status: false,
+      info: {},
+    });
 
     setEmailData({
       to: "",
       subject: "",
       body: "",
+      sentAt,
     });
   };
 
   const handleClose = () => {
     if (areFieldsNotEmpty()) {
-      emailService.newEmail({ ...emailData, isDraft: true });
+      if (isComposeOpen.info && isComposeOpen.info.isDraft) {
+        emailService.updateEmail({
+          ...emailData,
+          isDraft: true,
+        });
+      } else {
+        emailService.newEmail({
+          ...emailData,
+          isDraft: true,
+        });
+      }
     }
-    setIsComposeOpen(false);
+    setIsComposeOpen({
+      status: false,
+      info: {},
+    });
   };
 
   return (

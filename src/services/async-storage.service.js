@@ -37,6 +37,9 @@ async function post(entityType, newEntity) {
 async function put(entityType, updateEntity) {
   try {
     let entities = await query(entityType);
+    console.log(entities);
+    console.log(updateEntity);
+
     const idx = entities.findIndex((entity) => entity.id === updateEntity.id);
 
     if (idx < 0) throw new Error("Cannot find");
@@ -62,6 +65,18 @@ async function remove(entityType, emailId) {
     console.log(e);
   }
 }
+async function removeFromLocalStorage(entityType, emailId) {
+  try {
+    const entities = await query(entityType);
+    
+    const updatedEntities = entities.filter((entity) => entity.id !== emailId);
+
+    utilService.saveToStorage(entityType, updatedEntities);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 
 export const storageService = {
   query,
@@ -69,4 +84,5 @@ export const storageService = {
   post,
   put,
   remove,
+  removeFromLocalStorage,
 };

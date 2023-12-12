@@ -23,13 +23,18 @@ nav {
   align-items: center;
 }
 
-.compose-btn {
+.compose-btn, .compose-btn-draft {
   background-color: #c1e7fe;
   width: 50%;
   font-size: large;
   border-radius: 5px;
   border: none;
   justify-content: center;
+}
+
+.compose-btn-draft{
+  background-color: transparent;
+
 }
 
 .nav-link {

@@ -13,8 +13,10 @@ import "./App.css";
 
 function App() {
   const [filter, setFilter] = useState(emailService.getDefaultFilter());
-  const [isComposeOpen, setIsComposeOpen] = useState(false);
-console.log(filter);
+  const [isComposeOpen, setIsComposeOpen] = useState({
+    status: false,
+    info: {},
+  });
 
 
   return (
@@ -22,22 +24,45 @@ console.log(filter);
       <div className="email-index">
         <EmailFolderList
           setFilter={setFilter}
+          isComposeOpen={isComposeOpen}
           setIsComposeOpen={setIsComposeOpen}
         />
         <main>
           <EmailFilter setFilter={setFilter} />
 
-          {isComposeOpen && (
-            <EmailCompose setIsComposeOpen={setIsComposeOpen} />
+          {isComposeOpen.status && (
+            <EmailCompose
+              setIsComposeOpen={setIsComposeOpen}
+              isComposeOpen={isComposeOpen}
+            />
           )}
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutUs />} />
             <Route
               path="/email/:filter"
-              element={<EmailIndex filter={filter} setFilter={setFilter}/>}
+              element={
+                <EmailIndex
+                  filter={filter}
+                  setFilter={setFilter}
+                  setIsComposeOpen={setIsComposeOpen}
+                />
+              }
             />
-            <Route path="/email/details/:id" element={<EmailDetails filter={filter} />} />
+            <Route
+              path="/email/details/:id"
+              element={<EmailDetails filter={filter} />}
+            />
+            <Route
+              path="/email/draft/:id"
+              element={
+                // In App.jsx
+                <EmailCompose
+                  isComposeOpen={isComposeOpen}
+                  setIsComposeOpen={setIsComposeOpen}
+                />
+              }
+            />
           </Routes>
         </main>
       </div>
