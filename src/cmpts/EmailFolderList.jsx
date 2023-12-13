@@ -57,7 +57,7 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
         {folderLinks.map(({ label, icon, filter }) => (
           <Link
             key={label}
-            to={`/email/${filter}`}
+            to={`/misterEmailApp/email/${filter}`}
             className="nav-link"
             onClick={() =>
               setFilter((prevFilter) => ({ ...prevFilter, status: filter }))

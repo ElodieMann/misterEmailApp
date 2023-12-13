@@ -8,7 +8,7 @@ import "./AboutUs.css";
 const AboutUs = () => {
   return (
     <div className="about-page">
-      <Link to={"/"} className="back-btn">
+      <Link to={"/misterEmailApp"} className="back-btn">
       <FontAwesomeIcon icon={faChevronLeft} />
         Back
       </Link>

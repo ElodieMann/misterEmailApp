@@ -37,10 +37,10 @@ function App() {
             />
           )}
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutUs />} />
+            <Route path="/misterEmailApp" element={<HomePage />} />
+            <Route path="/misterEmailApp/about" element={<AboutUs />} />
             <Route
-              path="/email/:filter"
+              path="/misterEmailApp/email/:filter"
               element={
                 <EmailIndex
                   filter={filter}
@@ -50,14 +50,14 @@ function App() {
               }
             />
             <Route
-              path="/email/details/:id"
+              path="/misterEmailApp/email/details/:id"
               element={
                 <EmailDetails
                   setIsComposeOpen={setIsComposeOpen}
                 />
               }
             />
-            <Route path="/email/draft/:id" element={<EmailCompose />} />
+            <Route path="/misterEmailApp/email/draft/:id" element={<EmailCompose />} />
           </Routes>
         </main>
       </div>

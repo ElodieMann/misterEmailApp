@@ -75,7 +75,7 @@ const EmailPreview = ({
         </button>
       ) : (
         <Link
-          to={`/email/details/${email.id}`}
+          to={`/misterEmailApp/email/details/${email.id}`}
           onClick={() => setIsEmailClick(true)}
           className="email-info"
         >
