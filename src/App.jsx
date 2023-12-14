@@ -13,6 +13,8 @@ import "./App.css";
 
 function App() {
   const [filter, setFilter] = useState(emailService.getDefaultFilter());
+  const [emailData, setEmailData] = useState([]);
+
   const [isComposeOpen, setIsComposeOpen] = useState({
     status: false,
     info: {},
@@ -28,7 +30,8 @@ function App() {
           setIsComposeOpen={setIsComposeOpen}
         />
         <main>
-          <EmailFilter setFilter={setFilter} />
+          <EmailFilter setFilter={setFilter}   emailData={emailData}
+                  setEmailData={setEmailData}/>
 
           {isComposeOpen.status && (
             <EmailCompose
@@ -46,6 +49,8 @@ function App() {
                   filter={filter}
                   setFilter={setFilter}
                   setIsComposeOpen={setIsComposeOpen}
+                  emailData={emailData}
+                  setEmailData={setEmailData}
                 />
               }
             />

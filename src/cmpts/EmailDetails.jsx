@@ -4,7 +4,7 @@ import { emailService } from "../services/email.service";
 import { formatRelativeTime } from "../services/util.service";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const EmailDetails = ({ setIsEmailClick, setIsComposeOpen }) => {
   const [email, setEmail] = useState([]);
@@ -32,19 +32,24 @@ const EmailDetails = ({ setIsEmailClick, setIsComposeOpen }) => {
   };
 
   return (
-    <div className="email-details-cont">
-      <Link to="/email/inbox" onClick={() => setIsEmailClick(false)}>
-        <FontAwesomeIcon icon={faArrowLeft} />
+    <div className="email-details-cmpt">
+      <Link to="/misterEmailApp/email/inbox" onClick={() => setIsEmailClick(false)}>
+        <FontAwesomeIcon className="email-details-icon-back" icon={faArrowLeft} />
       </Link>
-      <h1>{email?.subject}</h1>
-      <div className="from">
-        <div>
-          <p>From : {email?.from || "Me"}</p>
-          <p>To : {email?.to}</p>
+      <div className="email-details-cont">
+        <p className="email-title">{email?.subject}</p>
+        <div className="from">
+          <div className="user-email-details">
+          <FontAwesomeIcon icon={faUser} className="user-icon"/>
+            <div>
+            <p>From : {email?.from || "Me"}</p>
+            <p>To : {email?.to}</p>
+            </div>
+          </div>
+          <p>At {formatRelativeTime(email?.sentAt)}</p>
         </div>
-        <p>At {formatRelativeTime(email?.sentAt)}</p>
+        <p>{email?.body}</p>
       </div>
-      <h4>{email?.body}</h4>
     </div>
   );
 };

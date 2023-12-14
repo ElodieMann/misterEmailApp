@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import EmailList from "../../cmpts/EmailList";
 import EmailDetails from "../../cmpts/EmailDetails";
 
-const EmailIndex = ({ filter, setFilter, setIsComposeOpen }) => {
+const EmailIndex = ({ filter, setFilter, setIsComposeOpen, emailData, setEmailData }) => {
   const [isEmailClick, setIsEmailClick] = useState(false);
 
   return (
@@ -17,6 +17,8 @@ const EmailIndex = ({ filter, setFilter, setIsComposeOpen }) => {
           filter={filter}
           setFilter={setFilter}
           setIsComposeOpen={setIsComposeOpen}
+          emailData={emailData}
+          setEmailData={setEmailData}
         />
       )}
     </div>

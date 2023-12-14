@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-const EmailFilter = ({ setFilter }) => {
+const EmailFilter = ({ setFilter, emailData, setEmailData }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const onSubmit = (e) => {
@@ -15,52 +15,62 @@ const EmailFilter = ({ setFilter }) => {
     setSearchTerm(e.target.value);
     setFilter((prevFilter) => ({ ...prevFilter, txt: e.target.value }));
   };
+  const sortByDate = () => {
+    const sortedData = [...emailData]
+      .flat()
+      .sort((a, b) => b.sentAt - a.sentAt);
+    setEmailData(sortedData);
+  };
 
-  const onSelectChange = (e) => {
-    const selectedValue = e.target.value;
-    setFilter((prevFilter) => ({
-      ...prevFilter,
-      isRead:
-        selectedValue === "read"
-          ? true
-          : selectedValue === "unread"
-          ? false
-          : null,
-    }));
+  const sortByTitle = () => {
+    const sortedData = [...emailData]
+      .flat()
+      .sort((a, b) => a.subject.localeCompare(b.subject));
+    setEmailData(sortedData);
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <div className="search-container">
-        <FontAwesomeIcon icon={faSearch} className="search-icon" />
-        <input
-          type="text"
-          placeholder="Search"
-          name="txt"
-          value={searchTerm}
-          onChange={onSearchInputChange}
-        />
-      </div>
+    <div className="filter-cmpt">
+      <form className="form-search" onSubmit={onSubmit}>
+        <div className="search-container">
+          <FontAwesomeIcon icon={faSearch} className="search-icon" />
+          <input
+          className="input-search"
+            type="text"
+            placeholder="Search"
+            name="txt"
+            value={searchTerm}
+            onChange={onSearchInputChange}
+          />
+        </div>
 
-      <select
-        name="readStatus"
-        onChange={(e) =>
-          setFilter((prevFilter) => ({
-            ...prevFilter,
-            isRead:
-              e.target.value === "read"
-                ? true
-                : e.target.value === "unread"
-                ? false
-                : null,
-          }))
-        }
-      >
-        <option value="">All</option>
-        <option value="unread">Unread</option>
-        <option value="read">Read</option>
-      </select>
-    </form>
+        <div className="btn-filter">
+          <button onClick={sortByDate}>Date</button>
+          <button onClick={sortByTitle}>Subject</button>
+          <button onClick={() => setFilter(emailService.getDefaultFilter())}>
+            Reset Search
+          </button>
+          <select
+            name="readStatus"
+            onChange={(e) =>
+              setFilter((prevFilter) => ({
+                ...prevFilter,
+                isRead:
+                  e.target.value === "read"
+                    ? true
+                    : e.target.value === "unread"
+                    ? false
+                    : null,
+              }))
+            }
+          >
+            <option value="">All</option>
+            <option value="unread">Unread</option>
+            <option value="read">Read</option>
+          </select>
+        </div>
+      </form>
+    </div>
   );
 };
 

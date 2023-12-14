@@ -138,6 +138,7 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             placeholder="To"
             value={emailData.to}
             onChange={handleChange}
+            className="to-input-compose"
           />
           <input
             type="text"
@@ -145,6 +146,8 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             placeholder="Subject"
             value={emailData.subject}
             onChange={handleChange}
+            className="subject-input-compose"
+
           />
           <textarea
             name="body"
@@ -153,14 +156,16 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             rows="10"
             value={emailData.body}
             onChange={handleChange}
+            className="message-input-compose"
+
           ></textarea>
           <div>
-            <button type="button" onClick={handleSendEmail}>
+            <button className="send-btn-compose" type="button" onClick={handleSendEmail}>
               Send
             </button>
-            <button type="button" onClick={handleClose}>
+            {/* <button type="button" onClick={handleClose}>
               Save as Draft
-            </button>
+            </button> */}
           </div>
         </form>
       </div>

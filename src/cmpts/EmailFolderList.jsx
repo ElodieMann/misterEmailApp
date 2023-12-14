@@ -27,6 +27,7 @@ const folderLinks = [
 
 const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
   const [unReadEmail, setUnReadEmail] = useState("");
+  const [activeLink, setActiveLink] = useState(keys.INBOX_FILTER);
 
   useEffect(() => {
     filterUnreadEmail();
@@ -58,15 +59,16 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
           <Link
             key={label}
             to={`/misterEmailApp/email/${filter}`}
-            className="nav-link"
-            onClick={() =>
-              setFilter((prevFilter) => ({ ...prevFilter, status: filter }))
-            }
+            className={`nav-link ${activeLink === filter ? "active" : ""}`}
+            onClick={() => {
+              setFilter((prevFilter) => ({ ...prevFilter, status: filter }));
+              setActiveLink(filter);
+            }}
           >
             <FontAwesomeIcon icon={icon} />
             {label}{" "}
             {filter === keys.INBOX_FILTER && (
-              <span style={{ color: "red" }}>{unReadEmail}</span>
+              <span className="unread-indicator">{unReadEmail}</span>
             )}
           </Link>
         ))}

@@ -1,13 +1,12 @@
 .about-page {
   position: relative;
-  height: 100vh;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   background-color: rgba(128, 128, 128, 0.227);
   border: 1px solid transparent;
   border-radius: 10px;
-  margin: 2% 10%;
   gap: 15px;
   padding: 40px;
 }
