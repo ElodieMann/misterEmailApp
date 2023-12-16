@@ -5,17 +5,19 @@ import EmailPreview from "./EmailPreview";
 const EmailList = ({
   setIsEmailClick,
   filter,
-  setFilter,
+  isComposeOpen,
   setIsComposeOpen,
   emailData,
-  setEmailData
+  setEmailData,
 }) => {
   const [isDelete, setIsDelete] = useState("");
-  
-console.log(emailData);
+  const [favorites, setFavorites] = useState([]);
+
+  console.log(filter);
+
   useEffect(() => {
     getAllEmail();
-  }, [filter, isDelete]);
+  }, [filter, isDelete, favorites, isComposeOpen.status]);
 
   const getAllEmail = async () => {
     try {
@@ -26,30 +28,8 @@ console.log(emailData);
     }
   };
 
-
-  // const sortByDate = () => {
-  //   const sortedData = [...emailData]
-  //     .flat()
-  //     .sort((a, b) => b.sentAt - a.sentAt);
-  //   setEmailData(sortedData);
-  // };
-
-  // const sortByTitle = () => {
-  //   const sortedData = [...emailData]
-  //     .flat()
-  //     .sort((a, b) => a.subject.localeCompare(b.subject));
-  //   setEmailData(sortedData);
-  // };
-
   return (
     <section>
-      {/* <div className="btn-filter">
-        <button onClick={sortByDate}>Date</button>
-        <button onClick={sortByTitle}>Subject</button>
-        <button onClick={() => setFilter(emailService.getDefaultFilter())}>
-          Reset Search
-        </button>
-      </div> */}
       {emailData?.length > 0 ? (
         emailData.map((email, index) => (
           <div key={index}>
@@ -60,6 +40,8 @@ console.log(emailData);
               setIsDelete={setIsDelete}
               filter={filter}
               setIsComposeOpen={setIsComposeOpen}
+              favorites={favorites}
+              setFavorites={setFavorites}
             />
           </div>
         ))

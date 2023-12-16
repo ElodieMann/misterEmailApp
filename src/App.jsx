@@ -20,7 +20,6 @@ function App() {
     info: {},
   });
 
-  console.log(filter);
 
   return (
     <Router>
@@ -30,8 +29,12 @@ function App() {
           setIsComposeOpen={setIsComposeOpen}
         />
         <main>
-          <EmailFilter setFilter={setFilter}   emailData={emailData}
-                  setEmailData={setEmailData}/>
+          <EmailFilter
+            filter={filter}
+            setFilter={setFilter}
+            emailData={emailData}
+            setEmailData={setEmailData}
+          />
 
           {isComposeOpen.status && (
             <EmailCompose
@@ -48,6 +51,7 @@ function App() {
                 <EmailIndex
                   filter={filter}
                   setFilter={setFilter}
+                  isComposeOpen={isComposeOpen}
                   setIsComposeOpen={setIsComposeOpen}
                   emailData={emailData}
                   setEmailData={setEmailData}
@@ -56,13 +60,12 @@ function App() {
             />
             <Route
               path="/misterEmailApp/email/details/:id"
-              element={
-                <EmailDetails
-                  setIsComposeOpen={setIsComposeOpen}
-                />
-              }
+              element={<EmailDetails setIsComposeOpen={setIsComposeOpen} />}
             />
-            <Route path="/misterEmailApp/email/draft/:id" element={<EmailCompose />} />
+            <Route
+              path="/misterEmailApp/email/draft/:id"
+              element={<EmailCompose />}
+            />
           </Routes>
         </main>
       </div>

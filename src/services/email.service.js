@@ -83,6 +83,8 @@ function getDefaultFilter() {
     status: "inbox",
     txt: "",
     isRead: null,
+    sortByDate: false,
+    sortByTitle: false,
   };
 }
 

@@ -28,94 +28,63 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
     }
   }, [isComposeOpen.info]);
 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEmailData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const areFieldsNotEmpty = () => {
-    return (
-      emailData.to.trim() !== "" ||
-      emailData.subject.trim() !== "" ||
-      emailData.body.trim() !== ""
-    );
-  };
-
-  const handleSendEmail = async () => {
+  const newEmail = async () => {
     const sentAt = new Date();
-
-    if (isComposeOpen.info && isComposeOpen.info.isDraft) {
-      const originalDraft = await emailService.getById(isComposeOpen.info.id);
-      console.log(originalDraft, "original");
-      if (originalDraft) {
-        emailService.updateEmail({
-          ...originalDraft,
-          ...emailData,
-          isDraft: false,
-          sentAt,
-        });
-      } else {
-        emailService.newEmail({
-          ...emailData,
-          isDraft: false,
-          sentAt,
-          id: utilService.makeId()
-        });
-      }
-    } else {
-      emailService.newEmail({
-        ...emailData,
-        isDraft: false,
-        sentAt,
-        id: utilService.makeId()
-
-      });
-    }
-
-    setIsComposeOpen({
-      status: false,
-      info: {},
-    });
-
-    setEmailData({
-      to: "",
-      subject: "",
-      body: "",
+    const addToData = await emailService.newEmail({
+      ...emailData,
+      isDraft: false,
       sentAt,
+      id: utilService.makeId(),
     });
+
+    return addToData;
   };
 
-  const handleClose = async () => {
-    if (areFieldsNotEmpty()) {
+  const newDraft = async () => {
+    const addToData = await emailService.newEmail({
+      ...emailData,
+      isDraft: true,
+      sentAt: null,
+      id: utilService.makeId(),
+    });
+
+    return addToData;
+  };
+
+  const onSentOrDraft = async (name) => {
+
+    const sentAt = new Date();
+  
+    if (emailData.to.trim()) {
       if (isComposeOpen.info && isComposeOpen.info.isDraft) {
         const originalDraft = await emailService.getById(isComposeOpen.info.id);
         if (originalDraft) {
           emailService.updateEmail({
             ...originalDraft,
             ...emailData,
-            isDraft: true,
+            isDraft: name === "draft",  
+            sentAt,
           });
         } else {
-          emailService.newEmail({
-            ...emailData,
-            isDraft: true,
-            sentAt: null,  
-            id: utilService.makeId(),
-          });
+          name === "draft" ? newDraft() : newEmail();  
         }
       } else {
-        emailService.newEmail({
-          ...emailData,
-          isDraft: true,
-          sentAt: null,  
-          id: utilService.makeId(),
-        });
+        name === "draft" ? newDraft() : newEmail();  
       }
     }
     setIsComposeOpen({
       status: false,
       info: {},
     });
+
+    console.log(isComposeOpen, "isComposeOpen");
+
   };
   
 
@@ -126,7 +95,11 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
           <p>New Message</p>
         </div>
         <form className="form-compose">
-          <button className="close-btn" type="button" onClick={handleClose}>
+          <button
+            className="close-btn"
+            type="button"
+            onClick={() => onSentOrDraft("draft")}
+          >
             x
           </button>
           <p>
@@ -147,7 +120,6 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             value={emailData.subject}
             onChange={handleChange}
             className="subject-input-compose"
-
           />
           <textarea
             name="body"
@@ -157,15 +129,15 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             value={emailData.body}
             onChange={handleChange}
             className="message-input-compose"
-
           ></textarea>
           <div>
-            <button className="send-btn-compose" type="button" onClick={handleSendEmail}>
+            <button
+              className="send-btn-compose"
+              type="button"
+              onClick={() => onSentOrDraft("sent")}
+            >
               Send
             </button>
-            {/* <button type="button" onClick={handleClose}>
-              Save as Draft
-            </button> */}
           </div>
         </form>
       </div>

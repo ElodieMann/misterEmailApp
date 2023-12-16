@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-const EmailFilter = ({ setFilter, emailData, setEmailData }) => {
+const EmailFilter = ({ filter, setFilter, emailData, setEmailData }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const onSubmit = (e) => {
@@ -16,18 +16,17 @@ const EmailFilter = ({ setFilter, emailData, setEmailData }) => {
     setFilter((prevFilter) => ({ ...prevFilter, txt: e.target.value }));
   };
   const sortByDate = () => {
-    const sortedData = [...emailData]
-      .flat()
-      .sort((a, b) => b.sentAt - a.sentAt);
+    const sortedData = [...emailData].flat().sort((a, b) => b.sentAt - a.sentAt);
     setEmailData(sortedData);
+    setFilter((prevFilter) => ({ ...prevFilter, sortByDate: true, sortByTitle: false }));
   };
-
-  const sortByTitle = () => {
-    const sortedData = [...emailData]
-      .flat()
-      .sort((a, b) => a.subject.localeCompare(b.subject));
+  
+  const sortBySubject = () => {
+    const sortedData = [...emailData].flat().sort((a, b) => a.subject.localeCompare(b.subject));
     setEmailData(sortedData);
+    setFilter((prevFilter) => ({ ...prevFilter, sortByDate: false, sortByTitle: true }));
   };
+  
 
   return (
     <div className="filter-cmpt">
@@ -35,7 +34,7 @@ const EmailFilter = ({ setFilter, emailData, setEmailData }) => {
         <div className="search-container">
           <FontAwesomeIcon icon={faSearch} className="search-icon" />
           <input
-          className="input-search"
+            className="input-search"
             type="text"
             placeholder="Search"
             name="txt"
@@ -46,7 +45,7 @@ const EmailFilter = ({ setFilter, emailData, setEmailData }) => {
 
         <div className="btn-filter">
           <button onClick={sortByDate}>Date</button>
-          <button onClick={sortByTitle}>Subject</button>
+          <button onClick={sortBySubject}>Subject</button>
           <button onClick={() => setFilter(emailService.getDefaultFilter())}>
             Reset Search
           </button>

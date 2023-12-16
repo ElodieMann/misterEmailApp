@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { formatRelativeTime } from "../services/util.service";
 import { emailService } from "../services/email.service";
-import * as keys from '../config/keys'
+import * as keys from "../config/keys";
 
 const EmailPreview = ({
   email,
@@ -12,34 +12,46 @@ const EmailPreview = ({
   setIsDelete,
   setIsComposeOpen,
   filter,
+  setFavorites,
+  favorites,
 }) => {
   const [isFav, setIsFav] = useState(email.isStarred);
+
+  useEffect(() => {
+    onChange();
+  }, [isFav]);
+
+  const onChange = () => {
+    let newFav = [...favorites];
+    newFav.includes(email.id)
+      ? newFav.splice(email.id, 1)
+      : newFav.push(email.id);
+    setFavorites(newFav);
+  };
 
   const onFavorite = async () => {
     try {
       const updatedEmail = { ...email, isStarred: !isFav };
-      setIsFav(!isFav);
       emailService.updateEmail(updatedEmail);
+      setIsFav(!isFav);
     } catch (e) {
       console.log(e);
     }
   };
+
   const onDelete = async () => {
     try {
       if (filter.status === keys.TRASH_FILTER) {
         await emailService.removeFromLocalStorage(email.id);
         setIsDelete(email.id);
-       
       } else {
         await emailService.removeEmail(email.id);
         setIsDelete(email.id);
-        console.log('tr');
       }
     } catch (e) {
       console.log(e);
     }
   };
-
 
   return (
     <div
@@ -49,7 +61,7 @@ const EmailPreview = ({
       <FontAwesomeIcon
         icon={faStar}
         className="fav-icon"
-        onClick={onFavorite}
+        onClick={() => onFavorite(email.id)}
         style={{ color: isFav ? "yellow" : "inherit" }}
       />
       {filter.status === "draft" ? (
@@ -82,7 +94,7 @@ const EmailPreview = ({
           <article
             style={{ backgroundColor: !email.isRead ? "white" : "#F2F6FC" }}
           >
-            <p className="mail-from">{email.from || 'From Me'}</p>
+            <p className="mail-from">{email.from || "From Me"}</p>
             <p className="mail-subj">{email.subject}</p>
             <p className="mail-sent">{formatRelativeTime(email.sentAt)}</p>
           </article>
