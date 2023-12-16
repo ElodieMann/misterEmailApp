@@ -1,12 +1,11 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
 import HomePage from "./pages/HomePage/HomePage";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import EmailIndex from "./pages/EmailIndex/EmailIndex";
 import EmailDetails from "./cmpts/EmailDetails/EmailDetails.jsx";
 import EmailFolderList from "./cmpts/EmailFolderList/EmailFolderList.jsx";
 import EmailFilter from "./cmpts/EmailFilter/EmailFilter.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EmailCompose from "./cmpts/EmailCompose/EmailCompose.jsx";
 import { emailService } from "./services/email.service.js";
 import styles from "./App.module.scss";
@@ -19,6 +18,23 @@ function App() {
     status: false,
     info: {},
   });
+
+  // useEffect(() => {
+  //   // if (!isComposeOpen.status) {
+  //   //   console.log(filter, "filter");
+  //   //   getAllEmail();
+  //   // }
+  //   console.log(isComposeOpen.status);
+  // }, [isComposeOpen.info]);
+
+  // const getAllEmail = async () => {
+  //   try {
+  //     const data = await emailService.getAllEmail(filter);
+  //     setEmailData(data);
+  //   } catch (e) {
+  //     console.log("Failed to load Email", e);
+  //   }
+  // };
 
   return (
     <Router>

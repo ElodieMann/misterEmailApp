@@ -13,11 +13,13 @@ const EmailList = ({
   const [isDelete, setIsDelete] = useState("");
   const [favorites, setFavorites] = useState([]);
 
-  console.log(filter);
-
   useEffect(() => {
     getAllEmail();
+
   }, [filter, isDelete, favorites, isComposeOpen.status]);
+
+  console.log('filter', filter);
+  // console.log('emailData', emailData);
 
   const getAllEmail = async () => {
     try {

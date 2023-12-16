@@ -30,7 +30,7 @@ const folderLinks = [
 const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
   const [unReadEmail, setUnReadEmail] = useState("");
   const [activeLink, setActiveLink] = useState(keys.INBOX_FILTER);
-  const [showMenu, setShowMenu] = useState(false); // Ajout de l'état pour le menu
+  const [showMenu, setShowMenu] = useState(false); 
 
   useEffect(() => {
     filterUnreadEmail();

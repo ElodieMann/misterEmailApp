@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { emailService } from "../../services/email.service";
 import { utilService } from "../../services/util.service";
-import styles from './EmailCompose.module.scss'
+import styles from "./EmailCompose.module.scss";
 
 const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
   const [emailData, setEmailData] = useState({
@@ -14,6 +14,8 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
     isRead: false,
     isStarred: false,
   });
+
+
 
   useEffect(() => {
     if (isComposeOpen.info && isComposeOpen.info.isDraft) {
@@ -28,7 +30,6 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
       });
     }
   }, [isComposeOpen.info]);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,9 +60,8 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
   };
 
   const onSentOrDraft = async (name) => {
-
     const sentAt = new Date();
-  
+
     if (emailData.to.trim()) {
       if (isComposeOpen.info && isComposeOpen.info.isDraft) {
         const originalDraft = await emailService.getById(isComposeOpen.info.id);
@@ -69,25 +69,22 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
           emailService.updateEmail({
             ...originalDraft,
             ...emailData,
-            isDraft: name === "draft",  
+            isDraft: name === "draft",
             sentAt,
           });
         } else {
-          name === "draft" ? newDraft() : newEmail();  
+          name === "draft" ? newDraft() : newEmail();
         }
       } else {
-        name === "draft" ? newDraft() : newEmail();  
+        name === "draft" ? newDraft() : newEmail();
       }
     }
+
     setIsComposeOpen({
       status: false,
       info: {},
     });
-
-    console.log(isComposeOpen, "isComposeOpen");
-
   };
-  
 
   return (
     <div className={styles.emailComposeOverlay}>
@@ -131,15 +128,14 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             onChange={handleChange}
             className={styles.messageInputCompose}
           ></textarea>
-         
-            <button
-              className={styles.sendBtnCompose}
-              type="button"
-              onClick={() => onSentOrDraft("sent")}
-            >
-              Send
-            </button>
-         
+
+          <button
+            className={styles.sendBtnCompose}
+            type="button"
+            onClick={() => onSentOrDraft("sent")}
+          >
+            Send
+          </button>
         </form>
       </div>
     </div>

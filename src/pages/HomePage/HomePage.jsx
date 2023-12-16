@@ -9,10 +9,10 @@ const HomePage = () => {
   return (
     <div className={styles.homePage}>
       <h1>
-        <span style={{ color: "red" }}>Welcome</span>{" "}
-        <span style={{ color: "yellow" }}>to </span>{" "}
-        <span style={{ color: "blue" }}>Mister</span>{" "}
-        <span style={{ color: "green" }}>Mail </span>!
+        <span >Welcome</span>
+        <span > to </span>
+        <span > Mister</span>
+        <span > Mail </span>!
       </h1>
       <h2>
         Your all-in-one destination for efficient and streamlined email

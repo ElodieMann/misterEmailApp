@@ -30,9 +30,11 @@ async function getAllEmail(filterBy) {
   );
   const emailsSent = data?.filter((email) => email.to !== initialUser.email);
 
+
+
   if (!filterBy) return null;
 
-  const { status = "inbox", txt, isRead = null } = filterBy;
+  const { status = "inbox", txt, isRead = null, sortByDate,  sortBySubject} = filterBy;
 
   let dataDisplay;
 
@@ -51,7 +53,8 @@ async function getAllEmail(filterBy) {
     case keys.SENT_FILTER:
       dataDisplay = emailsSent.filter(
         (email) => !email.isDraft && !email.removedAt
-      );
+        );
+   
       break;
     case keys.DRAFT_FILTER:
       dataDisplay = emailsSent.filter(
@@ -60,6 +63,14 @@ async function getAllEmail(filterBy) {
       break;
     default:
       break;
+  }
+
+  if (sortByDate) {
+    let sortedData = [...dataDisplay].flat().sort((a, b) => b.sentAt - a.sentAt);
+    dataDisplay = sortedData
+  } else if (sortBySubject) {
+    let sortedData = [...dataDisplay].flat().sort((a, b) => a.subject.localeCompare(b.subject));
+    dataDisplay = sortedData
   }
 
   if (txt && txt.trim() !== "") {
@@ -84,7 +95,7 @@ function getDefaultFilter() {
     txt: "",
     isRead: null,
     sortByDate: false,
-    sortByTitle: false,
+    sortBySubject: false,
   };
 }
 
