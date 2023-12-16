@@ -18,8 +18,7 @@ const EmailList = ({
 
   }, [filter, isDelete, favorites, isComposeOpen.status]);
 
-  console.log('filter', filter);
-  // console.log('emailData', emailData);
+
 
   const getAllEmail = async () => {
     try {

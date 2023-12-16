@@ -19,22 +19,6 @@ function App() {
     info: {},
   });
 
-  // useEffect(() => {
-  //   // if (!isComposeOpen.status) {
-  //   //   console.log(filter, "filter");
-  //   //   getAllEmail();
-  //   // }
-  //   console.log(isComposeOpen.status);
-  // }, [isComposeOpen.info]);
-
-  // const getAllEmail = async () => {
-  //   try {
-  //     const data = await emailService.getAllEmail(filter);
-  //     setEmailData(data);
-  //   } catch (e) {
-  //     console.log("Failed to load Email", e);
-  //   }
-  // };
 
   return (
     <Router>

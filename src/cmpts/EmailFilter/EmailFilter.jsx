@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { emailService } from "../../services/email.service";
 import styles from "./EmailFilter.module.scss";
 
-const EmailFilter = ({ filter, setFilter, emailData, setEmailData }) => {
+const EmailFilter = ({  setFilter }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const onSubmit = (e) => {
@@ -16,7 +17,7 @@ const EmailFilter = ({ filter, setFilter, emailData, setEmailData }) => {
     setSearchTerm(e.target.value);
     setFilter((prevFilter) => ({ ...prevFilter, txt: e.target.value }));
   };
-  
+
   const sortByDate = () => {
     setFilter((prevFilter) => ({
       ...prevFilter,
