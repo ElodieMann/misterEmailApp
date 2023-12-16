@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { emailService } from "../services/email.service";
-import EmailPreview from "./EmailPreview";
+import { emailService } from "../../services/email.service";
+import EmailPreview from "../EmailPreview/EmailPreview.jsx";
 
 const EmailList = ({
   setIsEmailClick,
@@ -29,26 +29,24 @@ const EmailList = ({
   };
 
   return (
-    <section>
+    <>
       {emailData?.length > 0 ? (
-        emailData.map((email, index) => (
-          <div key={index}>
-            <EmailPreview
-              key={email.id}
-              email={email}
-              setIsEmailClick={setIsEmailClick}
-              setIsDelete={setIsDelete}
-              filter={filter}
-              setIsComposeOpen={setIsComposeOpen}
-              favorites={favorites}
-              setFavorites={setFavorites}
-            />
-          </div>
+        emailData.map((email) => (
+          <EmailPreview
+            key={email.id}
+            email={email}
+            setIsEmailClick={setIsEmailClick}
+            setIsDelete={setIsDelete}
+            filter={filter}
+            setIsComposeOpen={setIsComposeOpen}
+            favorites={favorites}
+            setFavorites={setFavorites}
+          />
         ))
       ) : (
         <p>No Email</p>
       )}
-    </section>
+    </>
   );
 };
 

@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelopesBulk } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
-import "./HomePage.css";
+import styles from "./HomePage.module.scss";
 
 const HomePage = () => {
   return (
-    <div className="home-page">
+    <div className={styles.homePage}>
       <h1>
         <span style={{ color: "red" }}>Welcome</span>{" "}
         <span style={{ color: "yellow" }}>to </span>{" "}
@@ -26,11 +26,11 @@ const HomePage = () => {
         you need.
       </h3>
 
-      <Link to={"/misterEmailApp/email/inbox"} className="email-page-link">
-        <FontAwesomeIcon className="mail-home-icon" icon={faEnvelopesBulk} />{" "}
+      <Link to={"/misterEmailApp/email/inbox"} className={styles.emailPageLink}>
+        <FontAwesomeIcon className={styles.mailHomeIcon} icon={faEnvelopesBulk} />{" "}
         To your email inbox.
       </Link>
-      <Link to={"/misterEmailApp/about"} className="about-link">
+      <Link to={"/misterEmailApp/about"} className={styles.aboutLink}>
         About us
       </Link>
     </div>

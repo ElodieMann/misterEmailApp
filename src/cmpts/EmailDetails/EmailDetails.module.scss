@@ -1,0 +1,36 @@
+.emailDetailsIconBack {
+  margin: 10px;
+}
+
+.emailDetailsCont {
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+ 
+
+  .emailTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 60px;
+  }
+
+  .from {
+    display: flex;
+    justify-content: space-between;
+
+    .userEmailDetails {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+
+      .userIcon {
+        color: grey;
+        background-color: rgba(128, 128, 128, 0.283);
+        padding: 10px;
+        border-radius: 50%;
+        font-size: 1.2rem;
+      }
+    }
+  }
+}

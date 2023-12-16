@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { emailService } from "../services/email.service";
-import { utilService } from "../services/util.service";
+import { emailService } from "../../services/email.service";
+import { utilService } from "../../services/util.service";
+import styles from './EmailCompose.module.scss'
 
 const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
   const [emailData, setEmailData] = useState({
@@ -89,14 +90,14 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
   
 
   return (
-    <div className="email-compose-overlay">
-      <div className="email-compose-cmpt">
-        <div className="compose-header">
+    <div className={styles.emailComposeOverlay}>
+      <div className={styles.emailComposeCmpt}>
+        <div className={styles.composeHeader}>
           <p>New Message</p>
         </div>
-        <form className="form-compose">
+        <form className={styles.formCompose}>
           <button
-            className="close-btn"
+            className={styles.closeBtn}
             type="button"
             onClick={() => onSentOrDraft("draft")}
           >
@@ -111,7 +112,7 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             placeholder="To"
             value={emailData.to}
             onChange={handleChange}
-            className="to-input-compose"
+            className={styles.toInputCompose}
           />
           <input
             type="text"
@@ -119,7 +120,7 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             placeholder="Subject"
             value={emailData.subject}
             onChange={handleChange}
-            className="subject-input-compose"
+            className={styles.subjectInputCompose}
           />
           <textarea
             name="body"
@@ -128,17 +129,17 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             rows="10"
             value={emailData.body}
             onChange={handleChange}
-            className="message-input-compose"
+            className={styles.messageInputCompose}
           ></textarea>
-          <div>
+         
             <button
-              className="send-btn-compose"
+              className={styles.sendBtnCompose}
               type="button"
               onClick={() => onSentOrDraft("sent")}
             >
               Send
             </button>
-          </div>
+         
         </form>
       </div>
     </div>

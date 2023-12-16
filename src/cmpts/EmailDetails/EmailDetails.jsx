@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { emailService } from "../services/email.service";
-import { formatRelativeTime } from "../services/util.service";
+import { emailService } from "../../services/email.service";
+import { formatRelativeTime } from "../../services/util.service";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faUser } from "@fortawesome/free-solid-svg-icons";
+import styles from './EmailDetails.module.scss'
+
+
 
 const EmailDetails = ({ setIsEmailClick, setIsComposeOpen }) => {
   const [email, setEmail] = useState([]);
@@ -32,25 +35,25 @@ const EmailDetails = ({ setIsEmailClick, setIsComposeOpen }) => {
   };
 
   return (
-    <div className="email-details-cmpt">
-      <Link to="/misterEmailApp/email/inbox" onClick={() => setIsEmailClick(false)}>
-        <FontAwesomeIcon className="email-details-icon-back" icon={faArrowLeft} />
-      </Link>
-      <div className="email-details-cont">
-        <p className="email-title">{email?.subject}</p>
-        <div className="from">
-          <div className="user-email-details">
-          <FontAwesomeIcon icon={faUser} className="user-icon"/>
-            <div>
+    <div className={styles.emailDetailsCmpt}>
+    <Link to="/misterEmailApp/email/inbox" onClick={() => setIsEmailClick(false)}>
+      <FontAwesomeIcon className={styles.emailDetailsIconBack} icon={faArrowLeft} />
+    </Link>
+    <div className={styles.emailDetailsCont}>
+      <p className={styles.emailTitle}>{email?.subject}</p>
+      <div className={styles.from}>
+        <div className={styles.userEmailDetails}>
+          <FontAwesomeIcon icon={faUser} className={styles.userIcon} />
+          <div>
             <p>From : {email?.from || "Me"}</p>
             <p>To : {email?.to}</p>
-            </div>
           </div>
-          <p>At {formatRelativeTime(email?.sentAt)}</p>
         </div>
-        <p>{email?.body}</p>
+        <p>At {formatRelativeTime(email?.sentAt)}</p>
       </div>
+      <p>{email?.body}</p>
     </div>
+  </div>
   );
 };
 

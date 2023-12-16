@@ -1,0 +1,58 @@
+
+.filterCmpt {
+    height: 100%;
+    background-color: #F7F8FC;
+
+    .formSearch {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      padding: 10px;
+  
+      .searchContainer {
+        display: flex;
+        align-items: center;
+        height: 50%;
+        width: 30%;
+        gap: 20px;
+        background-color: #e9f1fb;
+        border-radius: 50px;
+        padding: 0 30px;
+
+        input {
+          border: none;
+          background-color: transparent;
+  
+          &:focus {
+            outline: none;
+          }
+        }
+
+        @media (max-width: 950px) {
+          width: 80%;
+          
+        }
+      }
+  
+      .btnFilter {
+        display: flex;
+        gap: 5px;
+  
+        > button {
+          border-radius: 5px;
+          border: 1px solid grey;
+          cursor: pointer;
+          background-color: white;
+          padding: 2px 6px;
+
+
+          &:hover {
+            background-color: rgba(128, 128, 128, 0.249);
+          }
+        
+        }
+      }
+    }
+  }
+  

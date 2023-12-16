@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { formatRelativeTime } from "../services/util.service";
-import { emailService } from "../services/email.service";
-import * as keys from "../config/keys";
+import { formatRelativeTime } from "../../services/util.service";
+import { emailService } from "../../services/email.service";
+import * as keys from "../../config/keys";
+import styles from "./EmailPreview.module.scss";
 
 const EmailPreview = ({
   email,
@@ -55,18 +56,18 @@ const EmailPreview = ({
 
   return (
     <div
-      className="email-item"
+      className={styles.emailItem}
       style={{ backgroundColor: !email.isRead ? "white" : "#F2F6FC" }}
     >
       <FontAwesomeIcon
         icon={faStar}
-        className="fav-icon"
+        className={styles.favIcon}
         onClick={() => onFavorite(email.id)}
         style={{ color: isFav ? "yellow" : "inherit" }}
       />
       {filter.status === "draft" ? (
         <button
-          className="compose-btn-draft"
+          className={styles.composeBtnDraft}
           onClick={() =>
             setIsComposeOpen({
               status: true,
@@ -75,34 +76,33 @@ const EmailPreview = ({
           }
         >
           <article
-            className="link-draft"
+            className={styles.linkDraft}
             style={{ backgroundColor: !email.isRead ? "white" : "#F2F6FC" }}
           >
-            <p className="mail-from" style={{ color: "red" }}>
+            <p className={styles.mailFrom} style={{ color: "red" }}>
               Draft
             </p>
-            <p className="mail-subj">{email.subject}</p>
-            <p className="mail-sent">{formatRelativeTime(email.sentAt)}</p>
+            <p className={styles.mailSubj}>{email.subject}</p>
+           
           </article>
         </button>
       ) : (
         <Link
           to={`/misterEmailApp/email/details/${email.id}`}
           onClick={() => setIsEmailClick(true)}
-          className="email-info"
+          className={styles.emailInfo}
         >
           <article
             style={{ backgroundColor: !email.isRead ? "white" : "#F2F6FC" }}
           >
-            <p className="mail-from">{email.from || "From Me"}</p>
-            <p className="mail-subj">{email.subject}</p>
-            <p className="mail-sent">{formatRelativeTime(email.sentAt)}</p>
+            <p className={styles.mailFrom}>{email.from || "From Me"}</p>
+            <p className={styles.mailSubj}>{email.subject}</p>
           </article>
         </Link>
       )}
-
+      <p className={styles.mailSent}>{formatRelativeTime(email.sentAt)}</p>
       <FontAwesomeIcon
-        className="trash-icon"
+        className={styles.trashIcon}
         icon={faTrash}
         onClick={onDelete}
       />

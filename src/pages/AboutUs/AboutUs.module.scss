@@ -1,6 +1,6 @@
-.about-page {
+.aboutPage {
   position: relative;
-  max-height: 90vh;
+  max-height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -9,13 +9,36 @@
   border-radius: 10px;
   gap: 15px;
   padding: 40px;
-}
 
-h1 {
-  text-align: center;
-}
+  h1 {
+    text-align: center;
+  }
 
-.back-btn {
+  .redText {
+ 
+      color: red;
+
+  }
+
+  .yellowText {
+
+      color: yellow;
+
+  }
+
+  .greenText {
+
+      color: green;
+
+  }
+
+  .blueText {
+   
+      color: blue;
+  
+  }
+
+  .backBtn {
     position: absolute;
     top: 5px;
     left: 5px;
@@ -25,8 +48,10 @@ h1 {
     font-size: 1.5rem;
     text-decoration: none;
     color: grey;
-}
-.back-btn:hover {
-    color: white;
-    background-color: transparent;
+
+    &:hover {
+      color: white;
+      background-color: transparent;
+    }
+  }
 }

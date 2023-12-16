@@ -1,0 +1,37 @@
+*{
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  background-color: #f7f8fc;
+  height: 100vh;
+  
+}
+
+.emailApp {
+  display: flex;
+  height: 100vh;
+ 
+  @media (max-width: 950px) {
+    flex-direction: column;
+  }
+}
+
+main {
+  width: 80vw;
+  @media (max-width: 950px) {
+    width: 90vw;
+    margin: 0 auto;
+  }
+}
+
+.search {
+  height: 10vh;
+}
+.emailIndex {
+  height: 90vh;
+  overflow-x: auto;
+}

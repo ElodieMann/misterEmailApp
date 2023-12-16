@@ -1,0 +1,86 @@
+.emailItem,
+article,
+.linkDraft {
+  display: grid;
+  align-items: center;
+  color: black;
+  grid-template-columns: 5% 55% 0% 15% 5%;
+  justify-content: space-between;
+  overflow: hidden;
+  border: 1px solid rgba(128, 128, 128, 0.068);
+}
+
+article {
+  grid-template-columns: 0% 45% 45%;
+  border: none;
+
+  @media (max-width: 950px) {
+    display: flex;
+    flex-direction: column;
+    justify-self: self-start;
+  }
+}
+
+.emailItem:hover {
+  box-shadow: 1px 1px 3px 1px rgba(17, 17, 17, 0.732);
+}
+
+.favIcon {
+  padding: 10px;
+  margin: 10px;
+  color: rgba(128, 128, 128, 0.416);
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0.342);
+    border-radius: 50%;
+  }
+}
+
+.trashIcon {
+  color: rgba(128, 128, 128, 0.352);
+
+  &:hover {
+    color: black;
+    cursor: pointer;
+  }
+}
+
+.mailFrom,
+.mailSubj,
+.mailSent {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mailFrom {
+  grid-column: 2;
+}
+
+.mailSubj {
+  grid-column: 3;
+}
+
+.mailSent {
+  grid-column: 4;
+}
+
+a {
+  text-decoration: none;
+}
+
+.composeBtnDraft {
+  display: flex;
+  color: black;
+  width: 90%;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  border: none;
+  background-color: transparent;
+  article {
+    width: 100%;
+    grid-template-columns: 0% 55% 55%;
+    border: none;
+  }
+}

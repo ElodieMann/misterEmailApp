@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import EmailList from "../../cmpts/EmailList";
-import EmailDetails from "../../cmpts/EmailDetails";
+import EmailList from "../../cmpts/EmailList/EmailList.jsx";
+import EmailDetails from "../../cmpts/EmailDetails/EmailDetails.jsx";
 
 const EmailIndex = ({ filter, setFilter,isComposeOpen, setIsComposeOpen, emailData, setEmailData, sent, draft }) => {
   const [isEmailClick, setIsEmailClick] = useState(false);
 
   return (
-    <div className="email-index">
+    <>
       {isEmailClick ? (
         <EmailDetails
           setIsEmailClick={setIsEmailClick}
@@ -24,7 +24,7 @@ const EmailIndex = ({ filter, setFilter,isComposeOpen, setIsComposeOpen, emailDa
           draft={draft}
         />
       )}
-    </div>
+    </>
   );
 };
 

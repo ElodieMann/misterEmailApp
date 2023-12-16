@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { emailService } from "../services/email.service";
+import { emailService } from "../../services/email.service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faInbox,
@@ -10,8 +10,10 @@ import {
   faTrash,
   faEnvelopesBulk,
   faPen,
+  faBars,
 } from "@fortawesome/free-solid-svg-icons";
-import * as keys from "../config/keys";
+import * as keys from "../../config/keys";
+import styles from "./EmailFolderList.module.scss";
 
 const folderLinks = [
   { label: keys.INBOX_LABEL, icon: faInbox, filter: keys.INBOX_FILTER },
@@ -28,6 +30,7 @@ const folderLinks = [
 const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
   const [unReadEmail, setUnReadEmail] = useState("");
   const [activeLink, setActiveLink] = useState(keys.INBOX_FILTER);
+  const [showMenu, setShowMenu] = useState(false); // Ajout de l'état pour le menu
 
   useEffect(() => {
     filterUnreadEmail();
@@ -39,11 +42,22 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
     setUnReadEmail(unRead.length);
   };
 
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
   return (
-    <nav>
-      <FontAwesomeIcon className="mail-home-icon" icon={faEnvelopesBulk} />
+    <nav
+      className={`${styles.emailFolderList} ${showMenu ? styles.showMenu : ""}`}
+    >
+      <FontAwesomeIcon
+        className={styles.hamburgerIcon}
+        icon={faBars}
+        onClick={toggleMenu}
+      />
+      <FontAwesomeIcon className={styles.mailHomeIcon} icon={faEnvelopesBulk} />
       <button
-        className="compose-btn"
+        className={styles.composeBtn}
         onClick={() =>
           setIsComposeOpen({
             status: true,
@@ -54,12 +68,14 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
         <FontAwesomeIcon icon={faPen} />
         Compose
       </button>
-      <div className="links">
+      <div className={styles.links}>
         {folderLinks.map(({ label, icon, filter }) => (
           <Link
             key={label}
             to={`/misterEmailApp/email/${filter}`}
-            className={`nav-link ${activeLink === filter ? "active" : ""}`}
+            className={`${styles.navLink} ${
+              activeLink === filter ? styles.active : ""
+            }`}
             onClick={() => {
               setFilter((prevFilter) => ({ ...prevFilter, status: filter }));
               setActiveLink(filter);
@@ -68,7 +84,7 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
             <FontAwesomeIcon icon={icon} />
             {label}{" "}
             {filter === keys.INBOX_FILTER && (
-              <span className="unread-indicator">{unReadEmail}</span>
+              <span className={styles.unreadIndicator}>{unReadEmail}</span>
             )}
           </Link>
         ))}
