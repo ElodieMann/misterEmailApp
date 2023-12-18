@@ -15,8 +15,6 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
     isStarred: false,
   });
 
-
-
   useEffect(() => {
     if (isComposeOpen.info && isComposeOpen.info.isDraft) {
       setEmailData({
@@ -36,55 +34,51 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
     setEmailData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const newEmail = async () => {
+  const newEmailOrDraft = async (name) => {
     const sentAt = new Date();
+    const isDraft = name === "draft";
     const addToData = await emailService.newEmail({
       ...emailData,
-      isDraft: false,
-      sentAt,
+      isDraft,
+      sentAt: isDraft ? null : sentAt,
       id: utilService.makeId(),
     });
-
-    return addToData;
-  };
-
-  const newDraft = async () => {
-    const addToData = await emailService.newEmail({
-      ...emailData,
-      isDraft: true,
-      sentAt: null,
-      id: utilService.makeId(),
-    });
-
-    return addToData;
-  };
-
-  const onSentOrDraft = async (name) => {
-    const sentAt = new Date();
-
-    if (emailData.to.trim()) {
-      if (isComposeOpen.info && isComposeOpen.info.isDraft) {
-        const originalDraft = await emailService.getById(isComposeOpen.info.id);
-        if (originalDraft) {
-          emailService.updateEmail({
-            ...originalDraft,
-            ...emailData,
-            isDraft: name === "draft",
-            sentAt,
-          });
-        } else {
-          name === "draft" ? newDraft() : newEmail();
-        }
-      } else {
-        name === "draft" ? newDraft() : newEmail();
-      }
-    }
-
+  
     setIsComposeOpen({
       status: false,
       info: {},
     });
+  
+    return addToData;
   };
+  
+  const onSentOrDraft = async (name) => {
+    if (emailData.to.trim()) {
+      if (isComposeOpen.info && isComposeOpen.info.isDraft) {
+        const originalDraft = await emailService.getById(isComposeOpen.info.id);
+  
+        if (originalDraft) {
+          const isDraft = name === "draft";
+          await emailService.updateEmail({
+            ...originalDraft,
+            ...emailData,
+            isDraft,
+            sentAt: isDraft ? null : new Date(),
+          });
+  
+          setIsComposeOpen({
+            status: false,
+            info: {},
+          });
+        } else {
+          await newEmailOrDraft(name);
+        }
+      } else {
+        await newEmailOrDraft(name);
+      }
+    }
+  };
+  
 
   return (
     <div className={styles.emailComposeOverlay}>

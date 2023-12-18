@@ -1,33 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { emailService } from "../../services/email.service";
+import React from "react";
 import EmailPreview from "../EmailPreview/EmailPreview.jsx";
 
 const EmailList = ({
   setIsEmailClick,
   filter,
-  isComposeOpen,
   setIsComposeOpen,
   emailData,
-  setEmailData,
+  favorites,
+  setFavorites,
+  setIsDelete,
 }) => {
-  const [isDelete, setIsDelete] = useState("");
-  const [favorites, setFavorites] = useState([]);
 
-  useEffect(() => {
-    getAllEmail();
-
-  }, [filter, isDelete, favorites, isComposeOpen.status]);
-
-
-
-  const getAllEmail = async () => {
-    try {
-      const data = await emailService.getAllEmail(filter);
-      setEmailData(data);
-    } catch (e) {
-      console.log("Failed to load Email", e);
-    }
-  };
 
   return (
     <>
@@ -38,10 +21,10 @@ const EmailList = ({
             email={email}
             setIsEmailClick={setIsEmailClick}
             setIsDelete={setIsDelete}
-            filter={filter}
             setIsComposeOpen={setIsComposeOpen}
-            favorites={favorites}
+            filter={filter}
             setFavorites={setFavorites}
+            favorites={favorites}
           />
         ))
       ) : (

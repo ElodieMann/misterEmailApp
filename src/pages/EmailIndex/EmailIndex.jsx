@@ -1,27 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EmailList from "../../cmpts/EmailList/EmailList.jsx";
 import EmailDetails from "../../cmpts/EmailDetails/EmailDetails.jsx";
+import { emailService } from "../../services/email.service";
 
-const EmailIndex = ({ filter, setFilter,isComposeOpen, setIsComposeOpen, emailData, setEmailData, sent, draft }) => {
+const EmailIndex = ({ filter, isComposeOpen, setIsComposeOpen }) => {
   const [isEmailClick, setIsEmailClick] = useState(false);
+  const [emailData, setEmailData] = useState([]);
+  const [isDelete, setIsDelete] = useState("");
+  const [favorites, setFavorites] = useState([]);
+
+  useEffect(() => {
+    getAllEmail();
+  }, [filter, isDelete, favorites, isComposeOpen]);
+
+  const getAllEmail = async () => {
+    try {
+      const data = await emailService.getAllEmail(filter);
+      setEmailData([...data]);
+    } catch (e) {
+      console.log("Failed to load Email", e);
+    }
+  };
 
   return (
     <>
       {isEmailClick ? (
         <EmailDetails
           setIsEmailClick={setIsEmailClick}
-          setIsComposeOpen={setIsComposeOpen}
         />
       ) : (
         <EmailList
-        isComposeOpen={isComposeOpen}
+          setIsEmailClick={setIsEmailClick}
           filter={filter}
-          setFilter={setFilter}
           setIsComposeOpen={setIsComposeOpen}
           emailData={emailData}
-          setEmailData={setEmailData}
-          sent={sent}
-          draft={draft}
+          favorites={favorites}
+          setFavorites={setFavorites}
+          setIsDelete={setIsDelete}
         />
       )}
     </>

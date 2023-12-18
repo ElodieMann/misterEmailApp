@@ -25,40 +25,42 @@ const initialUser = {
 
 async function getAllEmail(filterBy) {
   const data = await initEmails();
-  const emailsReceived = data?.filter(
-    (email) => email.to === initialUser.email
-  );
-  const emailsSent = data?.filter((email) => email.to !== initialUser.email);
-
-
 
   if (!filterBy) return null;
 
-  const { status = "inbox", txt, isRead = null, sortByDate,  sortBySubject} = filterBy;
+  const {
+    status = "inbox",
+    txt,
+    isRead = null,
+    sortByDate,
+    sortBySubject,
+  } = filterBy;
 
   let dataDisplay;
 
   switch (status) {
     case keys.INBOX_FILTER:
-      dataDisplay = emailsReceived.filter((email) => !email.removedAt);
+      dataDisplay = data.filter(
+        (email) => email.to === initialUser.email && !email.removedAt
+      );
       break;
     case keys.STARRED_FILTER:
-      dataDisplay = data.filter(
-        (email) => email.isStarred && !email.removedAt
-      );
+      dataDisplay = data.filter((email) => email.isStarred && !email.removedAt);
       break;
     case keys.TRASH_FILTER:
       dataDisplay = data.filter((email) => email.removedAt);
       break;
     case keys.SENT_FILTER:
-      dataDisplay = emailsSent.filter(
-        (email) => !email.isDraft && !email.removedAt
-        );
-   
+      dataDisplay = data.filter(
+        (email) =>
+          email.to !== initialUser.email && !email.isDraft && !email.removedAt
+      );
+
       break;
     case keys.DRAFT_FILTER:
-      dataDisplay = emailsSent.filter(
-        (email) => email.isDraft && !email.removedAt
+      dataDisplay = data.filter(
+        (email) =>
+          email.to !== initialUser.email && email.isDraft && !email.removedAt
       );
       break;
     default:
@@ -66,19 +68,30 @@ async function getAllEmail(filterBy) {
   }
 
   if (sortByDate) {
-    let sortedData = [...dataDisplay].flat().sort((a, b) => b.sentAt - a.sentAt);
-    dataDisplay = sortedData
+    let sortedData = [...dataDisplay]
+      .flat()
+      .sort((a, b) => b.sentAt - a.sentAt);
+    dataDisplay = sortedData;
   } else if (sortBySubject) {
-    let sortedData = [...dataDisplay].flat().sort((a, b) => a.subject.localeCompare(b.subject));
-    dataDisplay = sortedData
+    let sortedData = [...dataDisplay]
+      .flat()
+      .sort((a, b) => a.subject.localeCompare(b.subject));
+    dataDisplay = sortedData;
   }
 
   if (txt && txt.trim() !== "") {
-    const searchTerm = txt.toLowerCase();
+    const searchTerm = new RegExp(
+      txt
+        .trim()
+        .toLowerCase()
+        .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    );
+
     dataDisplay = dataDisplay.filter(
       (email) =>
-        email.subject.toLowerCase().includes(searchTerm) ||
-        email.body.toLowerCase().includes(searchTerm)
+        searchTerm.test(email.subject.toLowerCase()) ||
+        searchTerm.test(email.body.toLowerCase())||
+        searchTerm.test(email.from.toLowerCase())
     );
   }
 

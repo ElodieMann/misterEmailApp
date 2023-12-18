@@ -5,11 +5,9 @@ import { formatRelativeTime } from "../../services/util.service";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faUser } from "@fortawesome/free-solid-svg-icons";
-import styles from './EmailDetails.module.scss'
+import styles from "./EmailDetails.module.scss";
 
-
-
-const EmailDetails = ({ setIsEmailClick, setIsComposeOpen }) => {
+const EmailDetails = ({ setIsEmailClick }) => {
   const [email, setEmail] = useState([]);
   const params = useParams();
 
@@ -23,11 +21,6 @@ const EmailDetails = ({ setIsEmailClick, setIsComposeOpen }) => {
       setEmail(email);
       const updatedEmail = { ...email, isRead: true };
 
-      setIsComposeOpen({
-        status: false,
-        info: updatedEmail,
-      });
-
       emailService.updateEmail(updatedEmail);
     } catch (e) {
       console.log("Failed to load email", e);
@@ -36,24 +29,30 @@ const EmailDetails = ({ setIsEmailClick, setIsComposeOpen }) => {
 
   return (
     <div className={styles.emailDetailsCmpt}>
-    <Link to="/misterEmailApp/email/inbox" onClick={() => setIsEmailClick(false)}>
-      <FontAwesomeIcon className={styles.emailDetailsIconBack} icon={faArrowLeft} />
-    </Link>
-    <div className={styles.emailDetailsCont}>
-      <p className={styles.emailTitle}>{email?.subject}</p>
-      <div className={styles.from}>
-        <div className={styles.userEmailDetails}>
-          <FontAwesomeIcon icon={faUser} className={styles.userIcon} />
-          <div>
-            <p>From : {email?.from || "Me"}</p>
-            <p>To : {email?.to}</p>
+      <Link
+        to="/misterEmailApp/email/inbox"
+        onClick={() => setIsEmailClick(false)}
+      >
+        <FontAwesomeIcon
+          className={styles.emailDetailsIconBack}
+          icon={faArrowLeft}
+        />
+      </Link>
+      <div className={styles.emailDetailsCont}>
+        <p className={styles.emailTitle}>{email?.subject}</p>
+        <div className={styles.from}>
+          <div className={styles.userEmailDetails}>
+            <FontAwesomeIcon icon={faUser} className={styles.userIcon} />
+            <div>
+              <p>From : {email?.from || "Me"}</p>
+              <p>To : {email?.to}</p>
+            </div>
           </div>
+          <p>At {formatRelativeTime(email?.sentAt)}</p>
         </div>
-        <p>At {formatRelativeTime(email?.sentAt)}</p>
+        <p>{email?.body}</p>
       </div>
-      <p>{email?.body}</p>
     </div>
-  </div>
   );
 };
 
