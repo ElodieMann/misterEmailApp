@@ -4,6 +4,7 @@ import EmailPreview from "../EmailPreview/EmailPreview.jsx";
 const EmailList = ({
   setIsEmailClick,
   filter,
+  isComposeOpen,
   setIsComposeOpen,
   emailData,
   favorites,
@@ -14,7 +15,7 @@ const EmailList = ({
 
   return (
     <>
-      {emailData?.length > 0 ? (
+      {emailData?.length > 0  || isComposeOpen? (
         emailData.map((email) => (
           <EmailPreview
             key={email.id}

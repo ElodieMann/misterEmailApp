@@ -20,19 +20,13 @@ function createEventEmitter() {
 }
 
 export const eventBusService = createEventEmitter();
-console.log("eventBusService", eventBusService);
 
-// For debug only
-window.ebs = eventBusService;
-// window.showSuccessMsg = showSuccessMsg;
-// window.showErrorMsg = showErrorMsg;
 
 export function showUserMsg(msg) {
   eventBusService.emit("show-user-msg", msg);
 }
 
 export function emailSentMsg(id) {
-  console.log("emailSentMsg called");
   showUserMsg({
     txt: "Email sent!",
     type: "success",
@@ -50,7 +44,7 @@ export function emailSentMsg(id) {
 
 export function showErrorMsg() {
   showUserMsg({
-    txt: "Failed to sent!",
+    txt: "You must indicate at least one recipient.",
     type: "error",
   });
 }

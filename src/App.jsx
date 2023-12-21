@@ -13,7 +13,6 @@ import UserMsg from "./cmpts/UserMsg/UserMsg.jsx";
 
 function App() {
   const [filter, setFilter] = useState(emailService.getDefaultFilter());
-
   const [isComposeOpen, setIsComposeOpen] = useState({
     status: false,
     info: {},
@@ -28,13 +27,14 @@ function App() {
         />
         <main>
           <div className={styles.search}>
-            <EmailFilter setFilter={setFilter} />
+            <EmailFilter filter={filter} setFilter={setFilter} />
           </div>
           <div className={styles.emailIndex}>
             {isComposeOpen.status && (
               <EmailCompose
                 isComposeOpen={isComposeOpen}
                 setIsComposeOpen={setIsComposeOpen}
+                filter={filter}
               />
             )}
             <Routes>
@@ -54,15 +54,11 @@ function App() {
                 path="/misterEmailApp/email/details/:id"
                 element={<EmailDetails />}
               />
-              <Route
-                path="/misterEmailApp/email/draft/:id"
-                element={<EmailCompose />}
-              />
+             
             </Routes>
-
           </div>
         </main>
-            <UserMsg />
+        <UserMsg />
       </div>
     </Router>
   );

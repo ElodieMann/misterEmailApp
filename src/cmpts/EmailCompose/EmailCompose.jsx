@@ -2,9 +2,17 @@ import React, { useState, useEffect } from "react";
 import { emailService } from "../../services/email.service";
 import { utilService } from "../../services/util.service";
 import { emailSentMsg, showErrorMsg } from "../../services/event-bus.service.js";
+import { useSearchParams, useNavigate } from 'react-router-dom';
+
 import styles from "./EmailCompose.module.scss";
 
-const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
+const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen }) => {
+
+  const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+  const isComposeNew = searchParams.get('compose') === 'new';
+
   const [emailData, setEmailData] = useState({
     to: "",
     subject: "",
@@ -17,23 +25,38 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
   });
 
   useEffect(() => {
-    if (isComposeOpen.info && isComposeOpen.info.isDraft) {
+    if (isComposeOpen?.info && isComposeOpen?.info?.isDraft) {
       setEmailData({
-        to: isComposeOpen.info.to,
-        subject: isComposeOpen.info.subject,
-        body: isComposeOpen.info.body,
-        sentAt: isComposeOpen.info.sentAt || new Date(),
+        to: isComposeOpen?.info?.to,
+        subject: isComposeOpen?.info?.subject,
+        body: isComposeOpen?.info?.body,
+        sentAt: isComposeOpen?.info?.sentAt || new Date(),
         removedAt: null,
         isRead: false,
         isStarred: false,
       });
     }
-  }, [isComposeOpen.info]);
+  }, [isComposeOpen?.info]);
+
+  useEffect(() => {
+    if (isComposeNew) {
+      setIsComposeOpen({
+        status: true,
+        info: {},
+      });
+    }
+  }, [isComposeNew, setIsComposeOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEmailData((prevData) => ({ ...prevData, [name]: value }));
   };
+
+  const areFieldsEmpty = () => {
+    return !emailData.to.trim() || !emailData.subject.trim() || !emailData.body.trim();
+  };
+
+
 
   const newEmailOrDraft = async (name) => {
     const sentAt = new Date();
@@ -50,13 +73,24 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
       info: {},
     });
     if (name === 'sent') emailSentMsg(addToData.id);
+    console.log(filter.status);
+    navigate(`/misterEmailApp/email/${filter.status}`);
+
     return addToData;
   };
 
   const onSentOrDraft = async (name) => {
+    if (name === "draft" && areFieldsEmpty()) {
+      setIsComposeOpen({
+        status: false,
+        info: {},
+      });
+      return;
+    }
+
     if (emailData.to.trim()) {
-      if (isComposeOpen.info && isComposeOpen.info.isDraft) {
-        const originalDraft = await emailService.getById(isComposeOpen.info.id);
+      if (isComposeOpen?.info && isComposeOpen?.info?.isDraft) {
+        const originalDraft = await emailService.getById(isComposeOpen?.info?.id);
 
         if (originalDraft) {
           const isDraft = name === "draft";
@@ -71,6 +105,8 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             status: false,
             info: {},
           });
+          if (name === 'sent') emailSentMsg();
+
         } else {
           await newEmailOrDraft(name);
         }
@@ -103,7 +139,7 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             type="text"
             name="to"
             placeholder="To"
-            value={emailData.to}
+            value={emailData?.to}
             onChange={handleChange}
             className={styles.toInputCompose}
           />
@@ -111,7 +147,7 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             type="text"
             name="subject"
             placeholder="Subject"
-            value={emailData.subject}
+            value={emailData?.subject}
             onChange={handleChange}
             className={styles.subjectInputCompose}
           />

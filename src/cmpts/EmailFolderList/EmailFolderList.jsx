@@ -12,6 +12,8 @@ import {
   faPen,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from 'react-router-dom';
+
 import * as keys from "../../config/keys";
 import styles from "./EmailFolderList.module.scss";
 
@@ -28,6 +30,9 @@ const folderLinks = [
 ];
 
 const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
+  const navigate = useNavigate();
+
+
   const [unReadEmail, setUnReadEmail] = useState("");
   const [activeLink, setActiveLink] = useState(keys.INBOX_FILTER);
   const [showMenu, setShowMenu] = useState(false); 
@@ -56,14 +61,15 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
         onClick={toggleMenu}
       />
       <FontAwesomeIcon className={styles.mailHomeIcon} icon={faEnvelopesBulk} />
-      <button
+       <button
         className={styles.composeBtn}
-        onClick={() =>
+        onClick={() => {
           setIsComposeOpen({
             status: true,
             info: {},
-          })
-        }
+          });
+          navigate(`/misterEmailApp/email/${keys.INBOX_FILTER}?compose=new`);
+        }}
       >
         <FontAwesomeIcon icon={faPen} />
         Compose

@@ -25,13 +25,12 @@ const EmailIndex = ({ filter, isComposeOpen, setIsComposeOpen }) => {
   return (
     <>
       {isEmailClick ? (
-        <EmailDetails
-          setIsEmailClick={setIsEmailClick}
-        />
+        <EmailDetails setIsEmailClick={setIsEmailClick} />
       ) : (
         <EmailList
           setIsEmailClick={setIsEmailClick}
           filter={filter}
+          isComposeOpen={isComposeOpen}
           setIsComposeOpen={setIsComposeOpen}
           emailData={emailData}
           favorites={favorites}

@@ -30,7 +30,7 @@ async function getAllEmail(filterBy) {
 
   const {
     status = "inbox",
-    txt,
+    txt = '',
     isRead = null,
     sortByDate,
     sortBySubject,
@@ -105,7 +105,7 @@ async function getAllEmail(filterBy) {
 function getDefaultFilter() {
   return {
     status: "inbox",
-    txt: "",
+    txt: '',
     isRead: null,
     sortByDate: false,
     sortBySubject: false,
