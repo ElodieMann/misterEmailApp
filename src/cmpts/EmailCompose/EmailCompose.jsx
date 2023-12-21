@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { emailService } from "../../services/email.service";
 import { utilService } from "../../services/util.service";
+import { emailSentMsg, showErrorMsg } from "../../services/event-bus.service.js";
 import styles from "./EmailCompose.module.scss";
 
 const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
@@ -43,20 +44,20 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
       sentAt: isDraft ? null : sentAt,
       id: utilService.makeId(),
     });
-  
+
     setIsComposeOpen({
       status: false,
       info: {},
     });
-  
+    if (name === 'sent') emailSentMsg(addToData.id);
     return addToData;
   };
-  
+
   const onSentOrDraft = async (name) => {
     if (emailData.to.trim()) {
       if (isComposeOpen.info && isComposeOpen.info.isDraft) {
         const originalDraft = await emailService.getById(isComposeOpen.info.id);
-  
+
         if (originalDraft) {
           const isDraft = name === "draft";
           await emailService.updateEmail({
@@ -65,7 +66,7 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
             isDraft,
             sentAt: isDraft ? null : new Date(),
           });
-  
+
           setIsComposeOpen({
             status: false,
             info: {},
@@ -76,9 +77,10 @@ const EmailCompose = ({ isComposeOpen, setIsComposeOpen }) => {
       } else {
         await newEmailOrDraft(name);
       }
+    } else {
+      showErrorMsg();
     }
   };
-  
 
   return (
     <div className={styles.emailComposeOverlay}>

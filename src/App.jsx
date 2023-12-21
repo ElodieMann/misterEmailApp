@@ -9,6 +9,7 @@ import { useState } from "react";
 import EmailCompose from "./cmpts/EmailCompose/EmailCompose.jsx";
 import { emailService } from "./services/email.service.js";
 import styles from "./App.module.scss";
+import UserMsg from "./cmpts/UserMsg/UserMsg.jsx";
 
 function App() {
   const [filter, setFilter] = useState(emailService.getDefaultFilter());
@@ -58,8 +59,10 @@ function App() {
                 element={<EmailCompose />}
               />
             </Routes>
+
           </div>
         </main>
+            <UserMsg />
       </div>
     </Router>
   );
