@@ -17,6 +17,7 @@ function App() {
     status: false,
     info: {},
   });
+  const [canceledSent, setCancelSent] = useState(false)
 
   return (
     <Router>
@@ -47,6 +48,8 @@ function App() {
                     filter={filter}
                     isComposeOpen={isComposeOpen}
                     setIsComposeOpen={setIsComposeOpen}
+                    canceledSent={canceledSent}
+                    setCancelSent={setCancelSent}
                   />
                 }
               />
@@ -58,7 +61,7 @@ function App() {
             </Routes>
           </div>
         </main>
-        <UserMsg />
+        <UserMsg setCancelSent={setCancelSent}/>
       </div>
     </Router>
   );

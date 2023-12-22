@@ -15,6 +15,9 @@ const EmailPreview = ({
   filter,
   setFavorites,
   favorites,
+  toggleSelect,
+  isSelected,
+  setIsRead
 }) => {
   const [isFav, setIsFav] = useState(email.isStarred);
 
@@ -59,6 +62,11 @@ const EmailPreview = ({
       className={styles.emailItem}
       style={{ backgroundColor: !email.isRead ? "white" : "#F2F6FC" }}
     >
+      <input
+        type="checkbox"
+        onChange={() => toggleSelect(email.id)}
+        checked={isSelected}
+      />
       <FontAwesomeIcon
         icon={faStar}
         className={styles.favIcon}
@@ -83,7 +91,6 @@ const EmailPreview = ({
               Draft
             </p>
             <p className={styles.mailSubj}>{email.subject}</p>
-           
           </article>
         </button>
       ) : (

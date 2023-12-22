@@ -3,15 +3,26 @@ import EmailList from "../../cmpts/EmailList/EmailList.jsx";
 import EmailDetails from "../../cmpts/EmailDetails/EmailDetails.jsx";
 import { emailService } from "../../services/email.service";
 
-const EmailIndex = ({ filter, isComposeOpen, setIsComposeOpen }) => {
+const EmailIndex = ({
+  filter,
+  isComposeOpen,
+  setIsComposeOpen,
+  canceledSent,
+  setCancelSent,
+}) => {
   const [isEmailClick, setIsEmailClick] = useState(false);
   const [emailData, setEmailData] = useState([]);
   const [isDelete, setIsDelete] = useState("");
   const [favorites, setFavorites] = useState([]);
+  const [isRead, setIsRead] = useState("");
+
+  console.log(favorites);
+  console.log(favorites);
 
   useEffect(() => {
     getAllEmail();
-  }, [filter, isDelete, favorites, isComposeOpen]);
+    setCancelSent(false);
+  }, [filter, isDelete, favorites, isComposeOpen, canceledSent, isRead]);
 
   const getAllEmail = async () => {
     try {
@@ -36,6 +47,7 @@ const EmailIndex = ({ filter, isComposeOpen, setIsComposeOpen }) => {
           favorites={favorites}
           setFavorites={setFavorites}
           setIsDelete={setIsDelete}
+          setIsRead={setIsRead}
         />
       )}
     </>

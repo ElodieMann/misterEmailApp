@@ -4,7 +4,8 @@ article,
   display: grid;
   align-items: center;
   color: black;
-  grid-template-columns: 5% 55% 0% 15% 5%;
+  grid-template-columns: 5% 5% 55% 15% 5%;
+
   justify-content: space-between;
   overflow: hidden;
   border: 1px solid rgba(128, 128, 128, 0.068);

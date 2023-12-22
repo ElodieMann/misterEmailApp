@@ -4,7 +4,7 @@ import { emailService } from "../../services/email.service.js";
 import { eventBusService } from "../../services/event-bus.service.js";
 import styles from "./UserMsg.module.scss";
 
-const UserMsg = () => {
+const UserMsg = ({setCancelSent}) => {
   const [msg, setMsg] = useState(null);
   const navigate = useNavigate();
 
@@ -33,13 +33,18 @@ const UserMsg = () => {
     }
   }
 
-  function onCancelSending() {
-    emailService.removeEmail(msg.emailId);
-
-    setMsg({
-      txt: "Canceled.",
-    });
+  async function onCancelSending() {
+    try {
+      await emailService.removeEmail(msg.emailId);
+      setMsg({
+        txt: "Canceled.",
+      });
+      setCancelSent(true);
+    } catch (error) {
+      console.log(error);
+    }
   }
+  
 
   if (!msg) return <></>;
 

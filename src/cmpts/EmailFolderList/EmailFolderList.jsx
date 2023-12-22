@@ -12,7 +12,7 @@ import {
   faPen,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import * as keys from "../../config/keys";
 import styles from "./EmailFolderList.module.scss";
@@ -32,17 +32,22 @@ const folderLinks = [
 const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
   const navigate = useNavigate();
 
-
   const [unReadEmail, setUnReadEmail] = useState("");
   const [activeLink, setActiveLink] = useState(keys.INBOX_FILTER);
-  const [showMenu, setShowMenu] = useState(false); 
+  const [showMenu, setShowMenu] = useState(false);
+  const [inboxEmails, setInboxEmails] = useState([]);
 
   useEffect(() => {
-    filterUnreadEmail();
-  }, [unReadEmail]);
-
-  const filterUnreadEmail = async () => {
+    fetchData();
+  }, [inboxEmails]);
+  
+  const fetchData = async () => {
     const data = await emailService.getAllEmail("inbox");
+    setInboxEmails(data);
+    filterUnreadEmail(data);
+  };
+
+  const filterUnreadEmail = (data) => {
     const unRead = data.filter((email) => !email.isRead);
     setUnReadEmail(unRead.length);
   };
@@ -61,7 +66,7 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
         onClick={toggleMenu}
       />
       <FontAwesomeIcon className={styles.mailHomeIcon} icon={faEnvelopesBulk} />
-       <button
+      <button
         className={styles.composeBtn}
         onClick={() => {
           setIsComposeOpen({
