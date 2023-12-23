@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { emailService } from "../../services/email.service";
 import { utilService } from "../../services/util.service";
-import { emailSentMsg, showErrorMsg } from "../../services/event-bus.service.js";
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import {
+  emailSentMsg,
+  showErrorMsg,
+} from "../../services/event-bus.service.js";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 import styles from "./EmailCompose.module.scss";
 
 const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen }) => {
-
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
-  const isComposeNew = searchParams.get('compose') === 'new';
+  const isComposeNew = searchParams.get("compose") === "new";
 
   const [emailData, setEmailData] = useState({
     to: "",
@@ -47,16 +49,30 @@ const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen }) => {
     }
   }, [isComposeNew, setIsComposeOpen]);
 
+  useEffect(() => {
+    const to = searchParams.get("to");
+    const subject = searchParams.get("subject");
+
+    if (to) {
+      setEmailData((prevData) => ({ ...prevData, to }));
+    }
+    if (subject) {
+      setEmailData((prevData) => ({ ...prevData, subject }));
+    }
+  }, [searchParams]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEmailData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const areFieldsEmpty = () => {
-    return !emailData.to.trim() || !emailData.subject.trim() || !emailData.body.trim();
+    return (
+      !emailData.to.trim() ||
+      !emailData.subject.trim() ||
+      !emailData.body.trim()
+    );
   };
-
-
 
   const newEmailOrDraft = async (name) => {
     const sentAt = new Date();
@@ -72,7 +88,7 @@ const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen }) => {
       status: false,
       info: {},
     });
-    if (name === 'sent') emailSentMsg(addToData.id);
+    if (name === "sent") emailSentMsg(addToData.id);
     console.log(filter.status);
     navigate(`/misterEmailApp/email/${filter.status}`);
 
@@ -85,12 +101,15 @@ const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen }) => {
         status: false,
         info: {},
       });
+      navigate(`/misterEmailApp/email/${filter.status}`);
       return;
     }
 
     if (emailData.to.trim()) {
       if (isComposeOpen?.info && isComposeOpen?.info?.isDraft) {
-        const originalDraft = await emailService.getById(isComposeOpen?.info?.id);
+        const originalDraft = await emailService.getById(
+          isComposeOpen?.info?.id
+        );
 
         if (originalDraft) {
           const isDraft = name === "draft";
@@ -105,8 +124,7 @@ const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen }) => {
             status: false,
             info: {},
           });
-          if (name === 'sent') emailSentMsg();
-
+          if (name === "sent") emailSentMsg();
         } else {
           await newEmailOrDraft(name);
         }

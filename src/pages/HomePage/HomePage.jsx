@@ -9,10 +9,10 @@ const HomePage = () => {
   return (
     <div className={styles.homePage}>
       <h1>
-        <span >Welcome</span>
-        <span > to </span>
-        <span > Mister</span>
-        <span > Mail </span>!
+        <span>Welcome</span>
+        <span> to </span>
+        <span> Mister</span>
+        <span> Mail </span>!
       </h1>
       <h2>
         Your all-in-one destination for efficient and streamlined email
@@ -26,8 +26,18 @@ const HomePage = () => {
         you need.
       </h3>
 
+      <Link
+        to="/mail/inbox/edit?to=help@gmail.com&subject=Help"
+        className={styles.quickSendLink}
+      >
+        Quick Send (Help)
+      </Link>
+
       <Link to={"/misterEmailApp/email/inbox"} className={styles.emailPageLink}>
-        <FontAwesomeIcon className={styles.mailHomeIcon} icon={faEnvelopesBulk} />{" "}
+        <FontAwesomeIcon
+          className={styles.mailHomeIcon}
+          icon={faEnvelopesBulk}
+        />{" "}
         To your email inbox.
       </Link>
       <Link to={"/misterEmailApp/about"} className={styles.aboutLink}>

@@ -17,7 +17,7 @@ const EmailIndex = ({
   const [isRead, setIsRead] = useState("");
 
   console.log(favorites);
-  console.log(favorites);
+
 
   useEffect(() => {
     getAllEmail();

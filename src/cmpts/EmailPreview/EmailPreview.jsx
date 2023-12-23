@@ -13,31 +13,26 @@ const EmailPreview = ({
   setIsDelete,
   setIsComposeOpen,
   filter,
-  setFavorites,
   favorites,
+  setFavorites,
   toggleSelect,
   isSelected,
-  setIsRead
+  setIsRead,
 }) => {
-  const [isFav, setIsFav] = useState(email.isStarred);
-
-  useEffect(() => {
-    onChange();
-  }, [isFav]);
-
-  const onChange = () => {
-    let newFav = [...favorites];
-    newFav.includes(email.id)
-      ? newFav.splice(email.id, 1)
-      : newFav.push(email.id);
-    setFavorites(newFav);
-  };
 
   const onFavorite = async () => {
     try {
-      const updatedEmail = { ...email, isStarred: !isFav };
-      emailService.updateEmail(updatedEmail);
-      setIsFav(!isFav);
+      const updatedEmail = { ...email, isStarred: !email.isStarred };
+      await emailService.updateEmail(updatedEmail);
+
+      setFavorites((prevFavorites) => {
+        if (!prevFavorites.includes(email.id) && !email.isStarred) {
+          return [...prevFavorites, email.id];
+        } else if (prevFavorites.includes(email.id) && email.isStarred) {
+          return prevFavorites.filter((id) => id !== email.id);
+        }
+        return prevFavorites;
+      });
     } catch (e) {
       console.log(e);
     }
@@ -70,8 +65,8 @@ const EmailPreview = ({
       <FontAwesomeIcon
         icon={faStar}
         className={styles.favIcon}
-        onClick={() => onFavorite(email.id)}
-        style={{ color: isFav ? "yellow" : "inherit" }}
+        onClick={onFavorite}
+        style={{ color: email.isStarred ? "yellow" : "inherit" }}
       />
       {filter.status === "draft" ? (
         <button
