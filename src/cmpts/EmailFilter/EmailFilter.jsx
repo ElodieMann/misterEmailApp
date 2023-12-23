@@ -13,14 +13,12 @@ const EmailFilter = ({ filter, setFilter }) => {
 
   useEffect(() => {
     const txt = searchParams.get("txt");
-    const date = searchParams.get("date");
     const sortByDate = searchParams.get("sortByDate");
     const sortBySubject = searchParams.get("sortBySubject");
 
     setFilter((prevFilter) => ({
       ...prevFilter,
       txt,
-      date,
       sortByDate,
       sortBySubject,
     }));

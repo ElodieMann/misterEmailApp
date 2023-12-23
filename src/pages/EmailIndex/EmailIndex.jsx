@@ -16,9 +16,6 @@ const EmailIndex = ({
   const [favorites, setFavorites] = useState([]);
   const [isRead, setIsRead] = useState("");
 
-  console.log(favorites);
-
-
   useEffect(() => {
     getAllEmail();
     setCancelSent(false);

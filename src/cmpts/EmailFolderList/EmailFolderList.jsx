@@ -40,7 +40,19 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
   useEffect(() => {
     fetchData();
   }, [inboxEmails]);
-  
+
+  useEffect(() => {
+ 
+    const params = new URLSearchParams(window.location.search);
+    const composeParam = params.get("compose");
+    if (composeParam === "new") {
+      setIsComposeOpen({
+        status: true,
+        info: {},
+      });
+    }
+  }, [setIsComposeOpen]);
+
   const fetchData = async () => {
     const data = await emailService.getAllEmail("inbox");
     setInboxEmails(data);
@@ -73,7 +85,11 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
             status: true,
             info: {},
           });
-          navigate(`/misterEmailApp/email/${keys.INBOX_FILTER}?compose=new`);
+          const params = new URLSearchParams();
+          params.set("compose", "new");
+          navigate(
+            `/misterEmailApp/email/${keys.INBOX_FILTER}?${params.toString()}`
+          );
         }}
       >
         <FontAwesomeIcon icon={faPen} />

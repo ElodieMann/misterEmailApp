@@ -27,7 +27,7 @@ const HomePage = () => {
       </h3>
 
       <Link
-        to="/mail/inbox/edit?to=help@gmail.com&subject=Help"
+        to="/misterEmailApp/email/inbox?compose=new&to=help@gmail.com&subject=Help"
         className={styles.quickSendLink}
       >
         Quick Send (Help)

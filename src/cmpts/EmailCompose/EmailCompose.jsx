@@ -40,16 +40,16 @@ const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen }) => {
     }
   }, [isComposeOpen?.info]);
 
-  useEffect(() => {
+
+useEffect(() => {
+    const isComposeNew = searchParams.get("compose") === "new";
     if (isComposeNew) {
       setIsComposeOpen({
         status: true,
         info: {},
       });
     }
-  }, [isComposeNew, setIsComposeOpen]);
 
-  useEffect(() => {
     const to = searchParams.get("to");
     const subject = searchParams.get("subject");
 
@@ -59,12 +59,15 @@ const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen }) => {
     if (subject) {
       setEmailData((prevData) => ({ ...prevData, subject }));
     }
-  }, [searchParams]);
+}, [searchParams, setIsComposeOpen]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEmailData((prevData) => ({ ...prevData, [name]: value }));
   };
+
+
 
   const areFieldsEmpty = () => {
     return (

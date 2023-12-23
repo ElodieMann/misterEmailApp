@@ -112,6 +112,17 @@ function getDefaultFilter() {
   };
 }
 
+function getFilterFromSearchParams(searchParams) {
+  const defaultFilter = getDefaultFilter();
+  const filterBy = {};
+
+  for (const field in defaultFilter) {
+    filterBy[field] = searchParams.get(field) || defaultFilter[field];
+  }
+
+  return filterBy;
+}
+
 function getById(emailId) {
   return storageService.get(keys.STORAGE_KEY, emailId);
 }
@@ -133,6 +144,7 @@ function removeFromLocalStorage(emailId) {
 export const emailService = {
   getAllEmail,
   getDefaultFilter,
+  getFilterFromSearchParams,
   newEmail,
   getById,
   updateEmail,
