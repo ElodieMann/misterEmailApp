@@ -27,24 +27,23 @@ const folderLinks = [
   { label: keys.TRASH_LABEL, icon: faTrash, filter: keys.TRASH_FILTER },
 ];
 
-const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
+const EmailFolderList = ({ setFilter, setIsComposeOpen, emailData }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [unReadEmail, setUnReadEmail] = useState("");
   const [activeLink, setActiveLink] = useState("");
+  const currentPath = location.pathname.split("/")[1];
 
   useEffect(() => {
+    setActiveLink(currentPath || keys.INBOX_FILTER);
 
-    const currentPath = location.pathname.split('/')[1];  
-    console.log(location);
-    setActiveLink(currentPath || keys.INBOX_FILTER);  
-
-    setFilter((prevFilter) => ({ ...prevFilter, status: currentPath || keys.INBOX_FILTER }));
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      status: currentPath || keys.INBOX_FILTER,
+    }));
   }, [location, setFilter]);
 
-
   useEffect(() => {
- 
     const params = new URLSearchParams(window.location.search);
     const composeParam = params.get("compose");
     if (composeParam === "new") {
@@ -53,22 +52,22 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
         info: {},
       });
     }
-  }, [setIsComposeOpen]);
 
-  const filterUnreadEmail = (data) => {
-    const unRead = data.filter((email) => !email.isRead);
-    setUnReadEmail(unRead.length);
+    filterUnreadEmail();
+  }, [setIsComposeOpen, emailData]);
+
+  const filterUnreadEmail = () => {
+    if (activeLink === keys.INBOX_FILTER) {  
+      const unRead = emailData.filter((email) => !email.isRead && email.to === "user@appsus.com");
+      setUnReadEmail(unRead.length);
+    } 
   };
+  
 
   return (
-    <nav
-      className={styles.emailFolderList}
-    >
-      <FontAwesomeIcon
-        className={styles.hamburgerIcon}
-        icon={faBars}
-      />
-    
+    <nav className={styles.emailFolderList}>
+      <FontAwesomeIcon className={styles.hamburgerIcon} icon={faBars} />
+
       <button
         className={styles.composeBtn}
         onClick={() => {
@@ -78,9 +77,7 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
           });
           const params = new URLSearchParams();
           params.set("compose", "new");
-          navigate(
-            `/${keys.INBOX_FILTER}?${params.toString()}`
-          );
+          navigate(`/${currentPath}?${params.toString()}`);
         }}
       >
         <FontAwesomeIcon icon={faPen} />

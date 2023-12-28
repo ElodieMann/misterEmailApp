@@ -97,6 +97,19 @@ useEffect(() => {
     return addToData;
   };
 
+  const resetEmailData = () => {
+    setEmailData({
+      to: "",
+      subject: "",
+      body: "",
+      sentAt: new Date(),
+      id: utilService.makeId(),
+      removedAt: null,
+      isRead: false,
+      isStarred: false,
+    });
+  };
+
   const onSentOrDraft = async (name) => {
     if (name === "draft" && areFieldsEmpty()) {
       setIsComposeOpen({
@@ -105,6 +118,11 @@ useEffect(() => {
       });
       navigate(`/${filter.status}`);
       return;
+    }
+
+    if (name === "sent" && !isComposeOpen?.info?.isDraft) {
+      await newEmailOrDraft(name);
+      resetEmailData(); 
     }
 
     if (emailData.to.trim()) {

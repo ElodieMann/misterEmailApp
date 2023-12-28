@@ -21,6 +21,14 @@ const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent }) => {
     setCancelSent(false);
   }, [filter, isComposeOpen, canceledSent, isChange]);
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const updatedFilter = emailService.getFilterFromSearchParams(searchParams);
+    setFilter(updatedFilter);
+  }, [window.location.search]);
+  
+  
+
   const getAllEmail = async () => {
     try {
       const data = await emailService.getAllEmail(filter);
@@ -36,7 +44,7 @@ const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent }) => {
       <EmailFolderList
         setFilter={setFilter}
         setIsComposeOpen={setIsComposeOpen}
-        display={true}
+        emailData={emailData}
       />
 
       <div className={styles.listContainer}>

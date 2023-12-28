@@ -28,7 +28,7 @@ const EmailList = ({
   };
 
   return (
-    <table>
+    <div>
       <EmailSort
         selectedEmails={selectedEmails}
         setSelectedEmails={setSelectedEmails}
@@ -57,7 +57,7 @@ const EmailList = ({
           <p>No Email</p>
         )}
       </div>
-    </table>
+    </div>
   );
 };
 

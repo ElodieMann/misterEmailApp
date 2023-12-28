@@ -22,25 +22,26 @@ const EmailFilter = ({ filter, setFilter }) => {
       sortByDate,
       sortBySubject,
     }));
+
+    if (txt !== null && txt !== undefined) {
+      setSearchTerm(txt);
+    }
   }, [searchParams, setFilter]);
 
   const handleFilterChange = (newFilter) => {
-    const updatedFilter = {
-      ...filter,
-      ...newFilter,
-      status: filter.status,
-    };
-
-    setFilter(updatedFilter);
-
     const params = new URLSearchParams();
-    if (newFilter.txt) params.set("txt", newFilter.txt);
-    if (newFilter.sortByDate) params.set("sortByDate", newFilter.sortByDate);
-    if (newFilter.sortBySubject)
-      params.set("sortBySubject", newFilter.sortBySubject);
-
+  
+    if (newFilter.txt !== undefined) params.set("txt", newFilter.txt);
+    if (newFilter.sortByDate !== undefined) params.set("sortByDate", newFilter.sortByDate);
+    if (newFilter.sortBySubject !== undefined) params.set("sortBySubject", newFilter.sortBySubject);
+    if (newFilter.isRead !== undefined) params.set("isRead", newFilter.isRead);
+  
     navigate(`?${params.toString()}`);
+  
+    const updatedFilter = emailService.getFilterFromSearchParams(params);
+    setFilter(updatedFilter);
   };
+  
 
   const onSubmit = (e) => {
     e.preventDefault();

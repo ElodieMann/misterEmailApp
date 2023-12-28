@@ -72,7 +72,6 @@ async function getAllEmail(filterBy) {
       filteredEmails = sortedData;
   }
 
-  console.log(filterBy);
   if (filterBy.txt && filterBy.txt.trim() !== "") {
     const searchTerm = new RegExp(
       filterBy.txt
@@ -83,9 +82,9 @@ async function getAllEmail(filterBy) {
 
     filteredEmails = filteredEmails.filter(
       (email) =>
-        searchTerm.test(email.subject.toLowerCase()) ||
-        searchTerm.test(email.body.toLowerCase()) ||
-        searchTerm.test(email.from.toLowerCase())
+        searchTerm.test(email?.subject?.toLowerCase()) ||
+        searchTerm.test(email?.body?.toLowerCase()) ||
+        searchTerm.test(email?.from?.toLowerCase())
     );
   }
 
@@ -108,14 +107,19 @@ function getDefaultFilter() {
 
 function getFilterFromSearchParams(searchParams) {
   const defaultFilter = getDefaultFilter();
-  const filterBy = {};
+  const filterBy = { ...defaultFilter };
 
   for (const field in defaultFilter) {
-    filterBy[field] = searchParams.get(field) || defaultFilter[field];
+    let value = searchParams.get(field);
+    if (field === "isRead" && value !== null) {
+      value = value === "true" ? true : value === "false" ? false : null;
+    }
+    filterBy[field] = value !== null ? value : defaultFilter[field];
   }
 
   return filterBy;
 }
+
 
 function getById(emailId) {
   return storageService.get(keys.STORAGE_KEY, emailId);
