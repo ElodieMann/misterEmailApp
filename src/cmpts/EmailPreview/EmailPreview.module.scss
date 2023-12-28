@@ -65,11 +65,17 @@ article {
   justify-items: center;
 }
 
-a {
+a, .composeBtnDraft {
   text-decoration: none;
   height: 100%;
 }
 
+.composeBtnDraft article {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  gap: 10%;
+}
 
 .trashIcon, .readIcon {
   visibility: hidden; 

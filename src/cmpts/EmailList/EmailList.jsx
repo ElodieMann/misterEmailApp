@@ -11,8 +11,6 @@ const EmailList = ({
   isComposeOpen,
   setIsComposeOpen,
   emailData,
-  favorites,
-  setFavorites,
   setIsDelete,
   setIsRead,
   setIsChange

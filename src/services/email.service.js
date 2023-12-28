@@ -107,19 +107,14 @@ function getDefaultFilter() {
 
 function getFilterFromSearchParams(searchParams) {
   const defaultFilter = getDefaultFilter();
-  const filterBy = { ...defaultFilter };
+  const filterBy = {};
 
   for (const field in defaultFilter) {
-    let value = searchParams.get(field);
-    if (field === "isRead" && value !== null) {
-      value = value === "true" ? true : value === "false" ? false : null;
-    }
-    filterBy[field] = value !== null ? value : defaultFilter[field];
+    filterBy[field] = searchParams.get(field) || defaultFilter[field];
   }
 
   return filterBy;
 }
-
 
 function getById(emailId) {
   return storageService.get(keys.STORAGE_KEY, emailId);
