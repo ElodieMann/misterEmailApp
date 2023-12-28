@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faEnvelopesBulk } from "@fortawesome/free-solid-svg-icons";
 import { emailService } from "../../services/email.service";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, NavLink } from "react-router-dom";
 
 import styles from "./EmailFilter.module.scss";
 
@@ -64,6 +64,12 @@ const EmailFilter = ({ filter, setFilter }) => {
 
   return (
     <div className={styles.filterCmpt}>
+      <NavLink to="/inbox">
+        <FontAwesomeIcon
+          className={styles.mailHomeIcon}
+          icon={faEnvelopesBulk}
+        />
+      </NavLink>
       <form className={styles.formSearch} onSubmit={onSubmit}>
         <div className={styles.searchContainer}>
           <FontAwesomeIcon icon={faSearch} />

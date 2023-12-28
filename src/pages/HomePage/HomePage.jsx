@@ -27,20 +27,20 @@ const HomePage = () => {
       </h3>
 
       <Link
-        to="/misterEmailApp/email/inbox?compose=new&to=help@gmail.com&subject=Help"
+        to="/inbox?compose=new&to=help@gmail.com&subject=Help"
         className={styles.quickSendLink}
       >
         Quick Send (Help)
       </Link>
 
-      <Link to={"/misterEmailApp/email/inbox"} className={styles.emailPageLink}>
+      <Link to={"/inbox"} className={styles.emailPageLink}>
         <FontAwesomeIcon
           className={styles.mailHomeIcon}
           icon={faEnvelopesBulk}
         />{" "}
         To your email inbox.
       </Link>
-      <Link to={"/misterEmailApp/about"} className={styles.aboutLink}>
+      <Link to={"/about"} className={styles.aboutLink}>
         About us
       </Link>
     </div>

@@ -8,7 +8,7 @@ import styles from "./AboutUs.module.scss";
 const AboutUs = () => {
   return (
     <div className={styles.aboutPage}>
-      <Link to={"/misterEmailApp"} className={styles.backBtn}>
+      <Link to={"/"} className={styles.backBtn}>
         <FontAwesomeIcon icon={faChevronLeft} />
         Back
       </Link>

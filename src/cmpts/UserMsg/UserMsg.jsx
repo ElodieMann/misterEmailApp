@@ -10,7 +10,7 @@ const UserMsg = ({setCancelSent}) => {
 
   useEffect(() => {
     const unsubscribe = eventBusService.on("show-user-msg", (msg) => {
-      console.log("Message reçu:", msg);
+      console.log( msg);
       setMsg(msg);
 
         setTimeout(() => {
@@ -29,7 +29,7 @@ const UserMsg = ({setCancelSent}) => {
     console.log("View message clicked!");
 
     if (msg.emailId) {
-      navigate(`/misterEmailApp/email/details/${msg.emailId}`);
+      navigate(`/details/${msg.emailId}`);
     }
   }
 

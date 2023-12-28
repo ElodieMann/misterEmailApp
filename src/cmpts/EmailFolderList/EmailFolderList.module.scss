@@ -12,10 +12,6 @@
     }
   }
 
-  .mailHomeIcon {
-    font-size: 2.5rem;
-    color: red;
-  }
 
   .composeBtn {
     background-color: #c1e7fe;
@@ -84,11 +80,6 @@
     flex-direction: column;
     height: auto;
 
-    &.showMenu {
-      .links {
-        display: flex;
-        flex-wrap: wrap;
-      }
-    }
+    
   }
 }

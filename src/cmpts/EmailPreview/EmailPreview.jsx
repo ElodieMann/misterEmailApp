@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faStar,
+  faTrash,
+  faEnvelopeOpenText,
+  faEnvelope,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { formatRelativeTime } from "../../services/util.service";
 import { emailService } from "../../services/email.service";
@@ -10,29 +15,19 @@ import styles from "./EmailPreview.module.scss";
 const EmailPreview = ({
   email,
   setIsEmailClick,
-  setIsDelete,
   setIsComposeOpen,
   filter,
-  favorites,
-  setFavorites,
   toggleSelect,
   isSelected,
-  setIsRead,
+  setIsChange
 }) => {
-
   const onFavorite = async () => {
     try {
       const updatedEmail = { ...email, isStarred: !email.isStarred };
       await emailService.updateEmail(updatedEmail);
 
-      setFavorites((prevFavorites) => {
-        if (!prevFavorites.includes(email.id) && !email.isStarred) {
-          return [...prevFavorites, email.id];
-        } else if (prevFavorites.includes(email.id) && email.isStarred) {
-          return prevFavorites.filter((id) => id !== email.id);
-        }
-        return prevFavorites;
-      });
+      setIsChange(new Date())
+
     } catch (e) {
       console.log(e);
     }
@@ -42,11 +37,23 @@ const EmailPreview = ({
     try {
       if (filter.status === keys.TRASH_FILTER) {
         await emailService.removeFromLocalStorage(email.id);
-        setIsDelete(email.id);
+        setIsChange(new Date())
       } else {
         await emailService.removeEmail(email.id);
-        setIsDelete(email.id);
+        setIsChange(new Date())
+
       }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const toggleRead = async () => {
+    try {
+      const updatedEmail = { ...email, isRead: !email.isRead };
+      await emailService.updateEmail(updatedEmail);
+      setIsChange(new Date())
+ 
     } catch (e) {
       console.log(e);
     }
@@ -90,7 +97,7 @@ const EmailPreview = ({
         </button>
       ) : (
         <Link
-          to={`/misterEmailApp/email/details/${email.id}`}
+          to={`/details/${email.id}`}
           onClick={() => setIsEmailClick(true)}
           className={styles.emailInfo}
         >
@@ -102,12 +109,20 @@ const EmailPreview = ({
           </article>
         </Link>
       )}
-      <p className={styles.mailSent}>{formatRelativeTime(email.sentAt)}</p>
-      <FontAwesomeIcon
-        className={styles.trashIcon}
-        icon={faTrash}
-        onClick={onDelete}
-      />
+      <div className={styles.mailSent}>
+        <p>{formatRelativeTime(email.sentAt)}</p>
+        <FontAwesomeIcon
+          className={styles.trashIcon}
+          icon={faTrash}
+          onClick={onDelete}
+        />
+        <FontAwesomeIcon
+          icon={email.isRead ? faEnvelope :  faEnvelopeOpenText}
+          className={styles.readIcon}
+          onClick={() => toggleRead(email)}
+        />
+       
+      </div>
     </div>
   );
 };

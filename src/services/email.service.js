@@ -24,41 +24,34 @@ const initialUser = {
 };
 
 async function getAllEmail(filterBy) {
-  const data = await initEmails();
+  const emails = await initEmails();
 
-  if (!filterBy) return null;
+  if (!filterBy) return emails;
 
-  const {
-    status = "inbox",
-    txt = '',
-    isRead = null,
-    sortByDate,
-    sortBySubject,
-  } = filterBy;
 
-  let dataDisplay;
+  let filteredEmails = emails;
 
-  switch (status) {
+  switch (filterBy.status) {
     case keys.INBOX_FILTER:
-      dataDisplay = data.filter(
+      filteredEmails = emails.filter(
         (email) => email.to === initialUser.email && !email.removedAt
       );
       break;
     case keys.STARRED_FILTER:
-      dataDisplay = data.filter((email) => email.isStarred && !email.removedAt);
+      filteredEmails = emails.filter((email) => email.isStarred && !email.removedAt);
       break;
     case keys.TRASH_FILTER:
-      dataDisplay = data.filter((email) => email.removedAt);
+      filteredEmails = emails.filter((email) => email.removedAt);
       break;
     case keys.SENT_FILTER:
-      dataDisplay = data.filter(
+      filteredEmails = emails.filter(
         (email) =>
           email.to !== initialUser.email && !email.isDraft && !email.removedAt
       );
 
       break;
     case keys.DRAFT_FILTER:
-      dataDisplay = data.filter(
+      filteredEmails = emails.filter(
         (email) =>
           email.to !== initialUser.email && email.isDraft && !email.removedAt
       );
@@ -67,48 +60,49 @@ async function getAllEmail(filterBy) {
       break;
   }
 
-  if (sortByDate) {
-    let sortedData = [...dataDisplay]
+  if (filterBy.sortByDate) {
+    let sortedData = [...filteredEmails]
       .flat()
       .sort((a, b) => b.sentAt - a.sentAt);
-    dataDisplay = sortedData;
-  } else if (sortBySubject) {
-    let sortedData = [...dataDisplay]
+      filteredEmails = sortedData;
+  } else if (filterBy.sortBySubject) {
+    let sortedData = [...filteredEmails]
       .flat()
       .sort((a, b) => a.subject.localeCompare(b.subject));
-    dataDisplay = sortedData;
+      filteredEmails = sortedData;
   }
 
-  if (txt && txt.trim() !== "") {
+  console.log(filterBy);
+  if (filterBy.txt && filterBy.txt.trim() !== "") {
     const searchTerm = new RegExp(
-      txt
+      filterBy.txt
         .trim()
         .toLowerCase()
         .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
     );
 
-    dataDisplay = dataDisplay.filter(
+    filteredEmails = filteredEmails.filter(
       (email) =>
         searchTerm.test(email.subject.toLowerCase()) ||
-        searchTerm.test(email.body.toLowerCase())||
+        searchTerm.test(email.body.toLowerCase()) ||
         searchTerm.test(email.from.toLowerCase())
     );
   }
 
-  if (isRead !== null) {
-    dataDisplay = dataDisplay.filter((email) => email.isRead === isRead);
+
+  if (filterBy.isRead !== null) {
+    filteredEmails = filteredEmails.filter(email => email.isRead === filterBy.isRead);
   }
 
-  return dataDisplay;
+  return filteredEmails;
 }
 
 function getDefaultFilter() {
   return {
-    status: "inbox",
-    txt: '',
+    status: "",
+    txt: "",
     isRead: null,
-    sortByDate: false,
-    sortBySubject: false,
+
   };
 }
 

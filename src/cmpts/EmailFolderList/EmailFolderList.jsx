@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { emailService } from "../../services/email.service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faInbox,
@@ -12,7 +10,7 @@ import {
   faPen,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 
 import * as keys from "../../config/keys";
 import styles from "./EmailFolderList.module.scss";
@@ -30,16 +28,20 @@ const folderLinks = [
 ];
 
 const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
+  const location = useLocation();
   const navigate = useNavigate();
-
   const [unReadEmail, setUnReadEmail] = useState("");
-  const [activeLink, setActiveLink] = useState(keys.INBOX_FILTER);
-  const [showMenu, setShowMenu] = useState(false);
-  const [inboxEmails, setInboxEmails] = useState([]);
+  const [activeLink, setActiveLink] = useState("");
 
   useEffect(() => {
-    fetchData();
-  }, [inboxEmails]);
+
+    const currentPath = location.pathname.split('/')[1];  
+    console.log(location);
+    setActiveLink(currentPath || keys.INBOX_FILTER);  
+
+    setFilter((prevFilter) => ({ ...prevFilter, status: currentPath || keys.INBOX_FILTER }));
+  }, [location, setFilter]);
+
 
   useEffect(() => {
  
@@ -53,31 +55,20 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
     }
   }, [setIsComposeOpen]);
 
-  const fetchData = async () => {
-    const data = await emailService.getAllEmail("inbox");
-    setInboxEmails(data);
-    filterUnreadEmail(data);
-  };
-
   const filterUnreadEmail = (data) => {
     const unRead = data.filter((email) => !email.isRead);
     setUnReadEmail(unRead.length);
   };
 
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
-  };
-
   return (
     <nav
-      className={`${styles.emailFolderList} ${showMenu ? styles.showMenu : ""}`}
+      className={styles.emailFolderList}
     >
       <FontAwesomeIcon
         className={styles.hamburgerIcon}
         icon={faBars}
-        onClick={toggleMenu}
       />
-      <FontAwesomeIcon className={styles.mailHomeIcon} icon={faEnvelopesBulk} />
+    
       <button
         className={styles.composeBtn}
         onClick={() => {
@@ -88,7 +79,7 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
           const params = new URLSearchParams();
           params.set("compose", "new");
           navigate(
-            `/misterEmailApp/email/${keys.INBOX_FILTER}?${params.toString()}`
+            `/${keys.INBOX_FILTER}?${params.toString()}`
           );
         }}
       >
@@ -99,7 +90,7 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen }) => {
         {folderLinks.map(({ label, icon, filter }) => (
           <Link
             key={label}
-            to={`/misterEmailApp/email/${filter}`}
+            to={`/${filter}`}
             className={`${styles.navLink} ${
               activeLink === filter ? styles.active : ""
             }`}

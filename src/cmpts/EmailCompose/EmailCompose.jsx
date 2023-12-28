@@ -9,7 +9,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 
 import styles from "./EmailCompose.module.scss";
 
-const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen }) => {
+const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen, display }) => {
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
@@ -92,8 +92,7 @@ useEffect(() => {
       info: {},
     });
     if (name === "sent") emailSentMsg(addToData.id);
-    console.log(filter.status);
-    navigate(`/misterEmailApp/email/${filter.status}`);
+    navigate(`/${filter.status}`);
 
     return addToData;
   };
@@ -104,7 +103,7 @@ useEffect(() => {
         status: false,
         info: {},
       });
-      navigate(`/misterEmailApp/email/${filter.status}`);
+      navigate(`/${filter.status}`);
       return;
     }
 
@@ -139,13 +138,11 @@ useEffect(() => {
     }
   };
 
-  return (
+  return display?(
+
     <div className={styles.emailComposeOverlay}>
       <div className={styles.emailComposeCmpt}>
-        <div className={styles.composeHeader}>
-          <p>New Message</p>
-        </div>
-        <form className={styles.formCompose}>
+        <div className={styles.formCompose}>
           <button
             className={styles.closeBtn}
             type="button"
@@ -189,10 +186,10 @@ useEffect(() => {
           >
             Send
           </button>
-        </form>
+        </div>
       </div>
     </div>
-  );
+  ) : null
 };
 
 export default EmailCompose;

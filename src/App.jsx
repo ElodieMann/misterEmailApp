@@ -3,65 +3,47 @@ import HomePage from "./pages/HomePage/HomePage";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import EmailIndex from "./pages/EmailIndex/EmailIndex";
 import EmailDetails from "./cmpts/EmailDetails/EmailDetails.jsx";
-import EmailFolderList from "./cmpts/EmailFolderList/EmailFolderList.jsx";
 import EmailFilter from "./cmpts/EmailFilter/EmailFilter.jsx";
 import { useState } from "react";
-import EmailCompose from "./cmpts/EmailCompose/EmailCompose.jsx";
 import { emailService } from "./services/email.service.js";
 import styles from "./App.module.scss";
 import UserMsg from "./cmpts/UserMsg/UserMsg.jsx";
 
 function App() {
   const [filter, setFilter] = useState(emailService.getDefaultFilter());
-  const [isComposeOpen, setIsComposeOpen] = useState({
-    status: false,
-    info: {},
-  });
-  const [canceledSent, setCancelSent] = useState(false)
+
+  const [canceledSent, setCancelSent] = useState(false);
 
   return (
     <Router>
       <div className={styles.emailApp}>
-        <EmailFolderList
-          setFilter={setFilter}
-          setIsComposeOpen={setIsComposeOpen}
-        />
         <main>
-          <div className={styles.search}>
+          <header className={styles.search}>
             <EmailFilter filter={filter} setFilter={setFilter} />
-          </div>
-          <div className={styles.emailIndex}>
-            {isComposeOpen.status && (
-              <EmailCompose
-                isComposeOpen={isComposeOpen}
-                setIsComposeOpen={setIsComposeOpen}
-                filter={filter}
-              />
-            )}
+          </header>
+          <section className={styles.emailIndex}>
             <Routes>
-              <Route path="/misterEmailApp" element={<HomePage />} />
-              <Route path="/misterEmailApp/about" element={<AboutUs />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutUs />} />
               <Route
-                path="/misterEmailApp/email/:filter"
+                path="/:filter"
                 element={
                   <EmailIndex
                     filter={filter}
-                    isComposeOpen={isComposeOpen}
-                    setIsComposeOpen={setIsComposeOpen}
+                    setFilter={setFilter}
                     canceledSent={canceledSent}
                     setCancelSent={setCancelSent}
                   />
                 }
               />
               <Route
-                path="/misterEmailApp/email/details/:id"
+                path="/details/:id"
                 element={<EmailDetails />}
               />
-             
             </Routes>
-          </div>
+          </section>
         </main>
-        <UserMsg setCancelSent={setCancelSent}/>
+        <UserMsg setCancelSent={setCancelSent} />
       </div>
     </Router>
   );

@@ -1,27 +1,34 @@
-*{
+* {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 #root {
   background-color: #f7f8fc;
   height: 100vh;
-  
 }
 
 .emailApp {
   display: flex;
   height: 100vh;
- 
+  width: 100vw;
+
+  overflow: hidden;
+
   @media (max-width: 950px) {
     flex-direction: column;
   }
 }
 
 main {
-  width: 80vw;
+  width: 100vw;
   @media (max-width: 950px) {
     width: 90vw;
     margin: 0 auto;
@@ -32,6 +39,6 @@ main {
   height: 10vh;
 }
 .emailIndex {
+  flex: 1;
   height: 90vh;
-  overflow-x: auto;
 }

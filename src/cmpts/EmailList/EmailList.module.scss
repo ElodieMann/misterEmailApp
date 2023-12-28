@@ -1,22 +1,7 @@
-.btnFilter {
-    display: flex;
-    gap: 5px;
-
-    input {
-        margin-left: 15px;
-    }
-
-    > button {
-      border-radius: 5px;
-      border: 1px solid grey;
-      cursor: pointer;
-      background-color: white;
-      padding: 2px 6px;
 
 
-      &:hover {
-        background-color: rgba(128, 128, 128, 0.249);
-      }
-    
-    }
-  }
+.emailList {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 90vh;
+}

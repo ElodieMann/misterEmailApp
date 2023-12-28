@@ -7,13 +7,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faUser } from "@fortawesome/free-solid-svg-icons";
 import styles from "./EmailDetails.module.scss";
 
-const EmailDetails = ({ setIsEmailClick }) => {
+const EmailDetails = ({ isEmailClick, setIsEmailClick }) => {
   const [email, setEmail] = useState([]);
   const params = useParams();
 
+
   useEffect(() => {
+    if (!params) return
     getEmailById();
-  }, []);
+
+  }, [params.id]);
+
+  console.log(isEmailClick, 'detail');
 
   const getEmailById = async () => {
     try {
@@ -21,7 +26,8 @@ const EmailDetails = ({ setIsEmailClick }) => {
       setEmail(email);
       const updatedEmail = { ...email, isRead: true };
 
-      emailService.updateEmail(updatedEmail);
+      await emailService.updateEmail(updatedEmail);
+
     } catch (e) {
       console.log("Failed to load email", e);
     }
@@ -30,7 +36,7 @@ const EmailDetails = ({ setIsEmailClick }) => {
   return (
     <div className={styles.emailDetailsCmpt}>
       <Link
-        to="/misterEmailApp/email/inbox"
+        to="/inbox"
         onClick={() => setIsEmailClick(false)}
       >
         <FontAwesomeIcon
