@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import EmailList from "../../cmpts/EmailList/EmailList.jsx";
-import EmailDetails from "../../cmpts/EmailDetails/EmailDetails.jsx";
 import { emailService } from "../../services/email.service";
 import styles from "./EmailIndex.module.scss";
 import EmailFolderList from "../../cmpts/EmailFolderList/EmailFolderList.jsx";
 import EmailCompose from "../../cmpts/EmailCompose/EmailCompose.jsx";
 import { Outlet } from "react-router-dom";
 
-const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent }) => {
-  const [isEmailClick, setIsEmailClick] = useState(false);
+const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent,isEmailClick, setIsEmailClick}) => {
   const [emailData, setEmailData] = useState([]);
   const [isComposeOpen, setIsComposeOpen] = useState({
     status: false,

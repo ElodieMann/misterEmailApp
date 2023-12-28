@@ -11,6 +11,7 @@ import UserMsg from "./cmpts/UserMsg/UserMsg.jsx";
 
 function App() {
   const [filter, setFilter] = useState(emailService.getDefaultFilter());
+  const [isEmailClick, setIsEmailClick] = useState(false);
 
   const [canceledSent, setCancelSent] = useState(false);
 
@@ -32,9 +33,11 @@ function App() {
                     setFilter={setFilter}
                     canceledSent={canceledSent}
                     setCancelSent={setCancelSent}
+                    isEmailClick={isEmailClick}
+                    setIsEmailClick={setIsEmailClick}
                   />
                 }>
-                <Route path="/:filter/:id"  element={<EmailDetails />}>
+                <Route path="/:filter/:id"  element={<EmailDetails  setIsEmailClick={setIsEmailClick}/>}>
 
                 </Route>
               </Route>
@@ -42,7 +45,8 @@ function App() {
             </Routes>
           </section>
         </main>
-        <UserMsg setCancelSent={setCancelSent} />
+        <UserMsg setCancelSent={setCancelSent}  
+                    setIsEmailClick={setIsEmailClick}/>
       </div>
     </Router>
   );

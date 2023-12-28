@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
@@ -71,7 +71,7 @@ const EmailPreview = ({
       />
       <FontAwesomeIcon
         icon={faStar}
-        className={styles.favIcon}
+        className={styles.favIconStar}
         onClick={onFavorite}
         style={{ color: email.isStarred ? "yellow" : "inherit" }}
       />
@@ -112,13 +112,13 @@ const EmailPreview = ({
       <div className={styles.mailSent}>
         <p>{formatRelativeTime(email.sentAt)}</p>
         <FontAwesomeIcon
-          className={styles.trashIcon}
+          className={styles.favIconEmailPreview}
           icon={faTrash}
           onClick={onDelete}
         />
         <FontAwesomeIcon
           icon={email.isRead ? faEnvelope :  faEnvelopeOpenText}
-          className={styles.readIcon}
+          className={styles.favIconEmailPreview}
           onClick={() => toggleRead(email)}
         />
        

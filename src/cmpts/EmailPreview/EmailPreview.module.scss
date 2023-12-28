@@ -27,7 +27,7 @@ article {
   box-shadow: 1px 1px 3px 1px rgba(17, 17, 17, 0.732);
 }
 
-.favIcon {
+.favIconStar {
   padding: 10px;
   margin: 10px;
   color: rgba(128, 128, 128, 0.416);
@@ -39,7 +39,7 @@ article {
   }
 }
 
-.trashIcon, .readIcon {
+.favIconEmailPreview {
   color: rgba(128, 128, 128, 0.352);
 
   &:hover {
@@ -77,7 +77,7 @@ a, .composeBtnDraft {
   gap: 10%;
 }
 
-.trashIcon, .readIcon {
+.favIconEmailPreview {
   visibility: hidden; 
 }
 
@@ -87,7 +87,7 @@ a, .composeBtnDraft {
 
 .emailItem:hover {
 
-  .trashIcon, .readIcon {
+  .favIconEmailPreview {
     visibility: visible;  
   }
 }

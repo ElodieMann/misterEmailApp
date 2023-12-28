@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { emailService } from "../../services/email.service.js";
+import { emailService } from "../../services/email.service";
+
 import { eventBusService } from "../../services/event-bus.service.js";
 import styles from "./UserMsg.module.scss";
 
-const UserMsg = ({setCancelSent}) => {
+const UserMsg = ({ setCancelSent, setIsEmailClick }) => {
   const [msg, setMsg] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = eventBusService.on("show-user-msg", (msg) => {
-      console.log( msg);
+      console.log(msg);
       setMsg(msg);
 
-        setTimeout(() => {
-          onCloseMsg();
-        }, 3000);
+      setTimeout(() => {
+        onCloseMsg();
+      }, 3000);
     });
 
     return unsubscribe;
@@ -27,9 +28,9 @@ const UserMsg = ({setCancelSent}) => {
 
   function onViewMessage() {
     console.log("View message clicked!");
-
+    setIsEmailClick(true)
     if (msg.emailId) {
-      navigate(`/details/${msg.emailId}`);
+      navigate(`/sent/${msg.emailId}`);
     }
   }
 
@@ -44,7 +45,6 @@ const UserMsg = ({setCancelSent}) => {
       console.log(error);
     }
   }
-  
 
   if (!msg) return <></>;
 
