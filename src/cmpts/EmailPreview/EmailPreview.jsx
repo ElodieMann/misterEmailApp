@@ -97,7 +97,7 @@ const EmailPreview = ({
         </button>
       ) : (
         <Link
-          to={`/details/${email.id}`}
+          to={`/${filter.status}/${email.id}`}
           onClick={() => setIsEmailClick(true)}
           className={styles.emailInfo}
         >

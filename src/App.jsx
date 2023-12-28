@@ -25,8 +25,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutUs />} />
-              <Route
-                path="/:filter"
+              <Route path="/:filter"
                 element={
                   <EmailIndex
                     filter={filter}
@@ -34,12 +33,12 @@ function App() {
                     canceledSent={canceledSent}
                     setCancelSent={setCancelSent}
                   />
-                }
-              />
-              <Route
-                path="/details/:id"
-                element={<EmailDetails />}
-              />
+                }>
+                <Route path="/:filter/:id"  element={<EmailDetails />}>
+
+                </Route>
+              </Route>
+            
             </Routes>
           </section>
         </main>

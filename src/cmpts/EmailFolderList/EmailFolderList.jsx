@@ -6,7 +6,6 @@ import {
   faPaperPlane,
   faCompassDrafting,
   faTrash,
-  faEnvelopesBulk,
   faPen,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
@@ -27,7 +26,12 @@ const folderLinks = [
   { label: keys.TRASH_LABEL, icon: faTrash, filter: keys.TRASH_FILTER },
 ];
 
-const EmailFolderList = ({ setFilter, setIsComposeOpen, emailData }) => {
+const EmailFolderList = ({
+  setFilter,
+  setIsComposeOpen,
+  emailData,
+  setIsEmailClick,
+}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [unReadEmail, setUnReadEmail] = useState("");
@@ -57,12 +61,19 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen, emailData }) => {
   }, [setIsComposeOpen, emailData]);
 
   const filterUnreadEmail = () => {
-    if (activeLink === keys.INBOX_FILTER) {  
-      const unRead = emailData.filter((email) => !email.isRead && email.to === "user@appsus.com");
+    if (activeLink === keys.INBOX_FILTER) {
+      const unRead = emailData.filter(
+        (email) => !email.isRead && email.to === "user@appsus.com"
+      );
       setUnReadEmail(unRead.length);
-    } 
+    }
   };
-  
+
+  const handleFolderClick = (filterValue) => {
+    setIsEmailClick(false);  
+    setFilter((prevFilter) => ({ ...prevFilter, status: filterValue }));
+    setActiveLink(filterValue);
+  };
 
   return (
     <nav className={styles.emailFolderList}>
@@ -91,10 +102,7 @@ const EmailFolderList = ({ setFilter, setIsComposeOpen, emailData }) => {
             className={`${styles.navLink} ${
               activeLink === filter ? styles.active : ""
             }`}
-            onClick={() => {
-              setFilter((prevFilter) => ({ ...prevFilter, status: filter }));
-              setActiveLink(filter);
-            }}
+            onClick={() => handleFolderClick(filter)}
           >
             <FontAwesomeIcon icon={icon} />
             {label}{" "}

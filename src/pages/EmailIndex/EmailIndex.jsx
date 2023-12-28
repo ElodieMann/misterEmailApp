@@ -5,6 +5,7 @@ import { emailService } from "../../services/email.service";
 import styles from "./EmailIndex.module.scss";
 import EmailFolderList from "../../cmpts/EmailFolderList/EmailFolderList.jsx";
 import EmailCompose from "../../cmpts/EmailCompose/EmailCompose.jsx";
+import { Outlet } from "react-router-dom";
 
 const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent }) => {
   const [isEmailClick, setIsEmailClick] = useState(false);
@@ -14,7 +15,7 @@ const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent }) => {
     info: {},
   });
 
-  const [isChange, setIsChange] = useState('')
+  const [isChange, setIsChange] = useState("");
 
   useEffect(() => {
     getAllEmail();
@@ -30,19 +31,18 @@ const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent }) => {
     }
   };
 
-
   return (
     <section className={styles.emailIndex}>
       <EmailFolderList
         setFilter={setFilter}
         setIsComposeOpen={setIsComposeOpen}
         emailData={emailData}
+        setIsEmailClick={setIsEmailClick}  
       />
 
       <div className={styles.listContainer}>
         {isEmailClick ? (
-          <EmailDetails setIsEmailClick={setIsEmailClick} isEmailClick={isEmailClick}/>
-          // <p>hey</p>
+          <Outlet />
         ) : (
           <EmailList
             setIsEmailClick={setIsEmailClick}
