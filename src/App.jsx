@@ -8,6 +8,7 @@ import { useState } from "react";
 import { emailService } from "./services/email.service.js";
 import styles from "./App.module.scss";
 import UserMsg from "./cmpts/UserMsg/UserMsg.jsx";
+import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 
 function App() {
   const [filter, setFilter] = useState(emailService.getDefaultFilter());
@@ -26,6 +27,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutUs />} />
+              <Route path="/stat" element={<Dashboard />} />
               <Route path="/:filter"
                 element={
                   <EmailIndex
