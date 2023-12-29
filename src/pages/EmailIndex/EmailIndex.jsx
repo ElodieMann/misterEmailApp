@@ -15,10 +15,11 @@ const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent,isEmailClic
 
   const [isChange, setIsChange] = useState("");
 
+
   useEffect(() => {
     getAllEmail();
     setCancelSent(false);
-  }, [filter, isComposeOpen, canceledSent, isChange]);
+  }, [filter, canceledSent, isChange]);
 
   const getAllEmail = async () => {
     try {
@@ -58,6 +59,7 @@ const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent,isEmailClic
         setIsComposeOpen={setIsComposeOpen}
         filter={filter}
         display={isComposeOpen.status}
+        setIsChange={setIsChange}
       />
     </section>
   );

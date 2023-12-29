@@ -87,6 +87,7 @@ const EmailFolderList = ({
             info: {},
           });
           const params = new URLSearchParams();
+
           params.set("compose", "new");
           navigate(`/${currentPath}?${params.toString()}`);
         }}

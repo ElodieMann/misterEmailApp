@@ -9,11 +9,10 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 
 import styles from "./EmailCompose.module.scss";
 
-const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen, display }) => {
+const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen, display, setIsChange }) => {
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
-  const isComposeNew = searchParams.get("compose") === "new";
 
   const [emailData, setEmailData] = useState({
     to: "",
@@ -27,6 +26,9 @@ const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen, display }) => {
   });
 
   useEffect(() => {
+    console.log("====================================");
+    console.log(isComposeOpen);
+    console.log("====================================");
     if (isComposeOpen?.info && isComposeOpen?.info?.isDraft) {
       setEmailData({
         to: isComposeOpen?.info?.to,
@@ -37,11 +39,21 @@ const EmailCompose = ({ filter, isComposeOpen, setIsComposeOpen, display }) => {
         isRead: false,
         isStarred: false,
       });
+    } else {
+      setEmailData({
+        to: "",
+        subject: "",
+        body: "",
+        sentAt: new Date(),
+        id: utilService.makeId(),
+        removedAt: null,
+        isRead: false,
+        isStarred: false,
+      });
     }
-  }, [isComposeOpen?.info]);
+  }, [isComposeOpen?.info,]);
 
-
-useEffect(() => {
+  useEffect(() => {
     const isComposeNew = searchParams.get("compose") === "new";
     if (isComposeNew) {
       setIsComposeOpen({
@@ -59,15 +71,12 @@ useEffect(() => {
     if (subject) {
       setEmailData((prevData) => ({ ...prevData, subject }));
     }
-}, [searchParams, setIsComposeOpen]);
-
+  }, [searchParams, setIsComposeOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEmailData((prevData) => ({ ...prevData, [name]: value }));
   };
-
-
 
   const areFieldsEmpty = () => {
     return (
@@ -93,7 +102,7 @@ useEffect(() => {
     });
     if (name === "sent") emailSentMsg(addToData.id);
     navigate(`/${filter.status}`);
-
+    setIsChange(new Date())
     return addToData;
   };
 
@@ -115,7 +124,7 @@ useEffect(() => {
 
         if (originalDraft) {
           const isDraft = name === "draft";
-          await emailService.updateEmail({
+          const updateEmail = await emailService.updateEmail({
             ...originalDraft,
             ...emailData,
             isDraft,
@@ -126,7 +135,9 @@ useEffect(() => {
             status: false,
             info: {},
           });
-          if (name === "sent") emailSentMsg();
+          setIsChange(new Date())
+
+          if (name === "sent") emailSentMsg(updateEmail.id);
         } else {
           await newEmailOrDraft(name);
         }
@@ -138,8 +149,7 @@ useEffect(() => {
     }
   };
 
-  return display?(
-
+  return display ? (
     <div className={styles.emailComposeOverlay}>
       <div className={styles.emailComposeCmpt}>
         <div className={styles.formCompose}>
@@ -189,7 +199,7 @@ useEffect(() => {
         </div>
       </div>
     </div>
-  ) : null
+  ) : null;
 };
 
 export default EmailCompose;

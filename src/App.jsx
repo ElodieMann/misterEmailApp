@@ -37,7 +37,7 @@ function App() {
                     setIsEmailClick={setIsEmailClick}
                   />
                 }>
-                <Route path="/:filter/:id"  element={<EmailDetails  setIsEmailClick={setIsEmailClick}/>}>
+                <Route path="/:filter/:id"  element={<EmailDetails  setIsEmailClick={setIsEmailClick} filter={filter}/>}>
 
                 </Route>
               </Route>

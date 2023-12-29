@@ -15,7 +15,7 @@ import {
 
 import styles from "./EmailDetails.module.scss";
 
-const EmailDetails = ({ setIsEmailClick }) => {
+const EmailDetails = ({ setIsEmailClick, filter }) => {
   const [email, setEmail] = useState([]);
   const [isChange, setIsChange] = useState("");
   const params = useParams();
@@ -71,7 +71,7 @@ const EmailDetails = ({ setIsEmailClick }) => {
 
   return (
     <div className={styles.emailDetailsCmpt}>
-      <Link to="/inbox" onClick={() => setIsEmailClick(false)}>
+      <Link  to={`/${filter.status}`} onClick={() => setIsEmailClick(false)}>
         <FontAwesomeIcon
           className={styles.emailDetailsIconBack}
           icon={faArrowLeft}

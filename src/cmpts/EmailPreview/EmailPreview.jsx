@@ -36,12 +36,12 @@ const EmailPreview = ({
   const onDelete = async () => {
     try {
       if (filter.status === keys.TRASH_FILTER) {
-        await emailService.removeFromLocalStorage(email.id);
-        setIsChange(new Date())
-      } else {
         await emailService.removeEmail(email.id);
         setIsChange(new Date())
-
+      } else {
+        const updatedEmail = { ...email, removedAt: Date.now() };
+        await emailService.updateEmail(updatedEmail);
+        setIsChange(new Date());
       }
     } catch (e) {
       console.log(e);

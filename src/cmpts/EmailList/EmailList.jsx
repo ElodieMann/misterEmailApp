@@ -37,7 +37,7 @@ const EmailList = ({
       />
 
       <div className={styles.emailList}>
-        {emailData?.length > 0 || isComposeOpen.status ? (
+        {emailData?.length > 0   ? (
           emailData.map((email) => (
             <EmailPreview
               key={email.id}

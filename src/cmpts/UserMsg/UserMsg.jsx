@@ -11,15 +11,17 @@ const UserMsg = ({ setCancelSent, setIsEmailClick }) => {
 
   useEffect(() => {
     const unsubscribe = eventBusService.on("show-user-msg", (msg) => {
-      console.log(msg);
+      console.log("Received message:", msg);
       setMsg(msg);
-
+  
       setTimeout(() => {
         onCloseMsg();
       }, 3000);
     });
-
-    return unsubscribe;
+  
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   function onCloseMsg() {
@@ -28,9 +30,12 @@ const UserMsg = ({ setCancelSent, setIsEmailClick }) => {
 
   function onViewMessage() {
     console.log("View message clicked!");
-    setIsEmailClick(true)
-    if (msg.emailId) {
+    setIsEmailClick(true);
+    if (msg && msg.emailId) {
       navigate(`/sent/${msg.emailId}`);
+    } else {
+      console.error("Email ID is undefined");
+      // Additional error handling
     }
   }
 
