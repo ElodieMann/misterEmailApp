@@ -28,7 +28,8 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/stat" element={<Dashboard />} />
-              <Route path="/:filter"
+              <Route
+                path="/:filter"
                 element={
                   <EmailIndex
                     filter={filter}
@@ -38,17 +39,25 @@ function App() {
                     isEmailClick={isEmailClick}
                     setIsEmailClick={setIsEmailClick}
                   />
-                }>
-                <Route path="/:filter/:id"  element={<EmailDetails  setIsEmailClick={setIsEmailClick} filter={filter}/>}>
-
-                </Route>
+                }
+              >
+                <Route
+                  path="/:filter/:id"
+                  element={
+                    <EmailDetails
+                      setIsEmailClick={setIsEmailClick}
+                      filter={filter}
+                    />
+                  }
+                ></Route>
               </Route>
-            
             </Routes>
           </section>
         </main>
-        <UserMsg setCancelSent={setCancelSent}  
-                    setIsEmailClick={setIsEmailClick}/>
+        <UserMsg
+          setCancelSent={setCancelSent}
+          setIsEmailClick={setIsEmailClick}
+        />
       </div>
     </Router>
   );

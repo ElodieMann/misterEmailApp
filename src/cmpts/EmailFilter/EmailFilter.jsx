@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faEnvelopesBulk } from "@fortawesome/free-solid-svg-icons";
 import { emailService } from "../../services/email.service";
 import { useSearchParams, useNavigate, NavLink } from "react-router-dom";
+import {useForm} from '../../customHooks/useForm'
+import {useEffectUpdate} from '../../customHooks/useEffectUpdate'
 
 import styles from "./EmailFilter.module.scss";
 
@@ -12,17 +14,15 @@ const EmailFilter = ({ filter, setFilter }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    const txt = searchParams.get("txt");
-    const sortByDate = searchParams.get("sortByDate");
-    const sortBySubject = searchParams.get("sortBySubject");
-
+    const filterFromParams = emailService.getFilterFromSearchParams(searchParams);
+  
     setFilter((prevFilter) => ({
       ...prevFilter,
-      txt,
-      sortByDate,
-      sortBySubject,
+      ...filterFromParams,  
     }));
-
+   
+    const { txt } = filterFromParams;
+  
     if (txt !== null && txt !== undefined) {
       setSearchTerm(txt);
     }

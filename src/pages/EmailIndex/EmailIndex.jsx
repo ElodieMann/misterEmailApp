@@ -58,8 +58,10 @@ const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent,isEmailClic
         isComposeOpen={isComposeOpen}
         setIsComposeOpen={setIsComposeOpen}
         filter={filter}
+        setFilter={setFilter}
         display={isComposeOpen.status}
         setIsChange={setIsChange}
+
       />
     </section>
   );

@@ -35,7 +35,6 @@ const UserMsg = ({ setCancelSent, setIsEmailClick }) => {
       navigate(`/sent/${msg.emailId}`);
     } else {
       console.error("Email ID is undefined");
-      // Additional error handling
     }
   }
 

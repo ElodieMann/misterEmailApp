@@ -38,8 +38,26 @@ export function formatRelativeTime(timestamp) {
   }
 }
 
+const prefix = 'animate__';
+
+function animateCSS(element, animationName, callback) {
+  const animation = `${prefix}animated ${prefix}${animationName}`;
+
+  element.classList.add(...animation.split(' '));
+
+  const handleAnimationEnd = () => {
+    element.classList.remove(...animation.split(' '));
+    element.removeEventListener('animationend', handleAnimationEnd);
+
+    if (typeof callback === 'function') callback();
+  };
+
+  element.addEventListener('animationend', handleAnimationEnd);
+}
+
 export const utilService = {
   makeId,
   saveToStorage,
   loadFromStorage,
+  animateCSS
 };
