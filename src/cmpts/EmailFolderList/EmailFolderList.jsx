@@ -28,6 +28,7 @@ const folderLinks = [
 
 const EmailFolderList = ({
   setFilter,
+  isComposeOpen,
   setIsComposeOpen,
   emailData,
   setIsEmailClick,
@@ -37,6 +38,7 @@ const EmailFolderList = ({
   const [unReadEmail, setUnReadEmail] = useState("");
   const [activeLink, setActiveLink] = useState("");
   const currentPath = location.pathname.split("/")[1];
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     setActiveLink(currentPath || keys.INBOX_FILTER);
@@ -70,32 +72,45 @@ const EmailFolderList = ({
   };
 
   const handleFolderClick = (filterValue) => {
-    setIsEmailClick(false);  
+    setIsEmailClick(false);
     setFilter((prevFilter) => ({ ...prevFilter, status: filterValue }));
     setActiveLink(filterValue);
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <nav className={styles.emailFolderList}>
-      <FontAwesomeIcon className={styles.hamburgerIcon} icon={faBars} />
+    <nav
+      className={`${styles.emailFolderList} ${isMenuOpen ? "isMenuOpen" : ""}`}
+    >
+      <FontAwesomeIcon
+        className={styles.hamburgerIcon}
+        icon={faBars}
+        onClick={toggleMenu}
+      />
 
-      <button
-        className={styles.composeBtn}
-        onClick={() => {
-          setIsComposeOpen({
-            status: true,
-            info: {},
-          });
-          const params = new URLSearchParams();
+      {(!isComposeOpen.status || window.innerWidth > 950) && (
+        <button
+          className={`${styles.composeBtn}`}
+          onClick={() => {
+            setIsComposeOpen({
+              status: true,
+              info: {},
+            });
+            const params = new URLSearchParams();
 
-          params.set("compose", "new");
-          navigate(`/${currentPath}?${params.toString()}`);
-        }}
-      >
-        <FontAwesomeIcon icon={faPen} />
-        Compose
-      </button>
-      <div className={styles.links}>
+            params.set("compose", "new");
+            navigate(`/${currentPath}?${params.toString()}`);
+          }}
+        >
+          <FontAwesomeIcon icon={faPen} />
+          Compose
+        </button>
+      )}
+
+      <div className={`${styles.links} ${isMenuOpen ? styles.showMenu : ""}`}>
         {folderLinks.map(({ label, icon, filter }) => (
           <Link
             key={label}

@@ -4,12 +4,15 @@
   display: flex;
   align-items: center;
 
-
   .mailHomeIcon {
     font-size: 2.5rem;
     color: red;
     margin-left: 40px;
     padding: 10px;
+
+    @media (max-width: 950px) {
+      display: none;
+    }
   }
 
   .formSearch {
@@ -19,8 +22,13 @@
     padding: 10px;
     position: absolute;
     left: 20vw;
-    width: 100vw;
+    width: 80vw;
     gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    
+ 
 
     .searchContainer {
       display: flex;
@@ -50,7 +58,10 @@
       display: flex;
       gap: 5px;
 
-      > button {
+      @media (max-width: 950px) {
+        display: none;
+      }
+      button {
         border-radius: 5px;
         border: 1px solid grey;
         cursor: pointer;
@@ -63,4 +74,8 @@
       }
     }
   }
+}
+input,
+button {
+  max-width: 100%;
 }

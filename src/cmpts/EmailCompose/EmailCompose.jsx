@@ -5,6 +5,8 @@ import {
   emailSentMsg,
   showErrorMsg,
 } from "../../services/event-bus.service.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 import styles from "./EmailCompose.module.scss";
@@ -147,7 +149,7 @@ const EmailCompose = ({
             emailSentMsg(updateEmail.id);
             console.log(sendButtonRef.current); // Add this line for debugging
 
-            utilService.animateCSS(sendButtonRef.current, 'pulse');
+            utilService.animateCSS(sendButtonRef.current, "pulse");
           }
         } else {
           await newEmailOrDraft(name);
@@ -169,7 +171,7 @@ const EmailCompose = ({
             type="button"
             onClick={() => onSentOrDraft("draft")}
           >
-            x
+            <FontAwesomeIcon icon={faXmark} />
           </button>
           <p>
             From :<span>Your-Mail</span>
@@ -200,14 +202,14 @@ const EmailCompose = ({
             className={styles.messageInputCompose}
           ></textarea>
 
-<button
-  ref={sendButtonRef}
-  className={styles.sendBtnCompose}
-  type="button"
-  onClick={() => onSentOrDraft("sent")}
->
-  Send
-</button>
+          <button
+            ref={sendButtonRef}
+            className={styles.sendBtnCompose}
+            type="button"
+            onClick={() => onSentOrDraft("sent")}
+          >
+            Send
+          </button>
         </div>
       </div>
     </div>

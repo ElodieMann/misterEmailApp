@@ -6,80 +6,104 @@
   gap: 25px;
   padding: 15px;
 
-  .hamburgerIcon {
-    @media (min-width: 950px) {
-      display: none;
-    }
+  @media (max-width: 950px) {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 10;
+    left: -100%;
+    transition: left 0.5s ease-in-out;
+  }
+}
+
+.composeBtn {
+  background-color: #c1e7fe;
+  width: 50%;
+  padding: 15px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+
+  &:hover {
+    box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.44);
   }
 
-
-  .composeBtn {
-    background-color: #c1e7fe;
+  @media (max-width: 1200px) {
+    width: 80%;
+  }
+  @media (max-width: 950px) {
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
     width: 50%;
-    padding: 15px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: none;
+  }
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  .navLink {
+    color: rgb(63, 62, 62);
     display: flex;
-    gap: 10px;
-    justify-content: center;
-
+    align-items: center;
+    gap: 20px;
+    border-radius: 35px;
+    padding: 0 15px;
+    font-size: 20px;
+    transition: background-color 0.3s;
+    height: 40px;
     &:hover {
-      box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.44);
+      background-color: #e3e3e7;
     }
-
-
-
-    @media (max-width: 1200px) {
- 
-      width: 80%;
+    &.active {
+      background-color: #d3e2fd;
+      font-weight: bold;
     }
-    @media (max-width: 950px) {
-      position: fixed;
-      bottom: 30px;
-      right: 20px;
-      width: 50%;
+    .unreadIndicator {
+      color: #797c81;
+      font-size: 1rem;
     }
   }
-
-  .links {
-    .navLink {
-      color: rgb(63, 62, 62);
-      display: flex;
-      gap: 20px;
-      height: 40px;
-      align-items: center;
-      border-radius: 35px;
-      padding: 0 15px;
-      font-size: 20px;
-      transition: background-color 0.3s;
-
-      &:hover {
-        background-color: #e3e3e7;
-        cursor: pointer;
-      }
-
-      &.active {
-        background-color: #d3e2fd;
-        font-weight: bold;
-      }
-
-      .unreadIndicator {
-        color: #797c81;
-        font-size: 1rem;
-      }
-    }
-
-    @media (max-width: 950px) {
-      display: none;
-    }
+  @media (max-width: 950px) {
+    display: none;
   }
+}
+
+.showMenu {
+  @media (max-width: 950px) {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 40%;
+    overflow-y: auto;
+    background-color: #f7f8fc;
+    padding-top: 60px;
+    z-index: 10;
+  }
+}
+
+.hamburgerIcon {
+  display: none;
 
   @media (max-width: 950px) {
-    width: 100vw;
-    flex-direction: column;
-    height: auto;
+    display: block;
+    position: fixed;
+    top: 35px;
+left: 20px;
+    z-index: 1000;
+    cursor: pointer;
+  }
+}
 
-    
+.isMenuOpen {
+  @media (max-width: 950px) {
+    left: 0;
   }
 }

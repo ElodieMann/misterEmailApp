@@ -34,6 +34,7 @@ const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent,isEmailClic
     <section className={styles.emailIndex}>
       <EmailFolderList
         setFilter={setFilter}
+        isComposeOpen={isComposeOpen}
         setIsComposeOpen={setIsComposeOpen}
         emailData={emailData}
         setIsEmailClick={setIsEmailClick}  

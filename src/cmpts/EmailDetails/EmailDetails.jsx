@@ -11,6 +11,7 @@ import {
   faUser,
   faStar,
   faEnvelope,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./EmailDetails.module.scss";
@@ -69,9 +70,25 @@ const EmailDetails = ({ setIsEmailClick, filter }) => {
     }
   };
 
+  const onDelete = async () => {
+    try {
+      const updatedEmail = { ...email, removedAt: new Date() };
+      await emailService.updateEmail(updatedEmail);
+
+      eventBusService.emit("show-user-msg", {
+        txt: "Email deleted.",
+        emailId: email.id,
+      });
+      setIsEmailClick(false);
+      navigate(`/inbox`);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div className={styles.emailDetailsCmpt}>
-      <Link  to={`/${filter.status}`} onClick={() => setIsEmailClick(false)}>
+      <Link to={`/${filter.status}`} onClick={() => setIsEmailClick(false)}>
         <FontAwesomeIcon
           className={styles.emailDetailsIconBack}
           icon={faArrowLeft}
@@ -92,6 +109,11 @@ const EmailDetails = ({ setIsEmailClick, filter }) => {
                 icon={faEnvelope}
                 className={styles.favIconEmailDetail}
                 onClick={() => onReadEmail(email)}
+              />
+              <FontAwesomeIcon
+                className={styles.favIconEmailPreview}
+                icon={faTrash}
+                onClick={onDelete}
               />
             </div>
             <p>At {formatRelativeTime(email?.sentAt)}</p>

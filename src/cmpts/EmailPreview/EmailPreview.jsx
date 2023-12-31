@@ -68,6 +68,7 @@ const EmailPreview = ({
         type="checkbox"
         onChange={() => toggleSelect(email.id)}
         checked={isSelected}
+        className={styles.checkEmail}
       />
       <FontAwesomeIcon
         icon={faStar}

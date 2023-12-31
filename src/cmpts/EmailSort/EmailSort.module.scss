@@ -1,22 +1,26 @@
 .btnFilter {
-    display: flex;
-    gap: 10px;
-    height: 25px;
-    margin: 10px 0;
-    input {
-      margin-left: 15px;
-      height: auto;
-    }
-  
-    > button {
-      border-radius: 5px;
-      border: 1px solid grey;
-      cursor: pointer;
-      background-color: white;
-      padding: 2px 6px;
-  
-      &:hover {
-        background-color: rgba(128, 128, 128, 0.249);
-      }
+  display: flex;
+  gap: 10px;
+  height: auto;
+  margin: 10px 0;
+  flex-wrap: wrap;
+  @media (max-width: 950px) {
+    display: none;
+  }
+  input {
+    margin-left: 15px;
+    height: auto;
+  }
+
+  > button {
+    border-radius: 5px;
+    border: 1px solid grey;
+    cursor: pointer;
+    background-color: white;
+    padding: 2px 6px;
+
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.249);
     }
   }
+}

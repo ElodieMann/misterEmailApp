@@ -9,6 +9,11 @@ article,
   width: 80vw;
   overflow: hidden;
   border: 1px solid rgba(128, 128, 128, 0.068);
+
+  @media (max-width: 950px) {
+    width: 100%;
+    grid-template-columns: 20% 60% 0% 20%;
+  }
 }
 
 article {
@@ -20,6 +25,7 @@ article {
     display: flex;
     flex-direction: column;
     justify-self: self-start;
+    font-size: 0.8rem;
   }
 }
 
@@ -48,7 +54,6 @@ article {
   }
 }
 
-
 .mailFrom {
   grid-column: 2;
 }
@@ -65,7 +70,8 @@ article {
   justify-items: center;
 }
 
-a, .composeBtnDraft {
+a,
+.composeBtnDraft {
   text-decoration: none;
   height: 100%;
 }
@@ -78,20 +84,28 @@ a, .composeBtnDraft {
 }
 
 .favIconEmailPreview {
-  visibility: hidden; 
+  visibility: hidden;
+
+  @media (max-width: 950px) {
+    display: none;
+  }
 }
 
 .mailSent {
   visibility: visible;
-}
-
-.emailItem:hover {
-
-  .favIconEmailPreview {
-    visibility: visible;  
+  @media (max-width: 950px) {
+  
+    font-size: 0.8rem;
   }
 }
 
+.emailItem:hover {
+  .favIconEmailPreview {
+    visibility: visible;
+  }
+
+
+}
 
 .composeBtnDraft {
   display: flex;
@@ -105,5 +119,11 @@ a, .composeBtnDraft {
     width: 100%;
     grid-template-columns: 0% 55% 55%;
     border: none;
+  }
+}
+
+.checkEmail  {
+  @media (max-width: 950px) {
+    display: none;
   }
 }
