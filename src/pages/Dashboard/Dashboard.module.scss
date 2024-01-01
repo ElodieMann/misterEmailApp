@@ -1,0 +1,41 @@
+.titleDashbord {
+  text-align: center;
+  margin: 5%;
+}
+
+.dashboardContainer {
+  display: flex;
+  align-items: self-start;
+  justify-content: space-around;
+  text-align: center;
+  
+  @media (max-width: 950px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .overview {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    p {
+      margin: 10px 0;
+    }
+  }
+
+  .chartContainer {
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  }
+}

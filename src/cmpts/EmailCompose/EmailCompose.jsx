@@ -13,155 +13,98 @@ import styles from "./EmailCompose.module.scss";
 
 const EmailCompose = ({
   filter,
-  setFilter,
   isComposeOpen,
   setIsComposeOpen,
   display,
   setIsChange,
 }) => {
   const navigate = useNavigate();
-
   const [searchParams] = useSearchParams();
-
-  const [emailData, setEmailData] = useState({
-    to: "",
-    subject: "",
-    body: "",
-    sentAt: new Date(),
-    id: utilService.makeId(),
-    removedAt: null,
-    isRead: false,
-    isStarred: false,
-  });
-
   const sendButtonRef = useRef(null);
+
+  const [emailData, setEmailData] = useState(getInitialEmailData());
 
   useEffect(() => {
     if (isComposeOpen?.info?.isDraft) {
-      setEmailData(isComposeOpen.info);
+      setEmailData(isComposeOpen.info);  
     } else {
-      const isComposeNew = searchParams.get("compose") === "new";
-      const toParam = searchParams.get("to");
-      const subjectParam = searchParams.get("subject");
-
-      if (isComposeNew) {
-        setEmailData({
-          to: toParam || "",
-          subject: subjectParam || "",
-          body: "",
-          sentAt: new Date(),
-          id: utilService.makeId(),
-          removedAt: null,
-          isRead: false,
-          isStarred: false,
-        });
-      }
+      handleComposeNew();  
     }
   }, [isComposeOpen, searchParams]);
 
-  useEffect(() => {
+  function getInitialEmailData() {
+    return {
+      to: "",
+      subject: "",
+      body: "",
+      sentAt: new Date(),
+      id: utilService.makeId(),
+      removedAt: null,
+      isRead: true,
+      isStarred: false
+    };
+  }
+
+  function handleComposeNew() {
     const isComposeNew = searchParams.get("compose") === "new";
     if (isComposeNew) {
-      setIsComposeOpen({
-        status: true,
-        info: {},
-      });
+      setIsComposeOpen({ status: true, info: {} });
+      setEmailData(() => ({  
+        ...getInitialEmailData(),
+        to: searchParams.get("to") || "",
+        subject: searchParams.get("subject") || ""
+      }));
     }
-
-    const to = searchParams.get("to");
-    const subject = searchParams.get("subject");
-
-    if (to) {
-      setEmailData((prevData) => ({ ...prevData, to }));
-    }
-    if (subject) {
-      setEmailData((prevData) => ({ ...prevData, subject }));
-    }
-  }, [searchParams, setIsComposeOpen]);
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEmailData((prevData) => ({ ...prevData, [name]: value }));
+    setEmailData(prevData => ({ ...prevData, [name]: value }));
   };
 
-  const areFieldsEmpty = () => {
-    return (
-      !emailData.to?.trim() ||
-      !emailData.subject?.trim() ||
-      !emailData.body?.trim()
-    );
-  };
+  const areFieldsEmpty = () => !emailData.to.trim() || !emailData.subject.trim() || !emailData.body.trim();
 
-  const newEmailOrDraft = async (name) => {
-    const sentAt = new Date();
-    const isDraft = name === "draft";
-    const isSent = name === "sent";
-    const addToData = await emailService.newEmail({
-      ...emailData,
-      isDraft,
-      sentAt: isDraft ? null : sentAt,
-      id: utilService.makeId(),
-    });
-
-    setIsComposeOpen({
-      status: false,
-      info: {},
-    });
-    if (isSent) emailSentMsg(addToData.id);
-    navigate(`/${filter.status}`);
-    setIsChange(new Date());
-    return addToData;
-  };
-
-  const onSentOrDraft = async (name) => {
-    const isDraft = name === "draft";
-    const isSent = name === "sent";
-    if (isDraft && areFieldsEmpty()) {
-      setIsComposeOpen({
-        status: false,
-        info: {},
-      });
-      navigate(`/${filter.status}`);
+  const handleSendOrDraft = async (actionType) => {
+    if (actionType === "draft" && areFieldsEmpty()) {
+      closeComposer();
       return;
     }
 
     if (emailData.to.trim()) {
-      if (isComposeOpen?.info && isComposeOpen?.info?.isDraft) {
-        const originalDraft = await emailService.getById(
-          isComposeOpen?.info?.id
-        );
-
-        if (originalDraft) {
-          const updateEmail = await emailService.updateEmail({
-            ...originalDraft,
-            ...emailData,
-            isDraft,
-            sentAt: isDraft ? null : new Date(),
-          });
-
-          setIsComposeOpen({
-            status: false,
-            info: {},
-          });
-          setIsChange(new Date());
-
-          if (isSent) {
-            emailSentMsg(updateEmail.id);
-            console.log(sendButtonRef.current); // Add this line for debugging
-
-            utilService.animateCSS(sendButtonRef.current, "pulse");
-          }
-        } else {
-          await newEmailOrDraft(name);
-        }
-      } else {
-        await newEmailOrDraft(name);
+      const emailResponse = await processEmail(actionType);
+      if (emailResponse && actionType === "sent") {
+        emailSentMsg(emailResponse.id);
       }
     } else {
       showErrorMsg();
     }
   };
 
+  const processEmail = async (actionType) => {
+    const isDraft = actionType === "draft";
+    const emailInfo = {
+      ...emailData,
+      isDraft,
+      sentAt: isDraft ? null : new Date(),
+      id: isComposeOpen?.info?.isDraft ? emailData.id : utilService.makeId()
+    };
+
+    let emailResponse;
+    if (isComposeOpen?.info?.isDraft) {
+      emailResponse = await emailService.updateEmail(emailInfo);
+    } else {
+      emailResponse = await emailService.newEmail(emailInfo);
+    }
+
+    closeComposer();
+    return emailResponse;
+  };
+
+  const closeComposer = () => {
+    setIsComposeOpen({ status: false, info: {} });
+    navigate(`/${filter.status}`);
+    setIsChange(new Date());
+  };
   return display ? (
     <div className={styles.emailComposeOverlay}>
       <div className={styles.emailComposeCmpt}>
@@ -169,7 +112,7 @@ const EmailCompose = ({
           <button
             className={styles.closeBtn}
             type="button"
-            onClick={() => onSentOrDraft("draft")}
+            onClick={() => handleSendOrDraft("draft")}
           >
             <FontAwesomeIcon icon={faXmark} />
           </button>
@@ -206,7 +149,7 @@ const EmailCompose = ({
             ref={sendButtonRef}
             className={styles.sendBtnCompose}
             type="button"
-            onClick={() => onSentOrDraft("sent")}
+            onClick={() => handleSendOrDraft("sent")}
           >
             Send
           </button>

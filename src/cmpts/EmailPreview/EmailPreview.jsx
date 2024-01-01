@@ -17,9 +17,9 @@ const EmailPreview = ({
   setIsEmailClick,
   setIsComposeOpen,
   filter,
+  setIsChange,
   toggleSelect,
-  isSelected,
-  setIsChange
+  isSelected
 }) => {
   const onFavorite = async () => {
     try {

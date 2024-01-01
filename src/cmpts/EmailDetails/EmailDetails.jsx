@@ -18,23 +18,18 @@ import styles from "./EmailDetails.module.scss";
 
 const EmailDetails = ({ setIsEmailClick, filter }) => {
   const [email, setEmail] = useState([]);
-  const [isChange, setIsChange] = useState("");
   const params = useParams();
   const navigate = useNavigate();
 
-  useEffect(
-    () => {
-      if (!params) return;
-      getEmailById();
-    },
-    [params.id],
-    isChange
-  );
+  useEffect(() => {
+    if (!params) return;
+    getEmailById();
+  }, [params.id]);
 
   const getEmailById = async () => {
     try {
       const email = await emailService.getById(params.id || id);
-      setEmail(email);
+      setEmail({ ...email, isRead: true });
       const updatedEmail = { ...email, isRead: true };
 
       await emailService.updateEmail(updatedEmail);
@@ -43,48 +38,31 @@ const EmailDetails = ({ setIsEmailClick, filter }) => {
     }
   };
 
-  const onFavorite = async () => {
+  const updateEmail = async (updatedFields, successMsg, navigateOnSuccess = false) => {
     try {
-      const updatedEmail = { ...email, isStarred: !email.isStarred };
+      const updatedEmail = { ...email, ...updatedFields };
       await emailService.updateEmail(updatedEmail);
-
       setEmail(updatedEmail);
+
+      if (successMsg) {
+        eventBusService.emit("show-user-msg", { txt: successMsg, emailId: email.id });
+      }
+
+      if (navigateOnSuccess) {
+        setIsEmailClick(false);
+        navigate(`/inbox`);
+      }
     } catch (e) {
-      console.log(e);
+      eventBusService.emit("show-user-msg", { txt: "Operation failed. Please try again." });
+      console.error(e);  
     }
   };
 
-  const onReadEmail = async () => {
-    try {
-      const updatedEmail = { ...email, isRead: false };
-      await emailService.updateEmail(updatedEmail);
+  const onFavorite = () => updateEmail({ isStarred: !email.isStarred });
 
-      eventBusService.emit("show-user-msg", {
-        txt: "Email marked as unread.",
-        emailId: email.id,
-      });
-      setIsEmailClick(false);
-      navigate(`/inbox`);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const onReadEmail = () => updateEmail({ isRead: false }, "Email marked as unread.", true);
 
-  const onDelete = async () => {
-    try {
-      const updatedEmail = { ...email, removedAt: new Date() };
-      await emailService.updateEmail(updatedEmail);
-
-      eventBusService.emit("show-user-msg", {
-        txt: "Email deleted.",
-        emailId: email.id,
-      });
-      setIsEmailClick(false);
-      navigate(`/inbox`);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const onDelete = () => updateEmail({ removedAt: new Date() }, "Email deleted.", true);
 
   return (
     <div className={styles.emailDetailsCmpt}>

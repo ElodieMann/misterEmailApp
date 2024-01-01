@@ -1,27 +1,14 @@
 import React, { useState } from "react";
-
 import EmailPreview from "../EmailPreview/EmailPreview.jsx";
-
-import styles from "./EmailList.module.scss";
 import EmailSort from "../EmailSort/EmailSort.jsx";
+import styles from "./EmailList.module.scss";
 
-const EmailList = ({
-  setIsEmailClick,
-  filter,
-  isComposeOpen,
-  setIsComposeOpen,
-  emailData,
-  setIsDelete,
-  setIsRead,
-  setIsChange
-}) => {
+const EmailList = ({ setIsEmailClick, filter, setIsComposeOpen, emailData, setIsChange }) => {
   const [selectedEmails, setSelectedEmails] = useState([]);
 
   const toggleSelect = (emailId) => {
-    setSelectedEmails((prevSelected) =>
-      prevSelected.includes(emailId)
-        ? prevSelected.filter((id) => id !== emailId)
-        : [...prevSelected, emailId]
+    setSelectedEmails(prevSelected =>
+      prevSelected.includes(emailId) ? prevSelected.filter(id => id !== emailId) : [...prevSelected, emailId]
     );
   };
 
@@ -31,30 +18,31 @@ const EmailList = ({
         selectedEmails={selectedEmails}
         setSelectedEmails={setSelectedEmails}
         emailData={emailData}
-        setIsRead={setIsRead}
-        setIsDelete={setIsDelete}
         setIsChange={setIsChange}
       />
 
-      <div className={styles.emailList}>
-        {emailData?.length > 0   ? (
-          emailData.map((email) => (
-            <EmailPreview
-              key={email.id}
-              email={email}
-              setIsEmailClick={setIsEmailClick}
-              setIsComposeOpen={setIsComposeOpen}
-              filter={filter}
-              setIsChange={setIsChange}
-              setSelectedEmails={setSelectedEmails}
-              toggleSelect={toggleSelect}
-              isSelected={selectedEmails.includes(email.id)}
-            />
-          ))
+      <section className={styles.emailList}>
+        {emailData ? (
+          emailData.length > 0 ? (
+            emailData.map(email => (
+              <EmailPreview
+                key={email.id}
+                email={email}
+                setIsEmailClick={setIsEmailClick}
+                setIsComposeOpen={setIsComposeOpen}
+                filter={filter}
+                setIsChange={setIsChange}
+                toggleSelect={toggleSelect}
+                isSelected={selectedEmails.includes(email.id)}
+              />
+            ))
+          ) : (
+            <p>No emails available.</p>
+          )
         ) : (
-          <p>No Email</p>
+          <p>Loading emails...</p>
         )}
-      </div>
+      </section>
     </div>
   );
 };

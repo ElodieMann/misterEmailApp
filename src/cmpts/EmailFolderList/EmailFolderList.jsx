@@ -35,52 +35,30 @@ const EmailFolderList = ({
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [unReadEmail, setUnReadEmail] = useState("");
-  const [activeLink, setActiveLink] = useState("");
   const currentPath = location.pathname.split("/")[1];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState(currentPath || keys.INBOX_FILTER);
+  const [unReadEmail, setUnReadEmail] = useState(0);
 
   useEffect(() => {
     setActiveLink(currentPath || keys.INBOX_FILTER);
+    setFilter(prevFilter => ({ ...prevFilter, status: currentPath || keys.INBOX_FILTER }));
 
-    setFilter((prevFilter) => ({
-      ...prevFilter,
-      status: currentPath || keys.INBOX_FILTER,
-    }));
-  }, [location, setFilter]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const composeParam = params.get("compose");
-    if (composeParam === "new") {
-      setIsComposeOpen({
-        status: true,
-        info: {},
-      });
+    if (currentPath === keys.INBOX_FILTER) {
+      const unReadCount = emailData.filter(email => !email.isRead && email.to === "user@appsus.com").length;
+      setUnReadEmail(unReadCount);
     }
-
-    filterUnreadEmail();
-  }, [setIsComposeOpen, emailData]);
-
-  const filterUnreadEmail = () => {
-    if (activeLink === keys.INBOX_FILTER) {
-      const unRead = emailData.filter(
-        (email) => !email.isRead && email.to === "user@appsus.com"
-      );
-      setUnReadEmail(unRead.length);
-    }
-  };
+  }, [location, setFilter, currentPath, emailData]);
 
   const handleFolderClick = (filterValue) => {
     setIsEmailClick(false);
-    setFilter((prevFilter) => ({ ...prevFilter, status: filterValue }));
+    setFilter(prevFilter => ({ ...prevFilter, status: filterValue }));
     setActiveLink(filterValue);
   };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
   return (
     <nav
       className={`${styles.emailFolderList} ${isMenuOpen ? "isMenuOpen" : ""}`}

@@ -10,14 +10,7 @@ const EmailSort = ({
   setIsChange,
 }) => {
   const toggleSelectAllEmails = () => {
-    const allSelected = selectedEmails.length === emailData.length;
-
-    if (allSelected) {
-      setSelectedEmails([]);
-    } else {
-      const allEmailIds = emailData.map((email) => email.id);
-      setSelectedEmails(allEmailIds);
-    }
+    setSelectedEmails(selectedEmails.length === emailData.length ? [] : emailData.map(email => email.id));
   };
 
   const handleDelete = async () => {

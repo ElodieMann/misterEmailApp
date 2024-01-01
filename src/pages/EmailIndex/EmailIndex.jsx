@@ -47,7 +47,6 @@ const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent,isEmailClic
           <EmailList
             setIsEmailClick={setIsEmailClick}
             filter={filter}
-            isComposeOpen={isComposeOpen}
             setIsComposeOpen={setIsComposeOpen}
             emailData={emailData}
             setIsChange={setIsChange}
@@ -59,7 +58,6 @@ const EmailIndex = ({ filter, setFilter, canceledSent, setCancelSent,isEmailClic
         isComposeOpen={isComposeOpen}
         setIsComposeOpen={setIsComposeOpen}
         filter={filter}
-        setFilter={setFilter}
         display={isComposeOpen.status}
         setIsChange={setIsChange}
 

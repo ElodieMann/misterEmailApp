@@ -1,62 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faEnvelopesBulk } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faEnvelopesBulk, faChartSimple } from "@fortawesome/free-solid-svg-icons";
 import { emailService } from "../../services/email.service";
 import { useSearchParams, useNavigate, NavLink } from "react-router-dom";
-import {useForm} from '../../customHooks/useForm'
-import {useEffectUpdate} from '../../customHooks/useEffectUpdate'
-
+import { useForm } from '../../customHooks/useForm';
+import { useEffectUpdate } from '../../customHooks/useEffectUpdate';
 import styles from "./EmailFilter.module.scss";
 
 const EmailFilter = ({ filter, setFilter }) => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const [formFields, handleInputChange, setFields] = useForm({ txt: '' });
 
   useEffect(() => {
     const filterFromParams = emailService.getFilterFromSearchParams(searchParams);
-  
-    setFilter((prevFilter) => ({
-      ...prevFilter,
-      ...filterFromParams,  
-    }));
-   
-    const { txt } = filterFromParams;
-  
-    if (txt !== null && txt !== undefined) {
-      setSearchTerm(txt);
-    }
+    setFilter((prevFilter) => ({ ...prevFilter, ...filterFromParams }));
+    setFields({ txt: filterFromParams.txt ?? '' });  
   }, [searchParams, setFilter]);
 
+ 
+  useEffectUpdate(() => {
+    if (formFields.txt !== undefined) {
+      handleFilterChange({ ...filter, txt: formFields.txt });
+    }
+  }, [formFields]);
+
   const handleFilterChange = (newFilter) => {
-    const updatedFilter = {
-      ...filter,
-      ...newFilter,
-      status: filter.status,
-    };
-
+    const updatedFilter = { ...filter, ...newFilter };
     setFilter(updatedFilter);
+    updateSearchParams(updatedFilter);
+  };
 
+  const updateSearchParams = (updatedFilter) => {
     const params = new URLSearchParams();
-    if (newFilter.txt) params.set("txt", newFilter.txt);
-    if (newFilter.sortByDate) params.set("sortByDate", newFilter.sortByDate);
-    if (newFilter.sortBySubject)
-      params.set("sortBySubject", newFilter.sortBySubject);
-
+    if (updatedFilter.txt) params.set("txt", updatedFilter.txt);
+    if (updatedFilter.sortByDate) params.set("sortByDate", updatedFilter.sortByDate);
+    if (updatedFilter.sortBySubject) params.set("sortBySubject", updatedFilter.sortBySubject);
     navigate(`?${params.toString()}`);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (searchTerm.trim()) {
-      handleFilterChange({ ...filter, txt: searchTerm });
-      setSearchTerm("");
-    }
-  };
-
-  const onSearchInputChange = (e) => {
-    setSearchTerm(e.target.value);
-    handleFilterChange({ ...filter, txt: e.target.value });
   };
 
   const updateFilterAndNavigate = (sortByDateValue, sortBySubjectValue) => {
@@ -69,33 +53,27 @@ const EmailFilter = ({ filter, setFilter }) => {
   return (
     <div className={styles.filterCmpt}>
       <NavLink to="/inbox">
-        <FontAwesomeIcon
-          className={styles.mailHomeIcon}
-          icon={faEnvelopesBulk}
-        />
+        <FontAwesomeIcon className={styles.mailHomeIcon} icon={faEnvelopesBulk} />
       </NavLink>
-      <form className={styles.formSearch} onSubmit={onSubmit}>
+      <form className={styles.formSearch} onSubmit={(onSubmit)}>
         <div className={styles.searchContainer}>
           <FontAwesomeIcon icon={faSearch} />
           <input
             type="text"
             placeholder="Search"
             name="txt"
-            value={searchTerm}
-            onChange={onSearchInputChange}
+            value={formFields.txt}
+            onChange={handleInputChange}
           />
         </div>
 
         <div className={styles.btnFilter}>
-          <button onClick={() => updateFilterAndNavigate(true, false)}>
-            Date
-          </button>
-          <button onClick={() => updateFilterAndNavigate(false, true)}>
-            Subject
-          </button>
-          <button
-            onClick={() => handleFilterChange(emailService.getDefaultFilter())}
-          >
+          <button onClick={() => updateFilterAndNavigate(true, false)}>Date</button>
+          <button onClick={() => updateFilterAndNavigate(false, true)}>Subject</button>
+          <button onClick={() => {
+              handleFilterChange(emailService.getDefaultFilter());
+              setFields({ txt: '' });  
+          }}>
             Reset Search
           </button>
           <select
@@ -103,12 +81,7 @@ const EmailFilter = ({ filter, setFilter }) => {
             onChange={(e) =>
               handleFilterChange({
                 ...filter,
-                isRead:
-                  e.target.value === "read"
-                    ? true
-                    : e.target.value === "unread"
-                    ? false
-                    : null,
+                isRead: e.target.value === "read" ? true : e.target.value === "unread" ? false : null,
               })
             }
           >
@@ -116,8 +89,11 @@ const EmailFilter = ({ filter, setFilter }) => {
             <option value="unread">Unread</option>
             <option value="read">Read</option>
           </select>
+        <button onClick={() =>  navigate(`/stat`)}><FontAwesomeIcon icon={faChartSimple} /></button>
         </div>
+
       </form>
+
     </div>
   );
 };
