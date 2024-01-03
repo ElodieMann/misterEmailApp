@@ -1,38 +1,31 @@
+@import "../../global.scss";
+
 .filterCmpt {
   height: 100%;
-  background-color: #f7f8fc;
-  display: flex;
-  align-items: center;
+  background-color: $primary-bg-color;
+  @include flex-container(center, stretch);
 
   .mailHomeIcon {
     font-size: 2.5rem;
-    color: red;
+    color: $highlight-color;
     margin-left: 40px;
     padding: 10px;
 
-    @media (max-width: 950px) {
+    @include respond-to("small") {
       display: none;
     }
   }
 
   .formSearch {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    @include flex-container(column, space-around);
     padding: 10px;
     position: absolute;
     left: 20vw;
     width: 80vw;
     gap: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    
- 
 
     .searchContainer {
-      display: flex;
-      align-items: center;
+      @include flex-container;
       height: 50%;
       width: 30%;
       gap: 20px;
@@ -49,32 +42,34 @@
         }
       }
 
-      @media (max-width: 950px) {
+      @include respond-to("small") {
         width: 80%;
       }
     }
 
     .btnFilter {
-      display: flex;
+      @include flex-container;
       gap: 5px;
 
-      @media (max-width: 950px) {
+      @include respond-to("small") {
         display: none;
       }
+
       button {
         border-radius: 5px;
-        border: 1px solid grey;
+        border: 1px solid $main-text-color;
         cursor: pointer;
         background-color: white;
         padding: 2px 6px;
 
         &:hover {
-          background-color: rgba(128, 128, 128, 0.249);
+          background-color: $secondary-bg-color;
         }
       }
     }
   }
 }
+
 input,
 button {
   max-width: 100%;

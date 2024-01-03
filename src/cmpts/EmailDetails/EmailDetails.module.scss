@@ -1,43 +1,36 @@
+@import "../../global.scss";
+
 .emailDetailsIconBack {
   margin: 10px;
 }
 
 .emailDetailsCont {
   padding: 60px 50px;
-  display: flex;
-  flex-direction: column;
+  @include flex-container(column);
   gap: 30px;
 
   .emailDetailHeader {
-    display: flex;
-    justify-content: space-between;
+    @include flex-container(space-between);
   }
 
   .rightSideHeader {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include flex-container(column, flex-start, center);
     gap: 10px;
-    
   }
 
   .iconEmailDetail {
-    display: flex;
+    @include flex-container;
     gap: 20px;
     font-size: 20px;
-    align-items: center;
-
-
 
     .favIconEmailDetail {
       &:hover {
-        background-color: rgba(128, 128, 128, 0.234);
+        background-color: $secondary-bg-color;
         border-radius: 50px;
       }
     }
-
- 
   }
+
   .emailTitle {
     font-size: 1.5rem;
     font-weight: bold;
@@ -45,17 +38,15 @@
   }
 
   .from {
-    display: flex;
-    justify-content: space-between;
+    @include flex-container(space-between);
 
     .userEmailDetails {
-      display: flex;
-      align-items: center;
+      @include flex-container;
       gap: 30px;
 
       .userIcon {
-        color: grey;
-        background-color: rgba(128, 128, 128, 0.283);
+        color: $main-text-color;
+        background-color: $secondary-bg-color;
         padding: 10px;
         border-radius: 50%;
         font-size: 1.2rem;

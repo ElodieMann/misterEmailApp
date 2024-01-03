@@ -1,12 +1,13 @@
+@import "../../global.scss";
+
 .emailFolderList {
-  display: flex;
-  flex-direction: column;
+  @include flex-container(column, start, start);
   width: 20vw;
-  background-color: #f7f8fc;
+  background-color: $primary-bg-color;
   gap: 25px;
   padding: 15px;
 
-  @media (max-width: 950px) {
+  @include respond-to("small") {
     position: fixed;
     top: 0;
     height: 100vh;
@@ -24,18 +25,16 @@
   font-size: 1rem;
   border-radius: 5px;
   border: none;
-  display: flex;
+  @include flex-container();
   gap: 10px;
-  justify-content: center;
-
   &:hover {
-    box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.44);
+    box-shadow: 5px 5px 5px $secondary-bg-color;
   }
 
   @media (max-width: 1200px) {
     width: 80%;
   }
-  @media (max-width: 950px) {
+  @include respond-to("small") {
     position: fixed;
     bottom: 30px;
     right: 20px;
@@ -44,12 +43,10 @@
 }
 
 .links {
-  display: flex;
-  flex-direction: column;
+  @include flex-container(column, flex-start, flex-start);
   .navLink {
     color: rgb(63, 62, 62);
-    display: flex;
-    align-items: center;
+    @include flex-container(center);
     gap: 20px;
     border-radius: 35px;
     padding: 0 15px;
@@ -68,22 +65,21 @@
       font-size: 1rem;
     }
   }
-  @media (max-width: 950px) {
+  @include respond-to("small") {
     display: none;
   }
 }
 
 .showMenu {
-  @media (max-width: 950px) {
-    display: flex;
-    flex-direction: column;
+  @include respond-to("small") {
+    @include flex-container(column);
     position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
     width: 40%;
     overflow-y: auto;
-    background-color: #f7f8fc;
+    background-color: $primary-bg-color;
     padding-top: 60px;
     z-index: 10;
   }
@@ -92,18 +88,18 @@
 .hamburgerIcon {
   display: none;
 
-  @media (max-width: 950px) {
+  @include respond-to("small") {
     display: block;
     position: fixed;
     top: 35px;
-left: 20px;
+    left: 20px;
     z-index: 1000;
     cursor: pointer;
   }
 }
 
 .isMenuOpen {
-  @media (max-width: 950px) {
+  @include respond-to("small") {
     left: 0;
   }
 }

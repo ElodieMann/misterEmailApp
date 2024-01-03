@@ -1,3 +1,5 @@
+@import "../../global.scss";
+
 .userMsg {
   background-color: #202123;
   padding: 0.5em 1em;
@@ -7,9 +9,7 @@
   color: #c4c4c5;
   font-weight: bold;
   border-radius: 2px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
+  @include flex-container;
 
   button {
     background-color: transparent;

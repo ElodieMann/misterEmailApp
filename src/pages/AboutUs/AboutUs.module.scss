@@ -1,43 +1,20 @@
+@import '../../global.scss';
+
 .aboutPage {
+  @include flex-container(column, space-around);
   position: relative;
   height: 90vh;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  background-color: rgba(128, 128, 128, 0.227);
-  border: 1px solid transparent;
-  border-radius: 10px;
+  background-color: $secondary-bg-color;
+  border-radius:10px;
   gap: 15px;
   padding: 40px;
 
-  h1 {
-    text-align: center;
-  }
+  h1 { text-align: center; }
 
-  .redText {
- 
-      color: red;
-
-  }
-
-  .yellowText {
-
-      color: yellow;
-
-  }
-
-  .greenText {
-
-      color: green;
-
-  }
-
-  .blueText {
-   
-      color: blue;
-  
-  }
+  .redText { color: $highlight-color; }
+  .yellowText { color: yellow; }
+  .greenText { color: green; }
+  .blueText { color: blue; }
 
   .backBtn {
     position: absolute;
@@ -45,10 +22,10 @@
     left: 5px;
     background-color: white;
     border: 1px solid;
-    border-radius: 3px;
+    border-radius:3px;
     font-size: 1.5rem;
     text-decoration: none;
-    color: grey;
+    color: $main-text-color;
 
     &:hover {
       color: white;

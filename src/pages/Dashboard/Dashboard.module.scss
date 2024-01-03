@@ -1,18 +1,16 @@
+@import "../../global.scss";
+
 .titleDashbord {
   text-align: center;
   margin: 5%;
 }
 
 .dashboardContainer {
-  display: flex;
-  align-items: self-start;
-  justify-content: space-around;
+  @include flex-container(row, space-around, flex-start);
   text-align: center;
-  
-  @media (max-width: 950px) {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+
+  @include respond-to("small") {
+    @include flex-container(column, center, center);
   }
 
   .overview {
@@ -36,6 +34,5 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
   }
 }

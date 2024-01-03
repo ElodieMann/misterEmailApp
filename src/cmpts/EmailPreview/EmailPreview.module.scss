@@ -1,3 +1,5 @@
+@import "../../global.scss";
+
 .emailItem,
 article,
 .linkDraft {
@@ -8,9 +10,9 @@ article,
   grid-template-columns: 2% 4% 76% 15% 3%;
   width: 80vw;
   overflow: hidden;
-  border: 1px solid rgba(128, 128, 128, 0.068);
+  border: 1px solid $secondary-bg-color;
 
-  @media (max-width: 950px) {
+  @include respond-to("small") {
     width: 100%;
     grid-template-columns: 20% 60% 0% 20%;
   }
@@ -21,10 +23,9 @@ article {
   border: none;
   height: 100%;
 
-  @media (max-width: 950px) {
-    display: flex;
-    flex-direction: column;
-    justify-self: self-start;
+  @include respond-to("small") {
+    @include flex-container(column);
+    justify-self: flex-start;
     font-size: 0.8rem;
   }
 }
@@ -36,17 +37,17 @@ article {
 .favIconStar {
   padding: 10px;
   margin: 10px;
-  color: rgba(128, 128, 128, 0.416);
+  color: $secondary-bg-color;
 
   &:hover {
     cursor: pointer;
-    background-color: rgba(128, 128, 128, 0.342);
+    background-color: $secondary-bg-color;
     border-radius: 50%;
   }
 }
 
 .favIconEmailPreview {
-  color: rgba(128, 128, 128, 0.352);
+  color: $secondary-bg-color;
 
   &:hover {
     color: black;
@@ -57,17 +58,14 @@ article {
 .mailFrom {
   grid-column: 2;
 }
-
 .mailSubj {
   grid-column: 3;
 }
 
 .mailSent {
   grid-column: 4;
-  display: grid;
+  @include flex-container;
   grid-template-columns: repeat(3, 1fr);
-  align-items: center;
-  justify-items: center;
 }
 
 a,
@@ -77,7 +75,7 @@ a,
 }
 
 .composeBtnDraft article {
-  display: flex;
+  @include flex-container;
   width: 100%;
   justify-content: flex-start;
   gap: 10%;
@@ -86,15 +84,15 @@ a,
 .favIconEmailPreview {
   visibility: hidden;
 
-  @media (max-width: 950px) {
+  @include respond-to("small") {
     display: none;
   }
 }
 
 .mailSent {
   visibility: visible;
-  @media (max-width: 950px) {
-  
+
+  @include respond-to("small") {
     font-size: 0.8rem;
   }
 }
@@ -103,12 +101,10 @@ a,
   .favIconEmailPreview {
     visibility: visible;
   }
-
-
 }
 
 .composeBtnDraft {
-  display: flex;
+  @include flex-container;
   color: black;
   width: 90%;
   font-size: 1.2rem;
@@ -122,8 +118,8 @@ a,
   }
 }
 
-.checkEmail  {
-  @media (max-width: 950px) {
+.checkEmail {
+  @include respond-to("small") {
     display: none;
   }
 }

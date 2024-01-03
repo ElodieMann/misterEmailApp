@@ -1,62 +1,53 @@
+@import "../../global.scss";
+
 .homePage {
+  @include flex-container(column, space-around);
   position: relative;
   height: 90vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
   text-align: center;
-  background-color: rgba(128, 128, 128, 0.227);
-  border: 1px solid transparent;
+  background-color: $secondary-bg-color;
   border-radius: 10px;
   padding: 2% 10%;
 
-
   h3 {
-    color: grey;
+    color: $main-text-color;
   }
 
   .mailHomeIcon {
-    color: red;
+    color: $highlight-color;
     font-size: 4rem;
   }
 
   .emailPageLink,
   .aboutLink {
+    @include flex-container(row, flex-start);
     text-decoration: none;
-    color: grey;
-    display: flex;
-    align-items: center;
-    gap: 20px;
+    color: $main-text-color;
     font-size: 2rem;
     text-transform: capitalize;
 
     &:hover {
       cursor: pointer;
-      color: red;
+      color: $highlight-color;
     }
   }
 
   .aboutLink {
     font-size: 1rem;
-
   }
 }
 
 h1 {
   span {
     &:nth-child(1) {
-      color: red;
+      color: $highlight-color;
     }
-
     &:nth-child(2) {
       color: yellow;
     }
-
     &:nth-child(3) {
       color: blue;
     }
-
     &:nth-child(4) {
       color: green;
     }

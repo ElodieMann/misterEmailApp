@@ -3,7 +3,7 @@
   overflow-y: auto;
   max-height: 90vh;
 
-  @media (max-width: 950px) {
+  @include respond-to("small") {
     padding: 10px;
   }
 }

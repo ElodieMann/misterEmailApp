@@ -1,12 +1,16 @@
+@import "../../global.scss";
+
 .btnFilter {
-  display: flex;
+  @include flex-container;
   gap: 10px;
   height: auto;
   margin: 10px 0;
   flex-wrap: wrap;
-  @media (max-width: 950px) {
+
+  @include respond-to("small") {
     display: none;
   }
+
   input {
     margin-left: 15px;
     height: auto;
@@ -14,13 +18,13 @@
 
   > button {
     border-radius: 5px;
-    border: 1px solid grey;
+    border: 1px solid $main-text-color;
     cursor: pointer;
     background-color: white;
     padding: 2px 6px;
 
     &:hover {
-      background-color: rgba(128, 128, 128, 0.249);
+      background-color: $secondary-bg-color;
     }
   }
 }
